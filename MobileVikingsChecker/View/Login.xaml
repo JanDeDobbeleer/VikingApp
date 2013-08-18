@@ -1,0 +1,60 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="MobileVikingsChecker.View.Login"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="True"
+    shell:SystemTray.Opacity="0"
+    shell:SystemTray.ForegroundColor="White"
+    Loaded="Login_OnLoaded">
+
+    <Grid x:Name="LayoutRoot" Background="#960808" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel Grid.Row="0" Margin="12,27,0,28">
+            <TextBlock Text="Kostr" Style="{StaticResource PhoneTextLargeStyle}"/>
+        </StackPanel>
+        
+        <!--Controls to be shown during first boot, button serves to start the login and show the browser-->
+        <Image Grid.Row="1"
+               Source="\Assets\logowhite.png" 
+               HorizontalAlignment="Center" 
+               VerticalAlignment="Center" 
+               Margin="10,0,10,0"/>
+        <TextBlock x:Name="LoginBtn"
+                FontSize="{StaticResource PhoneFontSizeLarge}"
+                Grid.Row="2"
+                Text="sign in"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Foreground="White"
+                Margin="0,50,0,50"
+                Tap="Login_OnTap"/>
+        
+        <!--Controls to be able to enter the pincode and proceed with the login-->
+        <phone:WebBrowser x:Name="PinBrowser" Grid.Row="1" Visibility="Collapsed" Background="#960808" LoadCompleted="PinBrowser_OnLoadCompleted"/>
+        
+        <Grid x:Name="PincodeGrid"  Grid.Row="2" Background="Black" Visibility="Collapsed">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="70"/>
+            </Grid.ColumnDefinitions>
+            <TextBox x:Name="TxtBxPinCode" Grid.Column="0" InputScope="Number"/>
+            <Image Grid.Column="1" Source="\Assets\check.png" Tap="Check_OnTap" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="UniformToFill"/>
+        </Grid>
+    </Grid>
+
+</phone:PhoneApplicationPage>
