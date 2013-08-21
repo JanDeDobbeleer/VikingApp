@@ -8,7 +8,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     xmlns:ei="clr-namespace:Microsoft.Expression.Interactivity.Media;assembly=Microsoft.Expression.Interactions"
-    xmlns:DesignInControl="clr-namespace:MobileVikingsChecker.ViewModels"
     xmlns:controls="clr-namespace:MobileVikingsChecker.Controls"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -42,8 +41,8 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="MY APPLICATION" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock Text="page name" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock Text="Kostr" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock Text="Overview" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
@@ -51,12 +50,16 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
                 <!--<DesignInControl:CircularProgressBar HorizontalAlignment="Center" VerticalAlignment="Center" Percentage="{Binding Value, ElementName=slider}" StrokeThickness="25" SegmentColor="Yellow" />-->
                 <controls:CircularProgressBar HorizontalAlignment="Center" VerticalAlignment="Center" Percentage="{Binding Value, ElementName=slider}" SegmentColor="White" StrokeThickness="2" Radius="100"/>
             </Grid>
-            <Slider x:Name="slider" Grid.Row="1" Maximum="100"/>
+            <TextBlock x:Name="txtBlck1" Grid.Row="1"/>
+            <TextBlock x:Name="txtBlck2" Grid.Row="2"/>
+            <Slider x:Name="slider" Grid.Row="3" Maximum="100"/>
         </Grid>
     </Grid>
 

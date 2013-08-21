@@ -16,7 +16,7 @@
     shell:SystemTray.ForegroundColor="White"
     Loaded="Login_OnLoaded">
 
-    <Grid x:Name="LayoutRoot" Background="#960808" >
+    <Grid x:Name="LayoutRoot" Background="{StaticResource VikingColorBrush}" >
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -45,7 +45,7 @@
                 Tap="Login_OnTap"/>
         
         <!--Controls to be able to enter the pincode and proceed with the login-->
-        <phone:WebBrowser x:Name="PinBrowser" Grid.Row="1" Visibility="Collapsed" Background="#960808" LoadCompleted="PinBrowser_OnLoadCompleted"/>
+        <phone:WebBrowser x:Name="PinBrowser" Grid.Row="1" Visibility="Collapsed" Background="{StaticResource VikingColorBrush}" LoadCompleted="PinBrowser_OnLoadCompleted"/>
         
         <Grid x:Name="PincodeGrid"  Grid.Row="2" Background="Black" Visibility="Collapsed">
             <Grid.ColumnDefinitions>

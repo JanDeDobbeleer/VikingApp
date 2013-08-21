@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Diagnostics;
 using System.Resources;
@@ -60,7 +61,7 @@ namespace MobileVikingsChecker
             if (Debugger.IsAttached)
             {
                 // Display the current frame rate counters.
-                Application.Current.Host.Settings.EnableFrameRateCounter = true;
+                Application.Current.Host.Settings.EnableFrameRateCounter = false;
 
                 // Show the areas of the app that are being redrawn in each frame.
                 //Application.Current.Host.Settings.EnableRedrawRegions = true;
@@ -82,6 +83,9 @@ namespace MobileVikingsChecker
         // This code will not execute when the application is reactivated
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
+            var uri = IsolatedStorageSettings.ApplicationSettings.Contains("accesstoken") ? "/View/MainPivot.xaml" : "/View/Login.xaml";
+            //TODO: hardcoded for debugging, replace with uri
+            RootFrame.Navigate(new Uri("/View/MainPivot.xaml", UriKind.Relative));
         }
 
         // Code to execute when the application is activated (brought to foreground)

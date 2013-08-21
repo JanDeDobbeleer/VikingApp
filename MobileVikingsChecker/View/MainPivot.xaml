@@ -1,0 +1,94 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="MobileVikingsChecker.View.MainPivot"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:circle="clr-namespace:MobileVikingsChecker.Controls"
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait"  Orientation="Portrait"
+    shell:SystemTray.IsVisible="True">
+
+    <phone:PhoneApplicationPage.Resources>
+        <Style x:Key="ContentTextStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMediumLarge}"/>
+            <Setter Property="Foreground" Value="{StaticResource PhoneForegroundBrush}"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,15,0,0"></Setter>
+        </Style>
+        <Style x:Key="TextStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeNormal}"/>
+            <Setter Property="Foreground" Value="{StaticResource PhoneForegroundBrush}"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+            <Setter Property="Margin" Value="0,0,10,15"/>
+        </Style>
+        <Style x:Key="CircleStyle" TargetType="circle:CircularProgressBar">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="StrokeThickness" Value="10"/>
+        </Style>
+        <Style x:Key="RectangleStyle" TargetType="Rectangle">
+            <Setter Property="Margin" Value="0,25,0,0"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Width" Value="20"/>
+            <!--<Setter Property="Width" Value="20"/>-->
+        </Style>
+    </phone:PhoneApplicationPage.Resources>
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot">
+        <!--Pivot Control-->
+        <phone:Pivot Title="Kostr">
+            <!--Pivot item one-->
+            <phone:PivotItem Header="overview">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="350"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="77"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="70,00" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="{StaticResource PhoneFontSizeExtraLarge}" Foreground="{StaticResource PhoneForegroundBrush}" FontWeight="Bold"/>
+                    <circle:CircularProgressBar Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Style="{StaticResource CircleStyle}" Percentage="96" SegmentColor="{StaticResource SmsColorBrush}" Radius="76" />
+                    <circle:CircularProgressBar Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Style="{StaticResource CircleStyle}" Percentage="50" SegmentColor="{StaticResource VikingSmsColorBrush}" Radius="98" />
+                    <circle:CircularProgressBar Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Style="{StaticResource CircleStyle}" Percentage="54" SegmentColor="{StaticResource ValidColorBrush}" Radius="120" />
+                    <circle:CircularProgressBar Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Style="{StaticResource CircleStyle}" Percentage="80" SegmentColor="{StaticResource DataColorBrush}" Radius="142" />
+                    <Rectangle Fill="{StaticResource DataColorBrush}" Grid.Row="1" Grid.Column="0" Style="{StaticResource RectangleStyle}"/>
+                    <TextBlock Text="1000 / 2048" Style="{StaticResource ContentTextStyle}" Grid.Row="1" Grid.Column="0" />
+                    <TextBlock Text="free data" Style="{StaticResource TextStyle}" Grid.Row="1" Grid.Column="0"/>
+                    <Rectangle Fill="{StaticResource SmsColorBrush}" Grid.Row="3" Grid.Column="0"  Style="{StaticResource RectangleStyle}"/>
+                    <TextBlock Text="1984 / 2000"  Style="{StaticResource ContentTextStyle}" Grid.Row="3" Grid.Column="0"/>
+                    <TextBlock Text="free SMS" Style="{StaticResource TextStyle}" Grid.Row="3" Grid.Column="0"/>
+                    <Rectangle Fill="{StaticResource VikingSmsColorBrush}" Grid.Row="1" Grid.Column="2"  Style="{StaticResource RectangleStyle}"/>
+                    <TextBlock Text="199 / 300" Style="{StaticResource ContentTextStyle}" Grid.Row="1" Grid.Column="2"/>
+                    <TextBlock Text="viking SMS" Style="{StaticResource TextStyle}" Grid.Row="1" Grid.Column="2"/>
+                    <Rectangle Fill="{StaticResource ValidColorBrush}" Grid.Row="3" Grid.Column="2"  Style="{StaticResource RectangleStyle}" />
+                    <TextBlock Text="08 / 09 / 2013" Style="{StaticResource ContentTextStyle}" Grid.Row="3" Grid.Column="2"/>
+                    <TextBlock Text="valid until" Style="{StaticResource TextStyle}" Grid.Row="3" Grid.Column="2"/>
+                </Grid>
+            </phone:PivotItem>
+
+            <!--Pivot item two-->
+            <phone:PivotItem Header="usage">
+                <Grid/>
+            </phone:PivotItem>
+        </phone:Pivot>
+    </Grid>
+
+</phone:PhoneApplicationPage>
