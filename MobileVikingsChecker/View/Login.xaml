@@ -22,7 +22,7 @@
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel Grid.Row="0" Margin="12,27,0,28" Orientation="Horizontal" Height="40">
+        <StackPanel Grid.Row="0" Margin="12,10,0,10" Orientation="Horizontal" Height="40">
             <Image Source="/Assets/logo.png"/>
             <TextBlock Text="Fuel" Style="{StaticResource PhoneTextLargeStyle}" Margin="-3,0,0,0"/>
         </StackPanel>
@@ -46,13 +46,13 @@
         <!--Controls to be able to enter the pincode and proceed with the login-->
         <phone:WebBrowser x:Name="PinBrowser" Grid.Row="1" Visibility="Collapsed" LoadCompleted="PinBrowser_OnLoadCompleted"/>
         
-        <Grid x:Name="PincodeGrid"  Grid.Row="2" Background="{StaticResource PhoneForegroundBrush}" Visibility="Collapsed">
+        <Grid x:Name="PincodeGrid"  Grid.Row="2" Visibility="Collapsed">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="70"/>
             </Grid.ColumnDefinitions>
             <TextBox x:Name="TxtBxPinCode" Grid.Column="0" InputScope="Number"/>
-            <Image Grid.Column="1" Source="\Assets\check.png" Tap="Check_OnTap" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="UniformToFill"/>
+            <Image x:Name="CheckImage" Grid.Column="1" Tap="Check_OnTap" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="UniformToFill"/>
         </Grid>
     </Grid>
 

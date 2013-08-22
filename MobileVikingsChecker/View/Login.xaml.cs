@@ -107,7 +107,17 @@ namespace MobileVikingsChecker.View
         {
             SystemTray.ProgressIndicator = new ProgressIndicator();
             var v = (Visibility)Resources["PhoneLightThemeVisibility"];
-            VikingImage.Source = (v == System.Windows.Visibility.Visible) ? new BitmapImage(new Uri("/Assets/vikinglogoblack.png", UriKind.Relative)) : new BitmapImage(new Uri("/Assets/vikinglogowhite.png", UriKind.Relative));
+
+            if (v == System.Windows.Visibility.Visible)
+            {
+                VikingImage.Source = new BitmapImage(new Uri("/Assets/vikinglogoblack.png", UriKind.Relative));
+                CheckImage.Source = new BitmapImage(new Uri("/Assets/checkblack.png", UriKind.Relative));
+            }
+            else
+            {
+                VikingImage.Source = new BitmapImage(new Uri("/Assets/vikinglogowhite.png", UriKind.Relative));
+                CheckImage.Source = new BitmapImage(new Uri("/Assets/checkwhite.png", UriKind.Relative));
+            }
         }
         #endregion
 
