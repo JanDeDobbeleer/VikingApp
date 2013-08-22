@@ -12,11 +12,9 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True"
-    shell:SystemTray.Opacity="0"
-    shell:SystemTray.ForegroundColor="White"
     Loaded="Login_OnLoaded">
 
-    <Grid x:Name="LayoutRoot" Background="{StaticResource VikingColorBrush}" >
+    <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -24,13 +22,14 @@
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel Grid.Row="0" Margin="12,27,0,28">
-            <TextBlock Text="Kostr" Style="{StaticResource PhoneTextLargeStyle}"/>
+        <StackPanel Grid.Row="0" Margin="12,27,0,28" Orientation="Horizontal" Height="40">
+            <Image Source="/Assets/logo.png"/>
+            <TextBlock Text="Fuel" Style="{StaticResource PhoneTextLargeStyle}" Margin="-3,0,0,0"/>
         </StackPanel>
         
         <!--Controls to be shown during first boot, button serves to start the login and show the browser-->
         <Image Grid.Row="1"
-               Source="\Assets\logowhite.png" 
+               x:Name="VikingImage" 
                HorizontalAlignment="Center" 
                VerticalAlignment="Center" 
                Margin="10,0,10,0"/>
@@ -40,14 +39,14 @@
                 Text="sign in"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Center"
-                Foreground="White"
+                Foreground="{StaticResource PhoneForegroundBrush}"
                 Margin="0,50,0,50"
                 Tap="Login_OnTap"/>
         
         <!--Controls to be able to enter the pincode and proceed with the login-->
-        <phone:WebBrowser x:Name="PinBrowser" Grid.Row="1" Visibility="Collapsed" Background="{StaticResource VikingColorBrush}" LoadCompleted="PinBrowser_OnLoadCompleted"/>
+        <phone:WebBrowser x:Name="PinBrowser" Grid.Row="1" Visibility="Collapsed" LoadCompleted="PinBrowser_OnLoadCompleted"/>
         
-        <Grid x:Name="PincodeGrid"  Grid.Row="2" Background="Black" Visibility="Collapsed">
+        <Grid x:Name="PincodeGrid"  Grid.Row="2" Background="{StaticResource PhoneForegroundBrush}" Visibility="Collapsed">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="70"/>

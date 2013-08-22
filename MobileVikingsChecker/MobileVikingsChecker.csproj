@@ -166,7 +166,8 @@
     </Content>
     <Content Include="Assets\check.png" />
     <Content Include="Assets\logo.png" />
-    <Content Include="Assets\logowhite.png" />
+    <Content Include="Assets\vikinglogoblack.png" />
+    <Content Include="Assets\vikinglogowhite.png" />
     <Content Include="Assets\refresh.png" />
     <Content Include="Assets\Tiles\FlipCycleTileLarge.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

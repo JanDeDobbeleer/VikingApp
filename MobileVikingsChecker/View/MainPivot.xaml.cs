@@ -22,7 +22,7 @@ namespace MobileVikingsChecker.View
 
         private void BuildApplicationBar()
         {
-            ApplicationBar = new ApplicationBar { Mode = ApplicationBarMode.Default, Opacity = 0.5, IsVisible = true };
+            ApplicationBar = new ApplicationBar { Mode = ApplicationBarMode.Default, Opacity = 1, IsVisible = true };
             ApplicationBar.Buttons.Add(Tools.CreateButton("/Assets/refresh.png", "refresh", true, RefreshOnClick));
             ApplicationBar.Buttons.Add(Tools.CreateButton("/Assets/add.png", "reload", true, ReloadOnClick));
         }

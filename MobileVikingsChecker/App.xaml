@@ -8,7 +8,6 @@
             <Setter Property="FontSize" Value="{StaticResource PanoramaItemHeaderFontSize}" />
             <Setter Property="CharacterSpacing" Value="-35" />
         </Style>
-        <local:LocalizedStrings xmlns:local="clr-namespace:MobileVikingsChecker" x:Key="LocalizedStrings" />
         
         <!--Colorbrushes needed throughout the app-->
         <SolidColorBrush x:Key="VikingColorBrush">#960808</SolidColorBrush>
@@ -16,7 +15,6 @@
         <SolidColorBrush x:Key="DataColorBrush">#39c2b0</SolidColorBrush>
         <SolidColorBrush x:Key="SmsColorBrush">#8e15dc</SolidColorBrush>
         <SolidColorBrush x:Key="VikingSmsColorBrush">#ff6100</SolidColorBrush>
-        <SolidColorBrush x:Key="ValidColorBrush">#6ebe43</SolidColorBrush>
         
         <!--<vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />-->
     </Application.Resources>

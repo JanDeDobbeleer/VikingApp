@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using AsyncOAuth;
 using Microsoft.Phone.Controls;
@@ -105,6 +106,8 @@ namespace MobileVikingsChecker.View
         private void Login_OnLoaded(object sender, RoutedEventArgs e)
         {
             SystemTray.ProgressIndicator = new ProgressIndicator();
+            var v = (Visibility)Resources["PhoneLightThemeVisibility"];
+            VikingImage.Source = (v == System.Windows.Visibility.Visible) ? new BitmapImage(new Uri("/Assets/vikinglogoblack.png", UriKind.Relative)) : new BitmapImage(new Uri("/Assets/vikinglogowhite.png", UriKind.Relative));
         }
         #endregion
 

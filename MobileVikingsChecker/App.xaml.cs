@@ -85,7 +85,7 @@ namespace MobileVikingsChecker
         {
             var uri = IsolatedStorageSettings.ApplicationSettings.Contains("accesstoken") ? "/View/MainPivot.xaml" : "/View/Login.xaml";
             //TODO: hardcoded for debugging, replace with uri
-            RootFrame.Navigate(new Uri("/View/MainPivot.xaml", UriKind.Relative));
+            RootFrame.Navigate(new Uri("/View/Login.xaml", UriKind.Relative));
         }
 
         // Code to execute when the application is activated (brought to foreground)
