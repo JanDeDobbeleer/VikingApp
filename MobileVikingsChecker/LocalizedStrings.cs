@@ -1,6 +1,6 @@
-﻿using MobileVikingsChecker.Resources;
+﻿using Fuel.Resources;
 
-namespace MobileVikingsChecker
+namespace Fuel
 {
     /// <summary>
     /// Provides access to string resources.

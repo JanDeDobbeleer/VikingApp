@@ -5,16 +5,14 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
+using Coding4Fun.Toolkit.Controls;
 using Microsoft.Phone.Shell;
+using VikingApi.ApiTools;
 
-namespace MobileVikingsChecker.Common
+namespace Fuel.Common
 {
-    public struct KeyValuePair
-    {
-        public string name;
-        public object content;
-    }
-
     static class Tools
     {
         public static bool SaveSetting(KeyValuePair[] keyValuePair)
@@ -59,6 +57,33 @@ namespace MobileVikingsChecker.Common
             var button = new ApplicationBarIconButton { IconUri = new Uri(uri, UriKind.Relative), Text = text, IsEnabled = enabled };
             button.Click += handler;
             return button;
+        }
+
+        public static bool HasInternetConnection()
+        {
+            return (Microsoft.Phone.Net.NetworkInformation.NetworkInterface.NetworkInterfaceType != Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.None);
+        }
+
+        public static bool HandleError(object result, string message)
+        {
+            if (result != null)
+                return false;
+            ShowToast(message);
+            return true;
+        }
+
+        public static void ShowToast(string message)
+        {
+            SetProgressIndicator(false);
+            var toast = new ToastPrompt
+            {
+                Title = "Fuel",
+                Message = message,
+                ImageSource = new BitmapImage(new Uri("/Assets/ToastIcon.png", UriKind.RelativeOrAbsolute)),
+                MillisecondsUntilHidden = 3000,
+                TextOrientation = Orientation.Vertical
+            };
+            toast.Show();
         }
     }
 }

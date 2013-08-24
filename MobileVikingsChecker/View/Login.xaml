@@ -1,11 +1,12 @@
 ﻿<phone:PhoneApplicationPage
-    x:Class="MobileVikingsChecker.View.Login"
+    x:Class="Fuel.View.Login"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="clr-namespace:Fuel.Controls"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -43,17 +44,9 @@
                 Margin="0,50,0,50"
                 Tap="Login_OnTap"/>
         
-        <!--Controls to be able to enter the pincode and proceed with the login-->
-        <phone:WebBrowser x:Name="PinBrowser" Grid.Row="1" Visibility="Collapsed" LoadCompleted="PinBrowser_OnLoadCompleted"/>
-        
-        <Grid x:Name="PincodeGrid"  Grid.Row="2" Visibility="Collapsed">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="70"/>
-            </Grid.ColumnDefinitions>
-            <TextBox x:Name="TxtBxPinCode" Grid.Column="0" InputScope="Number"/>
-            <Image x:Name="CheckImage" Grid.Column="1" Tap="Check_OnTap" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="UniformToFill"/>
+        <!--Controls to be able to enter the pincode and proceed with the login--><!--
+        <phone:WebBrowser x:Name="PinBrowser" Grid.Row="1" Grid.RowSpan="2" Visibility="Collapsed" LoadCompleted="PinBrowser_OnLoadCompleted"/>-->
+        <controls:ApiBrowser x:Name="PinBrowser" Grid.Row="1" Grid.RowSpan="2" Visibility="Collapsed"/>
         </Grid>
-    </Grid>
 
 </phone:PhoneApplicationPage>

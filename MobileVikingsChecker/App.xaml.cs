@@ -9,30 +9,12 @@ using System.Windows.Markup;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using MobileVikingsChecker.Resources;
-using MobileVikingsChecker.ViewModel;
+using Fuel.Resources;
 
-namespace MobileVikingsChecker
+namespace Fuel
 {
     public partial class App : Application
     {
-        private static MainViewModel viewModel = null;
-
-        /// <summary>
-        /// A static ViewModel used by the views to bind against.
-        /// </summary>
-        /// <returns>The MainViewModel object.</returns>
-        public static MainViewModel ViewModel
-        {
-            get
-            {
-                // Delay creation of the view model until necessary
-                if (viewModel == null)
-                    viewModel = new MainViewModel();
-
-                return viewModel;
-            }
-        }
 
         /// <summary>
         /// Provides easy access to the root frame of the Phone Application.
@@ -85,7 +67,7 @@ namespace MobileVikingsChecker
         {
             var uri = IsolatedStorageSettings.ApplicationSettings.Contains("accesstoken") ? "/View/MainPivot.xaml" : "/View/Login.xaml";
             //TODO: hardcoded for debugging, replace with uri
-            RootFrame.Navigate(new Uri("/View/Login.xaml", UriKind.Relative));
+            RootFrame.Navigate(new Uri(uri, UriKind.Relative));
         }
 
         // Code to execute when the application is activated (brought to foreground)

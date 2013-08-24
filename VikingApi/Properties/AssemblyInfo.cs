@@ -6,11 +6,11 @@ using System.Resources;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Fuel")]
+[assembly: AssemblyTitle("VikingApi")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Fuel")]
+[assembly: AssemblyProduct("VikingApi")]
 [assembly: AssemblyCopyright("Copyright ©  2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -21,7 +21,7 @@ using System.Resources;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("1acb18cb-666a-47dd-92d8-781c9b657cf5")]
+[assembly: Guid("4c3cf688-1220-4cf6-9a4d-25f45234fe71")]
 
 // Version information for an assembly consists of the following four values:
 //

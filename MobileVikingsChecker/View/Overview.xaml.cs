@@ -8,9 +8,9 @@ using System.Windows.Media;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using MobileVikingsChecker.Common;
+using Fuel.Common;
 
-namespace MobileVikingsChecker.View
+namespace Fuel.View
 {
     public partial class Overview : PhoneApplicationPage
     {

@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace MobileVikingsChecker.Controls
+namespace Fuel.Controls
 {
     public partial class CircularProgressBar : UserControl
     {
