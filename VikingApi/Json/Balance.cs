@@ -20,6 +20,7 @@ namespace VikingApi.Classes
 
     public class Balance
     {
+        //JSON members
         public string valid_until { get; set; }
         public int voice_super_on_net { get; set; }
         public int sms_super_on_net_max { get; set; }
@@ -30,10 +31,5 @@ namespace VikingApi.Classes
         public int sms_super_on_net { get; set; }
         public int voice_super_on_net_max { get; set; }
         public bool is_expired { get; set; }
-
-        public static void ConvertBalance(string json)
-        {
-            ApiTools.ApiTools.SaveSetting(new KeyValuePair() { name = "balance", content = JsonConvert.DeserializeObject<Balance>(json) });
-        }
     }
 }

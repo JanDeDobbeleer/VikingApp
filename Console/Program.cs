@@ -33,10 +33,37 @@ namespace Console
 
         static void Main(string[] args)
         {
-            Run().Wait();
+            /*Run().Wait();
             //System.Console.WriteLine(client.accessToken.Secret);
-            GetBalance().Wait();
-            System.Console.WriteLine(json);
+            GetBalance().Wait();*/
+
+            /*var expires = Convert.ToDateTime("2013-08-25 11:12:55");
+            var difference = (expires - DateTime.Now);
+            if (int.Parse(difference.TotalDays.ToString().Split('.')[0]) > 0)
+            {
+                System.Console.WriteLine("Remaining: " + difference.TotalDays.ToString().Split('.')[0] + " days");
+            }
+            else if(int.Parse(difference.TotalHours.ToString().Split('.')[0]) > 0)
+            {
+                System.Console.WriteLine("Remaining: " + difference.TotalHours.ToString().Split('.')[0] + " hours");
+            }
+            else if (int.Parse(difference.TotalMinutes.ToString().Split('.')[0]) > 0)
+            {
+                System.Console.WriteLine("Remaining: " + difference.TotalMinutes.ToString().Split('.')[0] + " minutes");
+            }
+            else
+            {
+                string value = int.Parse(difference.TotalSeconds.ToString().Split('.')[0]) > 0 ? difference.TotalSeconds.ToString().Split('.')[0] : "expired";
+                System.Console.WriteLine("Remaining: " + value +" seconds");
+            }*/
+
+            var try1 = ((Convert.ToDateTime("2013-09-08 07:12:34") - DateTime.Now).TotalDays / (Convert.ToDateTime("2013-09-08 07:12:34").AddMonths(-1) - Convert.ToDateTime("2013-09-08 07:12:34")).Days) * 100d;
+            var try2 = (((Convert.ToDateTime("2013-09-08 07:12:34") - Convert.ToDateTime("2013-09-08 07:12:34").AddMonths(-1)).Days - Math.Round((Convert.ToDateTime("2013-09-08 07:12:34") - DateTime.Now).TotalDays, 0)) / (Convert.ToDateTime("2013-09-08 07:12:34") - Convert.ToDateTime("2013-09-08 07:12:34").AddMonths(-1)).Days) * 100d;
+            System.Console.WriteLine("total days: " + (Convert.ToDateTime("2013-09-08 07:12:34") - Convert.ToDateTime("2013-09-08 07:12:34").AddMonths(-1)).Days);
+            System.Console.WriteLine("passed: " + ((Convert.ToDateTime("2013-09-08 07:12:34") - Convert.ToDateTime("2013-09-08 07:12:34").AddMonths(-1)).Days - Math.Round((Convert.ToDateTime("2013-09-08 07:12:34") - DateTime.Now).TotalDays, 0)));
+            System.Console.WriteLine(  try1);
+            System.Console.WriteLine();
+            System.Console.WriteLine(try2);
             System.Console.ReadKey();
         }
     }

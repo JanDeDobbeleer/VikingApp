@@ -23,8 +23,8 @@ namespace Fuel.View
         private void BuildApplicationBar()
         {
             ApplicationBar = new ApplicationBar { Mode = ApplicationBarMode.Default, Opacity = 0, IsVisible = true, ForegroundColor = (Color)Application.Current.Resources["VikingColor"] };
-            ApplicationBar.Buttons.Add(Tools.CreateButton("/Assets/refresh.png", "refresh", true, RefreshOnClick));
-            ApplicationBar.Buttons.Add(Tools.CreateButton("/Assets/add.png", "reload", true, ReloadOnClick));
+            ApplicationBar.Buttons.Add(Tools.Tools.CreateButton("/Assets/refresh.png", "refresh", true, RefreshOnClick));
+            ApplicationBar.Buttons.Add(Tools.Tools.CreateButton("/Assets/add.png", "reload", true, ReloadOnClick));
         }
 
         private void RefreshOnClick(object sender, EventArgs e)

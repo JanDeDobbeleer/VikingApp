@@ -41,12 +41,12 @@ namespace Fuel.View
         private async void Login_OnTap(object sender, RoutedEventArgs e)
         {
             //Get Pin URL
-            Tools.SetProgressIndicator(true);
+            Tools.Tools.SetProgressIndicator(true);
             SystemTray.ProgressIndicator.Text = "getting ready to loot and plunder";
             await Task.Run(() => GetPinUri());
 
             //Check URL to see whether or not an error was thrown
-            if (Tools.HandleError(PinBrowser.PinUrl, "viking, your internet is broken.")) 
+            if (Tools.Tools.HandleError(PinBrowser.PinUrl, "viking, your internet is broken.")) 
                 return;
 
             //Load pages in browser and login
@@ -82,30 +82,14 @@ namespace Fuel.View
             if (!_startNavigating) return;
             LoginBtn.Visibility = Visibility.Collapsed;
             PinBrowser.Visibility = Visibility.Visible;
-            Tools.SetProgressIndicator(false);
+            Tools.Tools.SetProgressIndicator(false);
             _startNavigating = false;
         }
 
-        private async void PinBrowserOnBrowserFinished(object sender, ApiBrowserEventArgs args)
+        private void PinBrowserOnBrowserFinished(object sender, ApiBrowserEventArgs args)
         {
-            //TODO:Load data and show mainpage
-            Tools.SetProgressIndicator(true);
-            SystemTray.ProgressIndicator.Text = "fetching data";
-
-            //get data using accesstoken
-            var client = new VikingsClient();
-            string json = await client.GetBalance((AccessToken)IsolatedStorageSettings.ApplicationSettings["accesstoken"]);
-
-            //check for errors
-            //TODO: see if this doesn't get stuck in bad connection
-            if (Tools.HandleError(PinBrowser.PinUrl, "can't get in, forcing the door."))
-                PinBrowserOnBrowserFinished(null, null);
-
-            //deserialize
-            Balance.ConvertBalance(json);
-
-            //roam free
             NavigationService.Navigate(new Uri("/View/MainPivot.xaml", UriKind.Relative));
+            Tools.Tools.SetProgressIndicator(false);
         }
         #endregion
     }

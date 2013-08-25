@@ -65,8 +65,7 @@ namespace Fuel
         // This code will not execute when the application is reactivated
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
-            var uri = IsolatedStorageSettings.ApplicationSettings.Contains("accesstoken") ? "/View/MainPivot.xaml" : "/View/Login.xaml";
-            //TODO: hardcoded for debugging, replace with uri
+            var uri = IsolatedStorageSettings.ApplicationSettings.Contains("login") ? "/View/MainPivot.xaml" : "/View/Login.xaml";
             RootFrame.Navigate(new Uri(uri, UriKind.Relative));
         }
 

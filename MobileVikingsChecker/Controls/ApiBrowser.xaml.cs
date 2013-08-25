@@ -11,6 +11,7 @@ using Coding4Fun.Toolkit.Controls;
 using Fuel.Common;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using Tools;
 using VikingApi.ApiTools;
 
 namespace Fuel.Controls
@@ -58,12 +59,14 @@ namespace Fuel.Controls
         {
             if (!navigationEventArgs.Uri.AbsoluteUri.Equals("https://mobilevikings.com/api/2.0/oauth/authorize/"))
                 return;
+            Tools.Tools.SetProgressIndicator(true);
             SystemTray.ProgressIndicator.Text = "boarding the ship";
             WebBrowser.Visibility = Visibility.Collapsed;
 
             // first define a new function which returns the content of "code" as string
             Browser.InvokeScript("eval", "this.newfunc_getmyvalue = function() { return document.getElementsByClassName('code')[0].innerHTML; }");
             // invoke the function and save the result
+            //TODO: add logic to send mail if this fails (no login possible)
             var pin = (string)Browser.InvokeScript("newfunc_getmyvalue");
 
             //fire correct event to show result
@@ -87,7 +90,12 @@ namespace Fuel.Controls
                         //try saving the token
                         for (int j = 1; (j <= 3) && !success; j++)
                         {
-                            success = Tools.SaveSetting(new KeyValuePair() { name = "accesstoken", content = accesstoken });
+                            success = Tools.Tools.SaveSetting(new KeyValuePair[]
+                            {
+                                new KeyValuePair() { name = "login", content = "false"},
+                                new KeyValuePair() {name = "tokenKey", content = accesstoken.Key},
+                                new KeyValuePair() {name = "tokenSecret", content = accesstoken.Secret}
+                            });
                         }
                     }
                 }

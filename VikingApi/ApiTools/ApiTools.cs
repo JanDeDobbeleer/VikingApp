@@ -1,56 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using System.Xml.Serialization;
+using AsyncOAuth;
+using Microsoft.Phone.Net.NetworkInformation;
+using Tools;
 
 namespace VikingApi.ApiTools
 {
-    public struct KeyValuePair
-    {
-        public string name;
-        public object content;
-    }
 
     public static class ApiTools
     {
         public static bool HasInternetConnection()
         {
-            return (Microsoft.Phone.Net.NetworkInformation.NetworkInterface.NetworkInterfaceType != Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.None);
+            return (NetworkInterface.NetworkInterfaceType != NetworkInterfaceType.None);
         }
 
-        public static bool SaveSetting(KeyValuePair[] keyValuePair)
+        public static string SerializeAccessToken(AccessToken token)
         {
-            try
-            {
-                for (int i = 0; i < keyValuePair.Count(); i++)
-                {
-                    IsolatedStorageSettings.ApplicationSettings[keyValuePair[i].name] = keyValuePair[i].content;
-                    IsolatedStorageSettings.ApplicationSettings.Save();
-                }
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-            return true;
+            var serializer = new XmlSerializer(typeof(AccessToken));
+
+            TextWriter writer = new StringWriter();
+            serializer.Serialize(writer, token);
+
+            return writer.ToString();
         }
 
-        public static bool SaveSetting(KeyValuePair keyValuePair)
+        public static AccessToken DeserializeAccessToken(string tData)
         {
-            try
-            {
-                IsolatedStorageSettings.ApplicationSettings[keyValuePair.name] = keyValuePair.content;
-                IsolatedStorageSettings.ApplicationSettings.Save();
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-            return true;
+            var serializer = new XmlSerializer(typeof(AccessToken));
+
+            TextReader reader = new StringReader(tData);
+
+            return (AccessToken)serializer.Deserialize(reader);
         }
     }
 }

@@ -94,7 +94,6 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\ApiBrowserEventArgs.cs" />
-    <Compile Include="Common\Tools.cs" />
     <Compile Include="Controls\ApiBrowser.xaml.cs">
       <DependentUpon>ApiBrowser.xaml</DependentUpon>
     </Compile>
@@ -222,6 +221,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Tools\Tools.csproj">
+      <Project>{CF7909FE-98C4-48C2-B7EE-B2E9187B8BAE}</Project>
+      <Name>Tools</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VikingApi\VikingApi.csproj">
       <Project>{4C3CF688-1220-4CF6-9A4D-25F45234FE71}</Project>
       <Name>VikingApi</Name>

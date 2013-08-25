@@ -2,18 +2,28 @@
 using System.Collections.Generic;
 using System.IO.IsolatedStorage;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Ink;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 using Coding4Fun.Toolkit.Controls;
 using Microsoft.Phone.Shell;
-using VikingApi.ApiTools;
 
-namespace Fuel.Common
+namespace Tools
 {
-    static class Tools
+    public struct KeyValuePair
+    {
+        public string name;
+        public object content;
+    }
+
+    public static class Tools
     {
         public static bool SaveSetting(KeyValuePair[] keyValuePair)
         {
@@ -21,8 +31,7 @@ namespace Fuel.Common
             {
                 for (int i = 0; i < keyValuePair.Count(); i++)
                 {
-                    IsolatedStorageSettings.ApplicationSettings[keyValuePair[i].name] = keyValuePair[i].content;
-                    IsolatedStorageSettings.ApplicationSettings.Save();
+                    SaveSetting(keyValuePair[i]);
                 }
             }
             catch (Exception)

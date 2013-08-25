@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Windows.Navigation;
 using AsyncOAuth;
@@ -57,10 +58,17 @@ namespace VikingApi.ApiTools
 
         public async Task<string> GetBalance(AccessToken token)
         {
-            var client = OAuthUtility.CreateOAuthClient(_consumerKey, _consumerSecret, token);
+            try
+            {
+                var client = OAuthUtility.CreateOAuthClient(_consumerKey, _consumerSecret, token);
 
-            var json = await client.GetStringAsync(BaseUrl + "sim_balance.json");
-            return json;
+                var json = await client.GetStringAsync(BaseUrl + "sim_balance.json");
+                return json;
+            }
+            catch (Exception e)
+            {
+                return "E1";
+            }
         }
 
         public async Task<string> GetSims(AccessToken token)
