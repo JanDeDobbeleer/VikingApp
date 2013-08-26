@@ -56,15 +56,15 @@ namespace VikingApi.AppClasses
             var difference = (expires - DateTime.Now);
             if (difference.Days > 0)
             {
-                return string.Format("{0} days remaining", difference.Days.ToString());
+                return string.Format("{0} days", difference.Days.ToString());
             }
             if (difference.Hours > 0)
             {
-                return string.Format("{0} hours remaining", difference.Hours.ToString());
+                return string.Format("{0} hours", difference.Hours.ToString());
             }
             if (difference.Minutes > 0)
             {
-                return string.Format("{0} minutes remaining", difference.Minutes.ToString());
+                return string.Format("{0} minutes", difference.Minutes.ToString());
             }
             return difference.Seconds > 0 ? string.Format("{0} seconds", difference.Seconds.ToString()) : "bundle expired";
         }

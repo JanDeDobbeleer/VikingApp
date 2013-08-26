@@ -15,7 +15,7 @@
         <SolidColorBrush x:Key="DataColorBrush">#39c2b0</SolidColorBrush>
         <SolidColorBrush x:Key="SmsColorBrush">#8e15dc</SolidColorBrush>
         <SolidColorBrush x:Key="VikingSmsColorBrush">#f4b300</SolidColorBrush>
-        <SolidColorBrush x:Key="VikingMinutesColorBrush">#1f0068</SolidColorBrush>
+        <SolidColorBrush x:Key="VikingMinutesColorBrush">#006ac1</SolidColorBrush>
 
         <!--<vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />-->
     </Application.Resources>
