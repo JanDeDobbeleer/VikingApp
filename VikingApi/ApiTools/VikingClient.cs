@@ -67,7 +67,7 @@ namespace VikingApi.ApiTools
             }
             catch (Exception e)
             {
-                return "E1";
+                return null;
             }
         }
 
@@ -81,10 +81,17 @@ namespace VikingApi.ApiTools
 
         public async Task<string> GetPricePlan(AccessToken token)
         {
-            var client = OAuthUtility.CreateOAuthClient(_consumerKey, _consumerSecret, token);
+            try
+            {
+                var client = OAuthUtility.CreateOAuthClient(_consumerKey, _consumerSecret, token);
 
-            var json = await client.GetStringAsync(BaseUrl + "price_plan_details.json");
-            return json;
+                var json = await client.GetStringAsync(BaseUrl + "price_plan_details.json");
+                return json;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
         }
 
         public async Task<string> GetTopUpHistory(AccessToken token)

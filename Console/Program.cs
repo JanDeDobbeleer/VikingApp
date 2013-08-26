@@ -57,13 +57,16 @@ namespace Console
                 System.Console.WriteLine("Remaining: " + value +" seconds");
             }*/
 
-            var try1 = ((Convert.ToDateTime("2013-09-08 07:12:34") - DateTime.Now).TotalDays / (Convert.ToDateTime("2013-09-08 07:12:34").AddMonths(-1) - Convert.ToDateTime("2013-09-08 07:12:34")).Days) * 100d;
+            /*var try1 = ((Convert.ToDateTime("2013-09-08 07:12:34") - DateTime.Now).TotalDays / (Convert.ToDateTime("2013-09-08 07:12:34").AddMonths(-1) - Convert.ToDateTime("2013-09-08 07:12:34")).Days) * 100d;
             var try2 = (((Convert.ToDateTime("2013-09-08 07:12:34") - Convert.ToDateTime("2013-09-08 07:12:34").AddMonths(-1)).Days - Math.Round((Convert.ToDateTime("2013-09-08 07:12:34") - DateTime.Now).TotalDays, 0)) / (Convert.ToDateTime("2013-09-08 07:12:34") - Convert.ToDateTime("2013-09-08 07:12:34").AddMonths(-1)).Days) * 100d;
             System.Console.WriteLine("total days: " + (Convert.ToDateTime("2013-09-08 07:12:34") - Convert.ToDateTime("2013-09-08 07:12:34").AddMonths(-1)).Days);
             System.Console.WriteLine("passed: " + ((Convert.ToDateTime("2013-09-08 07:12:34") - Convert.ToDateTime("2013-09-08 07:12:34").AddMonths(-1)).Days - Math.Round((Convert.ToDateTime("2013-09-08 07:12:34") - DateTime.Now).TotalDays, 0)));
             System.Console.WriteLine(  try1);
             System.Console.WriteLine();
-            System.Console.WriteLine(try2);
+            System.Console.WriteLine(try2);*/
+            var minutes = 3592/60;
+            var seconds = 3592 % 60;
+            System.Console.WriteLine(string.Format("{0}m {1}s", number, number2));
             System.Console.ReadKey();
         }
     }

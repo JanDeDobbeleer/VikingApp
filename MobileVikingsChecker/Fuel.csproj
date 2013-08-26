@@ -155,6 +155,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\helmetred.png" />
     <Content Include="Assets\ToastIcon.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
@@ -164,8 +165,6 @@
     <Content Include="Assets\ApplicationIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\checkblack.png" />
-    <Content Include="Assets\checkwhite.png" />
     <Content Include="Assets\logo.png" />
     <Content Include="Assets\vikinglogoblack.png" />
     <Content Include="Assets\vikinglogowhite.png" />
