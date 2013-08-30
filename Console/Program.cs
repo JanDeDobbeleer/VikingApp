@@ -1,37 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
+﻿using System.Security.Cryptography;
 using System.Threading.Tasks;
 using AsyncOAuth;
 
 namespace Console
 {
-    class Program
+    internal class Program
     {
         // set your token
-        const string consumerKey = "un9HyMLftXRtDf89jP";
-        const string consumerSecret = "AaDM9yyXLmTemvM2nVahzBFYS9JG62a6";
+        private const string consumerKey = "un9HyMLftXRtDf89jP";
+        private const string consumerSecret = "AaDM9yyXLmTemvM2nVahzBFYS9JG62a6";
 
         private static VikingsClient client;
         private static string json;
 
-        static async Task Run()
+        private static async Task Run()
         {
             // initialize computehash function
-            OAuthUtility.ComputeHash = (key, buffer) => { using (var hmac = new HMACSHA1(key)) { return hmac.ComputeHash(buffer); } };
+            OAuthUtility.ComputeHash = (key, buffer) =>
+            {
+                using (var hmac = new HMACSHA1(key))
+                {
+                    return hmac.ComputeHash(buffer);
+                }
+            };
 
-            var accessToken = await VikingsClient.Authorize(consumerKey, consumerSecret);
+            AccessToken accessToken = await VikingsClient.Authorize(consumerKey, consumerSecret);
             client = new VikingsClient(consumerKey, consumerSecret, accessToken);
         }
 
-        static async Task GetBalance()
+        private static async Task GetBalance()
         {
             json = await client.GetBalance();
         }
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             /*Run().Wait();
             //System.Console.WriteLine(client.accessToken.Secret);
@@ -64,9 +66,9 @@ namespace Console
             System.Console.WriteLine(  try1);
             System.Console.WriteLine();
             System.Console.WriteLine(try2);*/
-            var minutes = 3592/60;
-            var seconds = 3592 % 60;
-            System.Console.WriteLine(string.Format("{0}m {1}s", number, number2));
+            int minutes = 3592/60;
+            int seconds = 3592%60;
+            System.Console.WriteLine("{0}m {1}s", number, number2);
             System.Console.ReadKey();
         }
     }

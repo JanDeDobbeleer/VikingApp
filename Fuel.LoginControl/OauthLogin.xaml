@@ -1,47 +1,47 @@
 ﻿<UserControl x:Class="Fuel.LoginControl.OauthLogin"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:loginControl="clr-namespace:Fuel.LoginControl"
-    mc:Ignorable="d"
-    FontFamily="{StaticResource PhoneFontFamilyNormal}"
-    FontSize="{StaticResource PhoneFontSizeNormal}"
-    Foreground="{StaticResource PhoneForegroundBrush}"
-     Loaded="OauthLogin_OnLoaded">
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:loginControl="clr-namespace:Fuel.LoginControl"
+             mc:Ignorable="d"
+             FontFamily="{StaticResource PhoneFontFamilyNormal}"
+             FontSize="{StaticResource PhoneFontSizeNormal}"
+             Foreground="{StaticResource PhoneForegroundBrush}"
+             Loaded="OauthLogin_OnLoaded">
 
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,10,0,10" Orientation="Horizontal" Height="40">
-            <Image Source="/Assets/logo.png"/>
-            <TextBlock Text="Fuel" Style="{StaticResource PhoneTextLargeStyle}" Margin="-3,0,0,0"/>
+            <Image Source="/Assets/logo.png" />
+            <TextBlock Text="Fuel" Style="{StaticResource PhoneTextLargeStyle}" Margin="-3,0,0,0" />
         </StackPanel>
 
         <!--Controls to be shown during first boot, button serves to start the login and show the browser-->
         <Image Grid.Row="1"
-               x:Name="VikingImage" 
-               HorizontalAlignment="Center" 
-               VerticalAlignment="Center" 
-               Margin="10,0,10,0"/>
+               x:Name="VikingImage"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Margin="10,0,10,0" />
         <TextBlock x:Name="LoginBtn"
-                FontSize="{StaticResource PhoneFontSizeLarge}"
-                Grid.Row="2"
-                Text="sign in"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Center"
-                Foreground="{StaticResource PhoneForegroundBrush}"
-                Margin="0,50,0,50"
-                Tap="Login_OnTap"/>
+                   FontSize="{StaticResource PhoneFontSizeLarge}"
+                   Grid.Row="2"
+                   Text="sign in"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"
+                   Foreground="{StaticResource PhoneForegroundBrush}"
+                   Margin="0,50,0,50"
+                   Tap="Login_OnTap" />
 
         <!--Controls to be able to enter the pincode and proceed with the login-->
         <!--
         <phone:WebBrowser x:Name="PinBrowser" Grid.Row="1" Grid.RowSpan="2" Visibility="Collapsed" LoadCompleted="PinBrowser_OnLoadCompleted"/>-->
-        <loginControl:ApiBrowser x:Name="PinBrowser" Grid.Row="1" Grid.RowSpan="2" Visibility="Collapsed"/>
+        <loginControl:ApiBrowser x:Name="PinBrowser" Grid.Row="1" Grid.RowSpan="2" Visibility="Collapsed" />
     </Grid>
 </UserControl>

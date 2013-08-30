@@ -15,14 +15,20 @@ namespace Fuel.LoginControl
 
     public partial class ApiBrowser : UserControl
     {
-        public event BrowserFinishedEventHandler BrowserFinished;
-        public string PinUrl { get; set; }
-        public WebBrowser Browser { get { return LoginBrowser; } set { LoginBrowser = value; } }
-
         public ApiBrowser()
         {
             InitializeComponent();
         }
+
+        public string PinUrl { get; set; }
+
+        public WebBrowser Browser
+        {
+            get { return LoginBrowser; }
+            set { LoginBrowser = value; }
+        }
+
+        public event BrowserFinishedEventHandler BrowserFinished;
 
         protected void OnBrowserFinished(ApiBrowserEventArgs args)
         {
@@ -64,16 +70,16 @@ namespace Fuel.LoginControl
                 Browser.InvokeScript("eval", "this.newfunc_getmyvalue = function() { return document.getElementsByClassName('code')[0].innerHTML; }");
                 // invoke the function and save the result
                 //TODO: add logic to send mail if this fails (no login possible)
-                var pin = (string)Browser.InvokeScript("newfunc_getmyvalue");
+                var pin = (string) Browser.InvokeScript("newfunc_getmyvalue");
 
                 //fire correct event to show result
-                var args = new ApiBrowserEventArgs { Success = await GetAccessToken(pin) };
+                var args = new ApiBrowserEventArgs {Success = await GetAccessToken(pin)};
                 await Browser.ClearCookiesAsync();
                 OnBrowserFinished(args);
             }
             catch (Exception)
             {
-                var args = new ApiBrowserEventArgs { Success = false };
+                var args = new ApiBrowserEventArgs {Success = false};
                 OnBrowserFinished(args);
             }
         }

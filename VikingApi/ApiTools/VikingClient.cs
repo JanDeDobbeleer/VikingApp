@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
-using System.Windows.Navigation;
 using AsyncOAuth;
-using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
 using Tools;
 
 namespace VikingApi.ApiTools
@@ -13,10 +11,8 @@ namespace VikingApi.ApiTools
     public class VikingsClient
     {
         //data to authenticate
-        const string ConsumerKey = "un9HyMLftXRtDf89jP";
-        const string ConsumerSecret = "AaDM9yyXLmTemvM2nVahzBFYS9JG62a6";
-        private static RequestToken _requestToken;
-        private static OAuthAuthorizer _authorizer;
+        private const string ConsumerKey = "un9HyMLftXRtDf89jP";
+        private const string ConsumerSecret = "AaDM9yyXLmTemvM2nVahzBFYS9JG62a6";
 
         //base url's for authentication
         private const string BaseUrl = "https://mobilevikings.com:443/api/2.0/oauth/";
@@ -28,35 +24,44 @@ namespace VikingApi.ApiTools
         private const string Parameter = "?{0}={1}";
         private const string _balance = "sim_balance.json";
         public const string _sim = "msisdn_list.json";
+        private static RequestToken _requestToken;
+        private static OAuthAuthorizer _authorizer;
 
         //public properties
-        public string Balance {get { return _balance; } }
-        public string Sim { get { return _sim; } }
+        public string Balance
+        {
+            get { return _balance; }
+        }
 
-        public async static Task<string> GetPinUrl()
+        public string Sim
+        {
+            get { return _sim; }
+        }
+
+        public static async Task<string> GetPinUrl()
         {
             if (!ApiTools.HasInternetConnection()) return null;
             // create authorizer
             _authorizer = new OAuthAuthorizer(ConsumerKey, ConsumerSecret);
 
             // get request token
-            var tokenResponse = await _authorizer.GetRequestToken(
+            TokenResponse<RequestToken> tokenResponse = await _authorizer.GetRequestToken(
                 RequestTokenUrl,
-                new[] { new KeyValuePair<string, string>("oauth_callback", "oob") });
+                new[] {new KeyValuePair<string, string>("oauth_callback", "oob")});
             _requestToken = tokenResponse.Token;
 
             //Get and return Pin URL
             return _authorizer.BuildAuthorizeUrl(AuthorizeTokenUrl, _requestToken);
         }
 
-        public async static Task<AccessToken> GetAccessToken(string pinCode)
+        public static async Task<AccessToken> GetAccessToken(string pinCode)
         {
             if (!ApiTools.HasInternetConnection()) return null;
             // get access token
-            var accessTokenResponse = await _authorizer.GetAccessToken(AccessTokenUrl, _requestToken, pinCode);
+            TokenResponse<AccessToken> accessTokenResponse = await _authorizer.GetAccessToken(AccessTokenUrl, _requestToken, pinCode);
 
             // save access token.
-            var accessToken = accessTokenResponse.Token;
+            AccessToken accessToken = accessTokenResponse.Token;
 
             return accessToken;
         }
@@ -66,8 +71,8 @@ namespace VikingApi.ApiTools
             if (!ApiTools.HasInternetConnection()) return null;
             try
             {
-                var client = OAuthUtility.CreateOAuthClient(ConsumerKey, ConsumerSecret, token);
-                var json = await client.GetStringAsync(BaseUrl + path);
+                HttpClient client = OAuthUtility.CreateOAuthClient(ConsumerKey, ConsumerSecret, token);
+                string json = await client.GetStringAsync(BaseUrl + path);
                 return json;
             }
             catch (Exception e)
@@ -79,7 +84,7 @@ namespace VikingApi.ApiTools
         public async Task<string> GetInfo(AccessToken token, string path, KeyValuePair valuePair)
         {
             if (valuePair.content != null && valuePair.name != null)
-                return await GetInfo(token, string.Format(Parameter, valuePair.name, valuePair.content));
+                return await GetInfo(token, path + string.Format(Parameter, valuePair.name, HttpUtility.UrlEncode((string) valuePair.content)));
             return null;
         }
 
@@ -176,6 +181,5 @@ namespace VikingApi.ApiTools
             var json = await client.GetStringAsync(BaseUrl + "points/referrals.json");
             return json;
         }*/
-
     }
 }
