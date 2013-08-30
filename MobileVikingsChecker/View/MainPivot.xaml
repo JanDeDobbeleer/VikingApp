@@ -28,8 +28,7 @@
             <Setter Property="Foreground" Value="{StaticResource PhoneForegroundBrush}"/>
             <Setter Property="FontWeight" Value="Normal"/>
             <Setter Property="HorizontalAlignment" Value="Right"/>
-            <Setter Property="VerticalAlignment" Value="Center"/><!--
-            <Setter Property="Margin" Value="0,0,10,15"/>-->
+            <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
         <Style x:Key="CircleStyle" TargetType="controls:CircularProgressBar">
             <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -42,16 +41,23 @@
             <Setter Property="Height" Value="20"/>
             <Setter Property="Width" Value="20"/>
         </Style>
+        <Style x:Key="ReloadStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeExtraLarge}"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="15,10,15,10"/>
+        </Style>
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot">
         <!--Pivot Control-->
-        <phone:Pivot >
+        <phone:Pivot x:Name="Pivot">
             <phone:Pivot.Title>
                 <StackPanel Orientation="Horizontal" Height="40">
                     <Image Source="/Assets/logo.png"/>
                     <TextBlock Text="Fuel" FontSize="{StaticResource PhoneFontSizeLarge}"/>
+                    <ComboBox HorizontalAlignment="Right" x:Name="SimBox"/>
                 </StackPanel>
             </phone:Pivot.Title>
 
@@ -119,6 +125,17 @@
                 </Grid>
             </phone:PivotItem>
         </phone:Pivot>
+        
+        <!--Grid to be able to reload the wished amount-->
+        <Grid x:Name="ReloadMenu" VerticalAlignment="Bottom" HorizontalAlignment="Center" Background="{StaticResource PhoneBackgroundBrush}" Width="350" Height="60" Margin="0,0,0,10" Visibility="Collapsed">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="10" Style="{StaticResource ReloadStyle}" Tap="UIElement_OnTap"/>
+                <TextBlock Text="15" Style="{StaticResource ReloadStyle}" Tap="UIElement_OnTap"/>
+                <TextBlock Text="25" Style="{StaticResource ReloadStyle}" Tap="UIElement_OnTap"/>
+                <TextBlock Text="40" Style="{StaticResource ReloadStyle}" Tap="UIElement_OnTap"/>
+                <TextBlock Text="60" Style="{StaticResource ReloadStyle}" Tap="UIElement_OnTap"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 
 </phone:PhoneApplicationPage>

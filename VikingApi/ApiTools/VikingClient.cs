@@ -6,61 +6,89 @@ using System.Windows.Navigation;
 using AsyncOAuth;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using Tools;
 
 namespace VikingApi.ApiTools
 {
     public class VikingsClient
     {
-
-        const string _consumerKey = "un9HyMLftXRtDf89jP";
-        const string _consumerSecret = "AaDM9yyXLmTemvM2nVahzBFYS9JG62a6";
+        //data to authenticate
+        const string ConsumerKey = "un9HyMLftXRtDf89jP";
+        const string ConsumerSecret = "AaDM9yyXLmTemvM2nVahzBFYS9JG62a6";
         private static RequestToken _requestToken;
         private static OAuthAuthorizer _authorizer;
 
+        //base url's for authentication
         private const string BaseUrl = "https://mobilevikings.com:443/api/2.0/oauth/";
         private const string RequestTokenUrl = BaseUrl + "request_token/";
         private const string AuthorizeTokenUrl = BaseUrl + "authorize/";
         private const string AccessTokenUrl = BaseUrl + "access_token/";
 
+        //constant to build paths
+        private const string Parameter = "?{0}={1}";
+        private const string _balance = "sim_balance.json";
+        public const string _sim = "msisdn_list.json";
+
+        //public properties
+        public string Balance {get { return _balance; } }
+        public string Sim { get { return _sim; } }
+
         public async static Task<string> GetPinUrl()
         {
-            if (ApiTools.HasInternetConnection())
-            {
-                // create authorizer
-                _authorizer = new OAuthAuthorizer(_consumerKey, _consumerSecret);
+            if (!ApiTools.HasInternetConnection()) return null;
+            // create authorizer
+            _authorizer = new OAuthAuthorizer(ConsumerKey, ConsumerSecret);
 
-                // get request token
-                var tokenResponse = await _authorizer.GetRequestToken(
-                    RequestTokenUrl,
-                    new[] { new KeyValuePair<string, string>("oauth_callback", "oob") });
-                _requestToken = tokenResponse.Token;
+            // get request token
+            var tokenResponse = await _authorizer.GetRequestToken(
+                RequestTokenUrl,
+                new[] { new KeyValuePair<string, string>("oauth_callback", "oob") });
+            _requestToken = tokenResponse.Token;
 
-                //Get and return Pin URL
-                return _authorizer.BuildAuthorizeUrl(AuthorizeTokenUrl, _requestToken);
-            }
-            return null;
+            //Get and return Pin URL
+            return _authorizer.BuildAuthorizeUrl(AuthorizeTokenUrl, _requestToken);
         }
 
         public async static Task<AccessToken> GetAccessToken(string pinCode)
         {
-            if (ApiTools.HasInternetConnection())
+            if (!ApiTools.HasInternetConnection()) return null;
+            // get access token
+            var accessTokenResponse = await _authorizer.GetAccessToken(AccessTokenUrl, _requestToken, pinCode);
+
+            // save access token.
+            var accessToken = accessTokenResponse.Token;
+
+            return accessToken;
+        }
+
+        public async Task<string> GetInfo(AccessToken token, string path)
+        {
+            if (!ApiTools.HasInternetConnection()) return null;
+            try
             {
-                // get access token
-                var accessTokenResponse = await _authorizer.GetAccessToken(AccessTokenUrl, _requestToken, pinCode);
-
-                // save access token.
-                var accessToken = accessTokenResponse.Token;
-
-                return accessToken;
+                var client = OAuthUtility.CreateOAuthClient(ConsumerKey, ConsumerSecret, token);
+                var json = await client.GetStringAsync(BaseUrl + path);
+                return json;
             }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
+        public async Task<string> GetInfo(AccessToken token, string path, KeyValuePair valuePair)
+        {
+            if (valuePair.content != null && valuePair.name != null)
+                return await GetInfo(token, string.Format(Parameter, valuePair.name, valuePair.content));
             return null;
         }
 
-        public async Task<string> GetBalance(AccessToken token)
+        /*public async Task<string> GetBalance(AccessToken token)
         {
+            if (!ApiTools.HasInternetConnection()) return null;
             try
             {
-                var client = OAuthUtility.CreateOAuthClient(_consumerKey, _consumerSecret, token);
+                var client = OAuthUtility.CreateOAuthClient(ConsumerKey, ConsumerSecret, token);
 
                 var json = await client.GetStringAsync(BaseUrl + "sim_balance.json");
                 return json;
@@ -73,7 +101,7 @@ namespace VikingApi.ApiTools
 
         public async Task<string> GetSims(AccessToken token)
         {
-            var client = OAuthUtility.CreateOAuthClient(_consumerKey, _consumerSecret, token);
+            var client = OAuthUtility.CreateOAuthClient(ConsumerKey, ConsumerSecret, token);
 
             var json = await client.GetStringAsync(BaseUrl + "msisdn_list.json?alias=1");
             return json;
@@ -83,7 +111,7 @@ namespace VikingApi.ApiTools
         {
             try
             {
-                var client = OAuthUtility.CreateOAuthClient(_consumerKey, _consumerSecret, token);
+                var client = OAuthUtility.CreateOAuthClient(ConsumerKey, ConsumerSecret, token);
 
                 var json = await client.GetStringAsync(BaseUrl + "price_plan_details.json");
                 return json;
@@ -99,7 +127,7 @@ namespace VikingApi.ApiTools
             var fromdate = DateTime.Now.AddMonths(-1);
             //API requires: YYYY-MM-DDTHH:MM:SS
             //TODO: write extension to convert time to API format
-            var client = OAuthUtility.CreateOAuthClient(_consumerKey, _consumerSecret, token);
+            var client = OAuthUtility.CreateOAuthClient(ConsumerKey, ConsumerSecret, token);
 
             var json = await client.GetStringAsync(BaseUrl + string.Format("top_up_history.json?fromdate={0}", fromdate.ToString("yyyy-MM-ddTHH:mm:ss")));
             return json;
@@ -110,7 +138,7 @@ namespace VikingApi.ApiTools
             var fromdate = DateTime.Now.AddMonths(-1);
             //API requires: YYYY-MM-DDTHH:MM:SS
             //write extension to convert time to API format
-            var client = OAuthUtility.CreateOAuthClient(_consumerKey, _consumerSecret, token);
+            var client = OAuthUtility.CreateOAuthClient(ConsumerKey, ConsumerSecret, token);
 
             var json = await client.GetStringAsync(BaseUrl + string.Format("usage.json?fromdate={0}", fromdate.ToString("yyyy-MM-ddTHH:mm:ss")));
             return json;
@@ -118,7 +146,7 @@ namespace VikingApi.ApiTools
 
         public async Task<string> GetSimInfo(AccessToken token)
         {
-            var client = OAuthUtility.CreateOAuthClient(_consumerKey, _consumerSecret, token);
+            var client = OAuthUtility.CreateOAuthClient(ConsumerKey, ConsumerSecret, token);
 
             var json = await client.GetStringAsync(BaseUrl + "price_plan_details.json");
             return json;
@@ -126,7 +154,7 @@ namespace VikingApi.ApiTools
 
         public async Task<string> GetVikingPointsStats(AccessToken token)
         {
-            var client = OAuthUtility.CreateOAuthClient(_consumerKey, _consumerSecret, token);
+            var client = OAuthUtility.CreateOAuthClient(ConsumerKey, ConsumerSecret, token);
 
             var json = await client.GetStringAsync(BaseUrl + "points/stats.json");
             return json;
@@ -134,7 +162,7 @@ namespace VikingApi.ApiTools
 
         public async Task<string> GetVikingPointsReferalLinks(AccessToken token)
         {
-            var client = OAuthUtility.CreateOAuthClient(_consumerKey, _consumerSecret, token);
+            var client = OAuthUtility.CreateOAuthClient(ConsumerKey, ConsumerSecret, token);
 
             var json = await client.GetStringAsync(BaseUrl + "points/links.json");
             return json;
@@ -143,11 +171,11 @@ namespace VikingApi.ApiTools
         //REFERRALS
         public async Task<string> GetVikingPointsReferrals(AccessToken token)
         {
-            var client = OAuthUtility.CreateOAuthClient(_consumerKey, _consumerSecret, token);
+            var client = OAuthUtility.CreateOAuthClient(ConsumerKey, ConsumerSecret, token);
 
             var json = await client.GetStringAsync(BaseUrl + "points/referrals.json");
             return json;
-        }
+        }*/
 
     }
 }

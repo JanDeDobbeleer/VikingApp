@@ -7,6 +7,7 @@ using System.Resources;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Navigation;
+using Fuel.View;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Fuel.Resources;
@@ -65,8 +66,9 @@ namespace Fuel
         // This code will not execute when the application is reactivated
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
-            var uri = IsolatedStorageSettings.ApplicationSettings.Contains("login") ? "/View/MainPivot.xaml" : "/View/Login.xaml";
-            RootFrame.Navigate(new Uri(uri, UriKind.Relative));
+            if (!IsolatedStorageSettings.ApplicationSettings.Contains("login"))
+                IsolatedStorageSettings.ApplicationSettings["login"] = true;
+            RootFrame.Navigate(new Uri("/View/MainPivot.xaml", UriKind.Relative));
         }
 
         // Code to execute when the application is activated (brought to foreground)

@@ -72,27 +72,5 @@ namespace Tools
         {
             return (Microsoft.Phone.Net.NetworkInformation.NetworkInterface.NetworkInterfaceType != Microsoft.Phone.Net.NetworkInformation.NetworkInterfaceType.None);
         }
-
-        public static bool HandleError(object result, string message)
-        {
-            if (result != null)
-                return false;
-            ShowToast(message);
-            return true;
-        }
-
-        public static void ShowToast(string message)
-        {
-            SetProgressIndicator(false);
-            var toast = new ToastPrompt
-            {
-                Title = "Fuel",
-                Message = message,
-                ImageSource = new BitmapImage(new Uri("/Assets/ToastIcon.png", UriKind.RelativeOrAbsolute)),
-                MillisecondsUntilHidden = 3000,
-                TextOrientation = Orientation.Vertical
-            };
-            toast.Show();
-        }
     }
 }

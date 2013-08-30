@@ -12,8 +12,8 @@
         <!--Colorbrushes needed throughout the app-->
         <SolidColorBrush x:Key="VikingColorBrush">#960808</SolidColorBrush>
         <Color x:Key="VikingColor">#960808</Color>
-        <SolidColorBrush x:Key="DataColorBrush">#39c2b0</SolidColorBrush>
-        <SolidColorBrush x:Key="SmsColorBrush">#8e15dc</SolidColorBrush>
+        <SolidColorBrush x:Key="DataColorBrush">#006ac1</SolidColorBrush>
+        <SolidColorBrush x:Key="SmsColorBrush">#f4b300</SolidColorBrush>
         <SolidColorBrush x:Key="VikingSmsColorBrush">#f4b300</SolidColorBrush>
         <SolidColorBrush x:Key="VikingMinutesColorBrush">#006ac1</SolidColorBrush>
 
