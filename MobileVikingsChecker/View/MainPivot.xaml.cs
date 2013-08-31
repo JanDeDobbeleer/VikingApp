@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,6 +12,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
 using VikingApi.AppClasses;
+using VikingApi.Json;
 
 namespace Fuel.View
 {
@@ -40,7 +40,7 @@ namespace Fuel.View
 
         private async void RefreshOnClick(object sender, EventArgs e)
         {
-            await _viewmodel.GetData(SimBox.SelectedItem.ToString());
+            await _viewmodel.GetData(SimBox.Text);
         }
 
         private void ReloadOnClick(object sender, EventArgs e)
@@ -60,8 +60,8 @@ namespace Fuel.View
         private void OnClickLogout(object sender, EventArgs e)
         {
             IsolatedStorageSettings.ApplicationSettings["login"] = true;
-            bundleGrid.Visibility = Visibility.Collapsed;
-            bonusGrid.Visibility = Visibility.Collapsed;
+            Bundle.Visibility = Visibility.Collapsed;
+            Bonus.Visibility = Visibility.Collapsed;
             ShowLogin();
         }
 
@@ -70,8 +70,8 @@ namespace Fuel.View
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             SystemTray.ProgressIndicator = new ProgressIndicator();
-            bundleGrid.Visibility = Visibility.Collapsed;
-            bonusGrid.Visibility = Visibility.Collapsed;
+            Bundle.Visibility = Visibility.Collapsed;
+            Bonus.Visibility = Visibility.Collapsed;
             if ((bool) IsolatedStorageSettings.ApplicationSettings["login"])
             {
                 ShowLogin();
@@ -104,7 +104,7 @@ namespace Fuel.View
         private async Task<bool> GetData()
         {
             await SetSimList();
-            await SetDataContext(SimBox.Items[0].ToString());
+            await SetDataContext(SimBox.Text);
             return true;
         }
 
@@ -114,22 +114,45 @@ namespace Fuel.View
             if (data != null)
             {
                 DataContext = data;
-                bundleGrid.Visibility = Visibility.Visible;
-                bonusGrid.Visibility = Visibility.Visible;
+                Bundle.Visibility = Visibility.Visible;
+                Bonus.Visibility = Visibility.Visible;
             }
             return true;
         }
 
         private async Task<bool> SetSimList()
         {
-            IEnumerable<string> sims = await _viewmodel.LoadSims();
-            if (sims != null)
+            await _viewmodel.GetSimInfo();
+            if (_viewmodel.Sims != null)
             {
-                SimBox.ItemsSource = sims;
+                SimBox.Text = _viewmodel.Sims.Select(x=>x.msisdn).FirstOrDefault();
             }
             return true;
         }
 
         #endregion
+
+        private void SimBox_OnTap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            if (_viewmodel.Sims.Count() == 1)
+                return;
+            Bundle.Visibility = Visibility.Collapsed;
+            Bonus.Visibility = Visibility.Collapsed;
+            SimBox.Visibility = Visibility.Collapsed;
+            ApplicationBar.IsVisible = false;
+            LongListSelector.ItemsSource = _viewmodel.Sims.ToList();
+            LongListSelector.Visibility = Visibility.Visible;
+        }
+
+        private async void LongListSelector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (LongListSelector.SelectedItem as Sim == null)
+                return;
+            SimBox.Text = (LongListSelector.SelectedItem as Sim).msisdn;
+            LongListSelector.Visibility = Visibility.Collapsed;
+            SimBox.Visibility = Visibility.Visible;
+            ApplicationBar.IsVisible = true;
+            await SetDataContext(SimBox.Text);
+        }
     }
 }

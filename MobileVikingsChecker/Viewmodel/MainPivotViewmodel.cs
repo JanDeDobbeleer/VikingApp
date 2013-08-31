@@ -16,6 +16,8 @@ namespace Fuel.Viewmodel
 {
     internal class MainPivotViewmodel
     {
+        public IEnumerable<Sim> Sims;
+ 
         public async Task<UserBalance> GetData(string msisdn)
         {
             try
@@ -43,7 +45,7 @@ namespace Fuel.Viewmodel
             }
         }
 
-        public async Task<IEnumerable<string>> LoadSims()
+        public async Task<bool> GetSimInfo()
         {
             Tools.Tools.SetProgressIndicator(true);
             try
@@ -59,13 +61,14 @@ namespace Fuel.Viewmodel
                     }
                 };
                 string json = await client.GetInfo(new AccessToken((string) IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string) IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Sim, new KeyValuePair {content = "1", name = "alias"});
+                Sims = JsonConvert.DeserializeObject<Sim[]>(json);
                 Tools.Tools.SetProgressIndicator(false);
-                return JsonConvert.DeserializeObject<Sim[]>(json).Select(x => x.msisdn);
+                return true;
             }
             catch (Exception)
             {
                 Message.ShowToast("Could not load sim information, please try again later");
-                return null;
+                return false;
             }
         }
     }

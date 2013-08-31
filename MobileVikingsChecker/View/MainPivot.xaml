@@ -48,6 +48,21 @@
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="Margin" Value="15,10,15,10" />
         </Style>
+        <Style x:Key="SimListStyle" TargetType="phone:LongListSelector">
+            <Setter Property="Margin" Value="12,70,0,0"/>
+            <Setter Property="ListHeader" Value="sims"/>
+            <Setter Property="Background" Value="{StaticResource PhoneBackgroundBrush}"/>
+            <Setter Property="ItemTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <TextBlock FontSize="{StaticResource PhoneFontSizeExtraLarge}"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,20,0,0"
+                                   Text="{Binding msisdn}"/>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -55,15 +70,22 @@
         <!--Pivot Control-->
         <phone:Pivot x:Name="Pivot">
             <phone:Pivot.Title>
-                <StackPanel Orientation="Horizontal" Height="40">
-                    <Image Source="/Assets/logo.png" />
-                    <TextBlock Text="Fuel" FontSize="{StaticResource PhoneFontSizeLarge}" />
-                    <ComboBox HorizontalAlignment="Right" x:Name="SimBox" />
-                </StackPanel>
+                <Grid Height="40" Width="{Binding ElementName=Pivot, Path=ActualWidth}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Assets/logo.png" />
+                        <TextBlock Text="Fuel" FontSize="{StaticResource PhoneFontSizeLarge}" />
+                    </StackPanel>
+                    <TextBlock Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" x:Name="SimBox" Margin="0,0,40,0" Tap="SimBox_OnTap"/>
+                </Grid>
             </phone:Pivot.Title>
-
+            
             <!--Pivot item one-->
-            <phone:PivotItem Header="bundle">
+            <phone:PivotItem Header="bundle" x:Name="Bundle">
                 <Grid x:Name="bundleGrid">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="300" />
@@ -116,7 +138,7 @@
             </phone:PivotItem>
 
             <!--Pivot item two-->
-            <phone:PivotItem Header="bonus">
+            <phone:PivotItem Header="bonus" x:Name="Bonus">
                 <Grid x:Name="bonusGrid">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="300" />
@@ -169,6 +191,9 @@
                 <TextBlock Text="60" Style="{StaticResource ReloadStyle}" Tap="UIElement_OnTap" />
             </StackPanel>
         </Grid>
+
+        <!--Selector to be able to show SIM numbers and select-->
+        <phone:LongListSelector x:Name="LongListSelector" SelectionChanged="LongListSelector_OnSelectionChanged" Visibility="Collapsed" LayoutMode="List" Style="{StaticResource SimListStyle}"/>
     </Grid>
 
 </phone:PhoneApplicationPage>
