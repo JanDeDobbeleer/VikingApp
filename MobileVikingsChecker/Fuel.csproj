@@ -103,7 +103,11 @@
     <Compile Include="Controls\CircularProgressBar.xaml.cs">
       <DependentUpon>CircularProgressBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Viewmodel\DetailsViewmodel.cs" />
     <Compile Include="Viewmodel\MainPivotViewmodel.cs" />
+    <Compile Include="View\DetailsPage.xaml.cs">
+      <DependentUpon>DetailsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\MainPivot.xaml.cs">
       <DependentUpon>MainPivot.xaml</DependentUpon>
     </Compile>
@@ -118,6 +122,10 @@
       <SubType>Designer</SubType>
     </DesignData>
     <Page Include="Controls\CircularProgressBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DetailsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

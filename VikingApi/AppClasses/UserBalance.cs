@@ -38,8 +38,8 @@ namespace VikingApi.AppClasses
         {
             Credit = string.Format("€{0}", _balance.credits);
             Remaining = ConvertDate(_balance.valid_until);
-            Data = string.Format("{0} / {1}", Math.Round(double.Parse(_balance.bundles.First(bundle => bundle.type == "data").value.Split('.')[0])/1024d/1024d, 0), Math.Round(double.Parse(_balance.bundles.First(bundle => bundle.type == "data").assigned.Split('.')[0])/1024d/1024d, 0));
-            Sms = string.Format("{0} / {1}", _balance.bundles.First(bundle => bundle.type == "sms").value.Split('.')[0], _balance.bundles.First(bundle => bundle.type == "sms").assigned.Split('.')[0]);
+            Data = string.Format("{0} / {1}", Math.Round(_balance.bundles.Where(x => x.type == "data").Sum(x => double.Parse(x.value.Split('.')[0])) / 1024d / 1024d, 0), Math.Round(_balance.bundles.Where(x => x.type == "data").Sum(x => double.Parse(x.assigned.Split('.')[0])) / 1024d / 1024d, 0));
+            Sms = string.Format("{0} / {1}", _balance.bundles.Where(x => x.type == "sms").Sum(x => double.Parse(x.value.Split('.')[0])), _balance.bundles.Where(x => x.type == "sms").Sum(x => double.Parse(x.assigned.Split('.')[0])));
             VikingSms = string.Format("{0} / {1}", _balance.bundles.First(bundle => bundle.type == "sms_super_on_net").value.Split('.')[0], _balance.bundles.First(bundle => bundle.type == "sms_super_on_net").assigned.Split('.')[0]);
             int minutes = int.Parse(_balance.bundles.First(bundle => bundle.type == "voice_super_on_net").value.Split('.')[0])/60;
             int seconds = int.Parse(_balance.bundles.First(bundle => bundle.type == "voice_super_on_net").assigned.Split('.')[0])%60;
@@ -68,26 +68,17 @@ namespace VikingApi.AppClasses
 
         private void CalculatePercentages()
         {
-            foreach (Bundle bundle in _balance.bundles)
-            {
-                switch (bundle.type)
-                {
-                    case ("sms_super_on_net"):
-                        VikingSmsPercentage = 100 - Math.Round((double.Parse(bundle.used.Split('.')[0])/double.Parse(bundle.assigned.Split('.')[0]))*100d, 0);
-                        break;
-                    case ("sms"):
-                        SmsPercentage = 100 - Math.Round((double.Parse(bundle.used.Split('.')[0])/double.Parse(bundle.assigned.Split('.')[0]))*100d, 0);
-                        break;
-                    case ("data"):
-                        DataPercentage = 100 - Math.Round((double.Parse(bundle.used.Split('.')[0])/double.Parse(bundle.assigned.Split('.')[0]))*100d, 0);
-                        break;
-                    case ("voice_super_on_net"):
-                        VikingMinutesPercentage = 100 - Math.Round((double.Parse(bundle.used.Split('.')[0])/double.Parse(bundle.assigned.Split('.')[0]))*100d, 0);
-                        break;
-                }
-            }
+            VikingMinutesPercentage = Calculatepercentage("voice_super_on_net");
+            VikingSmsPercentage = Calculatepercentage("sms_super_on_net");
+            DataPercentage = Calculatepercentage("data");
+            SmsPercentage = Calculatepercentage("sms");
             int totaldays = (Convert.ToDateTime(_balance.valid_until) - Convert.ToDateTime(_balance.valid_until).AddMonths(-1)).Days;
             RemainingPercentage = 100 - ((totaldays - Math.Round((Convert.ToDateTime(_balance.valid_until) - DateTime.Now).TotalDays, 0))/totaldays)*100d;
+        }
+
+        private double Calculatepercentage(string bundle)
+        {
+            return 100 - Math.Round((_balance.bundles.Where(x => x.type == bundle).Sum(x => double.Parse(x.used.Split('.')[0])) / _balance.bundles.Where(x => x.type == bundle).Sum(x => double.Parse(x.assigned.Split('.')[0]))) * 100d, 2);
         }
     }
 }
