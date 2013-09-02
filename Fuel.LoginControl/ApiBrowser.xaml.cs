@@ -46,6 +46,7 @@ namespace Fuel.LoginControl
                 case "/api/2.0/oauth/authorize/":
                 case "/bel/en/account/login/":
                 case "/account/login/":
+                case "/bel/en/account/password/reset/":
                     break;
                 case "/bel/sims/":
                     Browser.Navigate(new Uri(PinUrl));
