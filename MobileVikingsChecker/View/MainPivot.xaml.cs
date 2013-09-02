@@ -11,6 +11,7 @@ using Fuel.Viewmodel;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
+using Tools;
 using VikingApi.AppClasses;
 using VikingApi.Json;
 
@@ -42,8 +43,8 @@ namespace Fuel.View
         private async void RefreshOnClick(object sender, EventArgs e)
         {
             HideReloadMenu();
-            await _viewmodel.GetData(SimBox.Text);
-            Loading.Begin();
+            if(await SetDataContext(SimBox.Text))
+                Loading.Begin();
         }
 
         private void ReloadOnClick(object sender, EventArgs e)
@@ -92,10 +93,14 @@ namespace Fuel.View
             {
                 ApplicationBar.IsVisible = true;
                 Pivot.Visibility = Visibility.Visible;
-                await GetData();
-                if(e.NavigationMode == NavigationMode.Back)
+                if(await GetData() && e.NavigationMode == NavigationMode.Back)
                     Loading.Begin();
             }
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            Tools.Tools.SaveSetting(new KeyValuePair{name = "sim", content = SimBox.Text});
         }
 
         private void ShowLogin()
@@ -112,8 +117,7 @@ namespace Fuel.View
             Pivot.Visibility = Visibility.Visible;
             ApplicationBar.IsVisible = true;
             LayoutRoot.Children.Remove(LayoutRoot.Children.First(c => c.GetType() == typeof (OauthLogin)));
-            await GetData();
-            if (_logout)
+            if (await GetData() && _logout)
             {
                 Loading.Begin();
                 _logout = false;
@@ -144,7 +148,7 @@ namespace Fuel.View
             await _viewmodel.GetSimInfo();
             if (_viewmodel.Sims != null)
             {
-                SimBox.Text = _viewmodel.Sims.Select(x=>x.msisdn).FirstOrDefault();
+                SimBox.Text = IsolatedStorageSettings.ApplicationSettings.Contains("sim") ? (string)IsolatedStorageSettings.ApplicationSettings["sim"] : _viewmodel.Sims.Select(x => x.msisdn).FirstOrDefault();
             }
             return true;
         }
