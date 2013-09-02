@@ -63,15 +63,27 @@ namespace Fuel.LoginControl
                 if (!navigationEventArgs.Uri.AbsoluteUri.Equals("https://mobilevikings.com/api/2.0/oauth/authorize/"))
                     return;
                 Tools.Tools.SetProgressIndicator(true);
-                SystemTray.ProgressIndicator.Text = "requesting token";
                 LoginBrowser.Visibility = Visibility.Collapsed;
+                SystemTray.ProgressIndicator.Text = "requesting token";
 
                 // first define a new function which returns the content of "code" as string
                 Browser.InvokeScript("eval", "this.newfunc_getmyvalue = function() { return document.getElementsByClassName('code')[0].innerHTML; }");
                 // invoke the function and save the result
                 //TODO: add logic to send mail if this fails (no login possible)
-                var pin = (string) Browser.InvokeScript("newfunc_getmyvalue");
+                string pin;
+                try
+                {
+                    pin = (string) Browser.InvokeScript("newfunc_getmyvalue");
+                }
+                catch (Exception e)
+                {
+                    Tools.Message.ShowToast("Please authorize the application to continue");
+                    Tools.Tools.SetProgressIndicator(false);
+                    LoginBrowser.Visibility = Visibility.Visible;
+                    return;
+                }
 
+                LoginBrowser.Visibility = Visibility.Collapsed;
                 //fire correct event to show result
                 var args = new ApiBrowserEventArgs {Success = await GetAccessToken(pin)};
                 await Browser.ClearCookiesAsync();

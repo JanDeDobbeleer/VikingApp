@@ -45,7 +45,7 @@ namespace VikingApi.ApiTools
             _authorizer = new OAuthAuthorizer(ConsumerKey, ConsumerSecret);
 
             // get request token
-            TokenResponse<RequestToken> tokenResponse = await _authorizer.GetRequestToken(
+            var tokenResponse = await _authorizer.GetRequestToken(
                 RequestTokenUrl,
                 new[] {new KeyValuePair<string, string>("oauth_callback", "oob")});
             _requestToken = tokenResponse.Token;
@@ -58,10 +58,10 @@ namespace VikingApi.ApiTools
         {
             if (!ApiTools.HasInternetConnection()) return null;
             // get access token
-            TokenResponse<AccessToken> accessTokenResponse = await _authorizer.GetAccessToken(AccessTokenUrl, _requestToken, pinCode);
+            var accessTokenResponse = await _authorizer.GetAccessToken(AccessTokenUrl, _requestToken, pinCode);
 
             // save access token.
-            AccessToken accessToken = accessTokenResponse.Token;
+            var accessToken = accessTokenResponse.Token;
 
             return accessToken;
         }

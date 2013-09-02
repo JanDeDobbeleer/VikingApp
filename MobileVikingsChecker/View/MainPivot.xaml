@@ -7,6 +7,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="clr-namespace:Fuel.Controls"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:ei="clr-namespace:Microsoft.Expression.Interactivity.Media;assembly=Microsoft.Expression.Interactions"
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -63,6 +65,13 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Storyboard x:Name="Loading">
+            <DoubleAnimation Duration="0:0:1" From="0" To="{Binding ElementName=SmsCircle, Path=Percentage}" Storyboard.TargetProperty="Percentage" Storyboard.TargetName="SmsCircle"/>
+            <DoubleAnimation Duration="0:0:1" From="0" To="{Binding ElementName=DataCircle, Path=Percentage}" Storyboard.TargetProperty="Percentage" Storyboard.TargetName="DataCircle"/>
+            <DoubleAnimation Duration="0:0:1" From="0" To="{Binding ElementName=RemainingCircle, Path=Percentage}" Storyboard.TargetProperty="Percentage" Storyboard.TargetName="RemainingCircle"/>
+            <DoubleAnimation Duration="0:0:1" From="0" To="{Binding ElementName=VikingSmsCircle, Path=Percentage}" Storyboard.TargetProperty="Percentage" Storyboard.TargetName="VikingSmsCircle"/>
+            <DoubleAnimation Duration="0:0:1" From="0" To="{Binding ElementName=VikingMinutesCircle, Path=Percentage}" Storyboard.TargetProperty="Percentage" Storyboard.TargetName="VikingMinutesCircle"/>
+        </Storyboard>
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -80,7 +89,7 @@
                         <Image Source="/Assets/logo.png" />
                         <TextBlock Text="Fuel" FontSize="{StaticResource PhoneFontSizeLarge}" />
                     </StackPanel>
-                    <TextBlock Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" x:Name="SimBox" Margin="0,0,40,0" Tap="SimBox_OnTap"/>
+                    <TextBlock Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" x:Name="SimBox" Margin="0,0,54,0" Tap="SimBox_OnTap"/>
                 </Grid>
             </phone:Pivot.Title>
             
@@ -102,16 +111,28 @@
                     </Grid.ColumnDefinitions>
                     <controls:CircularProgressBar Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3"
                                                   Style="{StaticResource CircleStyle}"
-                                                  Percentage="{Binding SmsPercentage}"
-                                                  SegmentColor="{StaticResource SmsColorBrush}" Radius="110" />
+                                                  SegmentColor="{StaticResource SmsColorBrush}" 
+                                                  Radius="110"
+                                                  x:Name="SmsCircle"
+                                                  Percentage="{Binding SmsPercentage}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Loaded">
+                                <ei:ControlStoryboardAction Storyboard="{StaticResource Loading}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </controls:CircularProgressBar>
                     <controls:CircularProgressBar Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3"
                                                   Style="{StaticResource CircleStyle}"
                                                   Percentage="{Binding DataPercentage}"
-                                                  SegmentColor="{StaticResource DataColorBrush}" Radius="95" />
+                                                  SegmentColor="{StaticResource DataColorBrush}" 
+                                                  Radius="95"
+                                                  x:Name="DataCircle"/>
                     <controls:CircularProgressBar Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3"
                                                   Style="{StaticResource CircleStyle}"
                                                   Percentage="{Binding RemainingPercentage}"
-                                                  SegmentColor="{StaticResource VikingColorBrush}" Radius="80" />
+                                                  SegmentColor="{StaticResource VikingColorBrush}" 
+                                                  Radius="80" 
+                                                  x:Name="RemainingCircle"/>
                     <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Credit}"
                                VerticalAlignment="Center" HorizontalAlignment="Center"
                                FontSize="{StaticResource PhoneFontSizeLarge}"
@@ -157,11 +178,15 @@
                     <controls:CircularProgressBar Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3"
                                                   Style="{StaticResource CircleStyle}"
                                                   Percentage="{Binding VikingSmsPercentage}"
-                                                  SegmentColor="{StaticResource VikingSmsColorBrush}" Radius="95" />
+                                                  SegmentColor="{StaticResource VikingSmsColorBrush}" 
+                                                  Radius="95" 
+                                                  x:Name="VikingSmsCircle"/>
                     <controls:CircularProgressBar Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3"
                                                   Style="{StaticResource CircleStyle}"
                                                   Percentage="{Binding VikingMinutesPercentage}"
-                                                  SegmentColor="{StaticResource VikingMinutesColorBrush}" Radius="80" />
+                                                  SegmentColor="{StaticResource VikingMinutesColorBrush}" 
+                                                  Radius="80" 
+                                                  x:Name="VikingMinutesCircle"/>
 
                     <Rectangle Fill="{StaticResource VikingSmsColorBrush}" Grid.Row="1" Grid.Column="0"
                                Style="{StaticResource RectangleStyle}" />

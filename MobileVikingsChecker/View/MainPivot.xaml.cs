@@ -19,6 +19,7 @@ namespace Fuel.View
     public partial class MainPivot : PhoneApplicationPage
     {
         private readonly MainPivotViewmodel _viewmodel;
+        private bool _logout;
 
         public MainPivot()
         {
@@ -40,7 +41,9 @@ namespace Fuel.View
 
         private async void RefreshOnClick(object sender, EventArgs e)
         {
+            HideReloadMenu();
             await _viewmodel.GetData(SimBox.Text);
+            Loading.Begin();
         }
 
         private void ReloadOnClick(object sender, EventArgs e)
@@ -50,6 +53,7 @@ namespace Fuel.View
 
         private void UIElement_OnTap(object sender, GestureEventArgs e)
         {
+            HideReloadMenu();
             if ((sender as TextBlock) == null)
                 return;
             var task = new SmsComposeTask {To = "8989", Body = string.Format("sim topup {0}", (sender as TextBlock).Text)};
@@ -59,10 +63,18 @@ namespace Fuel.View
 
         private void OnClickLogout(object sender, EventArgs e)
         {
+            _logout = true;
+            HideReloadMenu();
             IsolatedStorageSettings.ApplicationSettings["login"] = true;
             Bundle.Visibility = Visibility.Collapsed;
             Bonus.Visibility = Visibility.Collapsed;
             ShowLogin();
+        }
+
+        private void HideReloadMenu()
+        {
+            if (ReloadMenu.Visibility == Visibility.Visible)
+                ReloadMenu.Visibility = Visibility.Collapsed;
         }
 
         #region startup
@@ -81,6 +93,8 @@ namespace Fuel.View
                 ApplicationBar.IsVisible = true;
                 Pivot.Visibility = Visibility.Visible;
                 await GetData();
+                if(e.NavigationMode == NavigationMode.Back)
+                    Loading.Begin();
             }
         }
 
@@ -99,6 +113,11 @@ namespace Fuel.View
             ApplicationBar.IsVisible = true;
             LayoutRoot.Children.Remove(LayoutRoot.Children.First(c => c.GetType() == typeof (OauthLogin)));
             await GetData();
+            if (_logout)
+            {
+                Loading.Begin();
+                _logout = false;
+            }
         }
 
         private async Task<bool> GetData()
