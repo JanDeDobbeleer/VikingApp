@@ -24,7 +24,7 @@ namespace Fuel.Viewmodel
             {
                 Tools.Tools.SetProgressIndicator(true);
                 SystemTray.ProgressIndicator.Text = "fetching data";
-                var client = new VikingsClient();
+                var client = new VikingsApi();
                 OAuthUtility.ComputeHash = (key, buffer) =>
                 {
                     using (var hmac = new HMACSHA1(key))
@@ -52,7 +52,7 @@ namespace Fuel.Viewmodel
             {
                 Tools.Tools.SetProgressIndicator(true);
                 SystemTray.ProgressIndicator.Text = "loading sims";
-                var client = new VikingsClient();
+                var client = new VikingsApi();
                 OAuthUtility.ComputeHash = (key, buffer) =>
                 {
                     using (var hmac = new HMACSHA1(key))

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ using Tools;
 
 namespace VikingApi.ApiTools
 {
-    public class VikingsClient
+    public class VikingsApi
     {
         //data to authenticate
         private const string ConsumerKey = "un9HyMLftXRtDf89jP";
@@ -21,9 +22,10 @@ namespace VikingApi.ApiTools
         private const string AccessTokenUrl = BaseUrl + "access_token/";
 
         //constant to build paths
-        private const string Parameter = "?{0}={1}";
+        private const string Parameter = "{0}={1}";
         private const string _balance = "sim_balance.json";
-        public const string _sim = "msisdn_list.json";
+        private const string _sim = "msisdn_list.json";
+        private const string _usage = "usage.json";
         private static RequestToken _requestToken;
         private static OAuthAuthorizer _authorizer;
 
@@ -38,6 +40,11 @@ namespace VikingApi.ApiTools
             get { return _sim; }
         }
 
+        public string Usage
+        {
+            get { return _usage; }
+        }
+
         public static async Task<string> GetPinUrl()
         {
             if (!ApiTools.HasInternetConnection()) return null;
@@ -47,7 +54,7 @@ namespace VikingApi.ApiTools
             // get request token
             var tokenResponse = await _authorizer.GetRequestToken(
                 RequestTokenUrl,
-                new[] {new KeyValuePair<string, string>("oauth_callback", "oob")});
+                new[] { new KeyValuePair<string, string>("oauth_callback", "oob") });
             _requestToken = tokenResponse.Token;
 
             //Get and return Pin URL
@@ -84,34 +91,21 @@ namespace VikingApi.ApiTools
         public async Task<string> GetInfo(AccessToken token, string path, KeyValuePair valuePair)
         {
             if (valuePair.content != null && valuePair.name != null)
-                return await GetInfo(token, path + string.Format(Parameter, valuePair.name, HttpUtility.UrlEncode((string) valuePair.content)));
+                return await GetInfo(token, path + "?" + string.Format(Parameter, valuePair.name, HttpUtility.UrlEncode((string)valuePair.content)));
             return null;
         }
 
-        /*public async Task<string> GetBalance(AccessToken token)
+        public async Task<string> GetInfo(AccessToken token, string path, KeyValuePair[] valuePair)
         {
-            if (!ApiTools.HasInternetConnection()) return null;
-            try
+            if (valuePair[0].content != null && valuePair[0].name != null)
             {
-                var client = OAuthUtility.CreateOAuthClient(ConsumerKey, ConsumerSecret, token);
-
-                var json = await client.GetStringAsync(BaseUrl + "sim_balance.json");
-                return json;
+                string querystring = valuePair.Aggregate(string.Empty, (current, keyValuePair) => current + string.Format(Parameter, keyValuePair.name, HttpUtility.UrlEncode((string) keyValuePair.content)));
+                return await GetInfo(token, path + "?" + querystring);
             }
-            catch (Exception e)
-            {
-                return null;
-            }
+            return null;
         }
 
-        public async Task<string> GetSims(AccessToken token)
-        {
-            var client = OAuthUtility.CreateOAuthClient(ConsumerKey, ConsumerSecret, token);
-
-            var json = await client.GetStringAsync(BaseUrl + "msisdn_list.json?alias=1");
-            return json;
-        }
-
+        /*
         public async Task<string> GetPricePlan(AccessToken token)
         {
             try

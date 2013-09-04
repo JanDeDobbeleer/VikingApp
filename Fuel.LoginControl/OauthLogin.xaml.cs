@@ -70,7 +70,7 @@ namespace Fuel.LoginControl
                     return hmac.ComputeHash(buffer);
                 }
             };
-            PinBrowser.PinUrl = await VikingsClient.GetPinUrl();
+            PinBrowser.PinUrl = await VikingsApi.GetPinUrl();
         }
 
         #endregion

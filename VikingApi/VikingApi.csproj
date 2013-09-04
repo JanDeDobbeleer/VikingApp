@@ -84,10 +84,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ApiTools\ApiTools.cs" />
-    <Compile Include="ApiTools\VikingClient.cs" />
+    <Compile Include="ApiTools\VikingApi.cs" />
     <Compile Include="AppClasses\UserBalance.cs" />
     <Compile Include="Json\Balance.cs" />
     <Compile Include="Json\Sim.cs" />
+    <Compile Include="Json\Usage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

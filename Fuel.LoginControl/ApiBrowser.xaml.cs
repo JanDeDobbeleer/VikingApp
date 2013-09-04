@@ -105,7 +105,7 @@ namespace Fuel.LoginControl
                 //try connecting to the service
                 for (int i = 1; (i <= 3) && !success; i++)
                 {
-                    AccessToken accesstoken = await VikingsClient.GetAccessToken(pincode);
+                    AccessToken accesstoken = await VikingsApi.GetAccessToken(pincode);
                     if (accesstoken != null)
                     {
                         //try saving the token

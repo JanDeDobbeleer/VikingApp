@@ -148,7 +148,7 @@ namespace Fuel.View
             await _viewmodel.GetSimInfo();
             if (_viewmodel.Sims != null)
             {
-                SimBox.Text = IsolatedStorageSettings.ApplicationSettings.Contains("sim") ? (string)IsolatedStorageSettings.ApplicationSettings["sim"] : _viewmodel.Sims.Select(x => x.msisdn).FirstOrDefault();
+                SimBox.Text = IsolatedStorageSettings.ApplicationSettings.Contains("sim") ? string.IsNullOrWhiteSpace((string)IsolatedStorageSettings.ApplicationSettings["sim"])?_viewmodel.Sims.Select(x => x.msisdn).FirstOrDefault():(string)IsolatedStorageSettings.ApplicationSettings["sim"] : _viewmodel.Sims.Select(x => x.msisdn).FirstOrDefault();
             }
             return true;
         }
@@ -176,6 +176,11 @@ namespace Fuel.View
             SimBox.Visibility = Visibility.Visible;
             ApplicationBar.IsVisible = true;
             await SetDataContext(SimBox.Text);
+        }
+
+        private void Bundle_OnTap(object sender, GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri(string.Format("/Views/DetailsPage?msisdn={0}", SimBox.Text), UriKind.Relative));
         }
     }
 }
