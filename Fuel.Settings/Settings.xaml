@@ -12,14 +12,11 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
-    shell:SystemTray.IsVisible="True"
-    Loaded="Settings_OnLoaded">
+    shell:SystemTray.IsVisible="True">
 
     <phone:PhoneApplicationPage.Resources>
         <Style x:Key="TextStyle" TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="{Binding Path=FontFamily, ElementName=Switch}" />
-            <Setter Property="FontWeight" Value="{Binding Path=FontWeight, ElementName=Switch}" />
-            <Setter Property="Foreground" Value="#989898"/>
+            <Setter Property="Foreground" Value="{StaticResource PhoneInverseInactiveBrush}"/>
             <Setter Property="Margin" Value="11,10,0,-10"/>
         </Style>
     </phone:PhoneApplicationPage.Resources>
@@ -48,12 +45,19 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" Text="Default sim on startup" Style="{StaticResource TextStyle}"/>
-            <toolkit:ListPicker Grid.Row="1" x:Name="SimPicker"/>
-            <toolkit:ToggleSwitch Grid.Row="2" x:Name="Switch" HorizontalAlignment="Left" VerticalAlignment="Center"  Header="Sms topup" IsChecked="True" Width="{Binding Path=ActualWidth, ElementName=ContentPanel}" Margin="0,0,0,-10" SwitchForeground="#960808"/>
-            <TextBlock Grid.Row="3" Text="Default sms topup value" Style="{StaticResource TextStyle}"/>
-            <toolkit:ListPicker Grid.Row="4" x:Name="ReloadPicker"/>
+            <CheckBox Grid.Row="0" HorizontalAlignment="Left" x:Name="SimCheck" Checked="SimCheck_OnChecked" Unchecked="SimCheck_OnChecked" VerticalAlignment="Center" Visibility="Collapsed"/>
+            <TextBlock Grid.Row="0" HorizontalAlignment="Right" Style="{StaticResource TextStyle}" Text="Remember last used sim" x:Name="LastUsedText" VerticalAlignment="Center" Margin="11,0,0,0" Visibility="Collapsed"/>
+            <TextBlock Grid.Row="1" Text="Default sim on startup" Style="{StaticResource TextStyle}" x:Name="SimText" Visibility="Collapsed"/>
+            <toolkit:ListPicker Grid.Row="2" x:Name="SimPicker" Tag="sim" SelectionChanged="Picker_OnSelectionChanged" Visibility="Collapsed"/>
+            <toolkit:ToggleSwitch Grid.Row="3" x:Name="Switch" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,0,0,-10" SwitchForeground="#960808" Checked="Switch_OnChecked" Unchecked="Switch_OnChecked">
+                <toolkit:ToggleSwitch.Header>
+                    <TextBlock Text="Sms topup" Style="{StaticResource TextStyle}" Margin="0,0,0,0"/>
+                </toolkit:ToggleSwitch.Header>
+            </toolkit:ToggleSwitch>
+            <TextBlock Grid.Row="4" x:Name="TopupText" Text="Default sms topup value" Style="{StaticResource TextStyle}" Margin="11,-10,0,-10" Visibility="Collapsed"/>
+            <toolkit:ListPicker Grid.Row="5" x:Name="ReloadPicker" Tag="defaulttopupvalue" SelectionChanged="Picker_OnSelectionChanged" Visibility="Collapsed"/>
         </Grid>
     </Grid>
 

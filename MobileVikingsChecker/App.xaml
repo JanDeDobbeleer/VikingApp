@@ -23,8 +23,6 @@
         <SolidColorBrush x:Key="SmsColorBrush">#f4b300</SolidColorBrush>
         <SolidColorBrush x:Key="VikingSmsColorBrush">#f4b300</SolidColorBrush>
         <SolidColorBrush x:Key="VikingMinutesColorBrush">#006ac1</SolidColorBrush>
-
-        <!--<vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />-->
     </Application.Resources>
     <Application.ApplicationLifetimeObjects>
         <!--Required object that handles lifetime events for the application-->

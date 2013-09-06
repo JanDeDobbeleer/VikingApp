@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO.IsolatedStorage;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Navigation;
 using AsyncOAuth;
 using Microsoft.Phone.Controls;
@@ -18,23 +20,21 @@ namespace Fuel.Settings
     public partial class Settings : PhoneApplicationPage
     {
         private IEnumerable<Sim> _sims;
-        private readonly int[] _topupValues = { 10, 15, 25, 40, 60 };
+        private readonly List<String> _topupValues = new List<string>{ "10", "15", "25", "40", "60" };
 
         public Settings()
         {
             InitializeComponent();
         }
 
-        private void Settings_OnLoaded(object sender, RoutedEventArgs e)
-        {
-            SystemTray.ProgressIndicator = new ProgressIndicator();
-        }
-
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            if(await GetSimInfo())
-                SimPicker.ItemsSource = _sims;
-            ReloadPicker.ItemsSource = _topupValues;
+            SystemTray.ProgressIndicator = new ProgressIndicator();
+            ShowHideSimTopup((bool)IsolatedStorageSettings.ApplicationSettings["topup"]);
+            if (await GetSimInfo())
+            {
+                ShowHideDefaultSim(_sims.Count() > 1);
+            }
         }
 
         public async Task<bool> GetSimInfo()
@@ -52,7 +52,7 @@ namespace Fuel.Settings
                         return hmac.ComputeHash(buffer);
                     }
                 };
-                string json = await client.GetInfo(new AccessToken((string) IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string) IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Sim, new KeyValuePair {content = "1", name = "alias"});
+                string json = await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Sim, new KeyValuePair { content = "1", name = "alias" });
                 _sims = JsonConvert.DeserializeObject<Sim[]>(json);
                 Tools.Tools.SetProgressIndicator(false);
                 return true;
@@ -62,6 +62,49 @@ namespace Fuel.Settings
                 Message.ShowToast("Could not load sim information, please try again later");
                 return false;
             }
+        }
+
+        private void ShowHideSimTopup(bool on)
+        {
+            Switch.IsChecked = on;
+            ReloadPicker.ItemsSource = _topupValues.ToList();
+            var visible = (on) ? Visibility.Visible : Visibility.Collapsed;
+            TopupText.Visibility = visible;
+            ReloadPicker.Visibility = visible;
+        }
+
+        private void ShowHideDefaultSim(bool on)
+        {
+            SimPicker.ItemsSource = _sims.Select(x=>x.msisdn);
+            var visible = (on) ? Visibility.Visible : Visibility.Collapsed;
+            SimText.Visibility = visible;
+            SimPicker.Visibility = visible;
+            SimCheck.Visibility = (_sims.Count() == 1)? visible:Visibility.Visible;
+            LastUsedText.Visibility = (_sims.Count() == 1) ? visible : Visibility.Visible;
+        }
+
+        private void Picker_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if ((sender as ListPicker) == null)
+                return;
+            if (!string.IsNullOrWhiteSpace((string)(sender as ListPicker).SelectedItem))
+                Tools.Tools.SaveSetting(new KeyValuePair { name = (sender as ListPicker).Tag.ToString(), content = (string)(sender as ListPicker).SelectedItem });
+        }
+
+        private void SimCheck_OnChecked(object sender, RoutedEventArgs e)
+        {
+            if ((sender as CheckBox) == null)
+                return;
+            Tools.Tools.SaveSetting(new KeyValuePair { name = "lastusedsim", content = (sender as CheckBox).IsChecked ?? false });
+            ShowHideDefaultSim(!((sender as CheckBox).IsChecked ?? false) && _sims.Count() > 1);
+        }
+
+        private void Switch_OnChecked(object sender, RoutedEventArgs e)
+        {
+            if ((sender as ToggleSwitch) == null)
+                return;
+            Tools.Tools.SaveSetting(new KeyValuePair { name = "topup", content = (sender as ToggleSwitch).IsChecked ?? false });
+            ShowHideSimTopup((sender as ToggleSwitch).IsChecked ?? false);
         }
     }
 }

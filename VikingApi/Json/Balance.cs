@@ -19,7 +19,7 @@ namespace VikingApi.Classes
         public int voice_super_on_net { get; set; }
         public int sms_super_on_net_max { get; set; }
         public int sms { get; set; }
-        public int data { get; set; }
+        public string data { get; set; }
         public string credits { get; set; }
         public List<Bundle> bundles { get; set; }
         public int sms_super_on_net { get; set; }

@@ -57,9 +57,26 @@ namespace Tools
             return button;
         }
 
+        public static ApplicationBarMenuItem CreateMenuItem(string text, bool enabled, EventHandler handler)
+        {
+            var appBarMenuItem = new ApplicationBarMenuItem { Text = text, IsEnabled = enabled};
+            appBarMenuItem.Click += handler;
+            return appBarMenuItem;
+        }
+
         public static bool HasInternetConnection()
         {
             return (NetworkInterface.NetworkInterfaceType != NetworkInterfaceType.None);
+        }
+
+        public static void DefaultAllSettings()
+        {
+            IsolatedStorageSettings.ApplicationSettings["topup"] = true;
+            IsolatedStorageSettings.ApplicationSettings["defaultnumber"] = string.Empty;
+            IsolatedStorageSettings.ApplicationSettings["defaulttopupvalue"] = 15;
+            IsolatedStorageSettings.ApplicationSettings["lastusedsim"] = false;
+            IsolatedStorageSettings.ApplicationSettings["sim"] = string.Empty;
+            IsolatedStorageSettings.ApplicationSettings["boot"] = false;
         }
     }
 }

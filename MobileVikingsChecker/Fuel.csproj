@@ -214,6 +214,10 @@
       <Project>{9CD9F551-E510-41E5-A1D9-B06B6340117E}</Project>
       <Name>Fuel.LoginControl</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Fuel.Settings\Fuel.Settings.csproj">
+      <Project>{6F741219-580C-42C0-BADB-502B88435431}</Project>
+      <Name>Fuel.Settings</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Tools\Tools.csproj">
       <Project>{CF7909FE-98C4-48C2-B7EE-B2E9187B8BAE}</Project>
       <Name>Tools</Name>

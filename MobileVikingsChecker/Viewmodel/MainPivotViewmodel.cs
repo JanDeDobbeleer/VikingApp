@@ -17,8 +17,9 @@ namespace Fuel.Viewmodel
     internal class MainPivotViewmodel
     {
         public IEnumerable<Sim> Sims;
+        public UserBalance Balance;
  
-        public async Task<UserBalance> GetData(string msisdn)
+        public async Task<bool> GetData(string msisdn)
         {
             try
             {
@@ -34,14 +35,15 @@ namespace Fuel.Viewmodel
                 };
                 string json = await client.GetInfo(new AccessToken((string) IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string) IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Balance, new KeyValuePair {name = "msisdn", content = msisdn});
                 if (Error.HandleError(json, "there seems to be no connection"))
-                    return null;
+                    return false;
                 Tools.Tools.SetProgressIndicator(false);
-                return new UserBalance(json);
+                Balance = new UserBalance(json);
+                return true;
             }
             catch (Exception)
             {
                 Message.ShowToast("Could not load bundle info, please try again later");
-                return null;
+                return false;
             }
         }
 

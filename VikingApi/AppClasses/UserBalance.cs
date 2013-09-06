@@ -42,7 +42,7 @@ namespace VikingApi.AppClasses
             Sms = string.Format("{0} / {1}", _balance.bundles.Where(x => x.type == "sms").Sum(x => double.Parse(x.value.Split('.')[0])), _balance.bundles.Where(x => x.type == "sms").Sum(x => double.Parse(x.assigned.Split('.')[0])));
             VikingSms = string.Format("{0} / {1}", _balance.bundles.First(bundle => bundle.type == "sms_super_on_net").value.Split('.')[0], _balance.bundles.First(bundle => bundle.type == "sms_super_on_net").assigned.Split('.')[0]);
             int minutes = int.Parse(_balance.bundles.First(bundle => bundle.type == "voice_super_on_net").value.Split('.')[0])/60;
-            int seconds = int.Parse(_balance.bundles.First(bundle => bundle.type == "voice_super_on_net").assigned.Split('.')[0])%60;
+            int seconds = int.Parse(_balance.bundles.First(bundle => bundle.type == "voice_super_on_net").value.Split('.')[0]) % 60;
             VikingMinutes = string.Format("{0}m {1}s", minutes, seconds);
             CalculatePercentages();
         }
