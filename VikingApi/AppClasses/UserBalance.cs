@@ -1,40 +1,162 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
+using Tools.Annotations;
 using VikingApi.Classes;
 
 namespace VikingApi.AppClasses
 {
-    public class UserBalance
+    public class UserBalance:INotifyPropertyChanged
     {
         private Balance _balance;
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        public UserBalance(string json)
+        #region properties
+        private string _credit;
+        public string Credit
         {
-            Load(json);
+            get { return _credit; }
+            set
+            {
+                if (value == _credit)
+                    return;
+                _credit = value;
+                OnPropertyChanged();
+            }
+        }
+        private string _remaining ;
+        public string Remaining
+        {
+            get { return _remaining; }
+            set
+            {
+                if (value == _remaining)
+                    return;
+                _remaining = value;
+                OnPropertyChanged();
+            }
+        }
+        private string _sms;
+        public string Sms
+        {
+            get { return _sms; }
+            set
+            {
+                if (value == _sms)
+                    return;
+                _sms = value;
+                OnPropertyChanged();
+            }
+        }
+        private string _data;
+        public string Data
+        {
+            get { return _data; }
+            set
+            {
+                if (value == _data)
+                    return;
+                _data = value;
+                OnPropertyChanged();
+            }
+        }
+        private string _vikingSms;
+        public string VikingSms
+        {
+            get { return _vikingSms; }
+            set
+            {
+                if (value == _vikingSms)
+                    return;
+                _vikingSms = value;
+                OnPropertyChanged();
+            }
+        }
+        private string _vikingMinutes;
+        public string VikingMinutes
+        {
+            get { return _vikingMinutes; }
+            set
+            {
+                if (value == _vikingMinutes)
+                    return;
+                _vikingMinutes = value;
+                OnPropertyChanged();
+            }
+        }
+
+        //percentages
+        private double _remainingPercentage;
+        public double RemainingPercentage
+        {
+            get { return _remainingPercentage; }
+            set
+            {
+                if (value.Equals(_remainingPercentage))
+                    return;
+                _remainingPercentage = value;
+                OnPropertyChanged();
+            }
+        }
+        private double _smsPercentage;
+        public double SmsPercentage
+        {
+            get { return _smsPercentage; }
+            set
+            {
+                if (value.Equals(_smsPercentage))
+                    return;
+                _smsPercentage = value;
+                OnPropertyChanged();
+            }
+        }
+        private double _dataPercentage;
+        public double DataPercentage
+        {
+            get { return _dataPercentage; }
+            set
+            {
+                if (value.Equals(_dataPercentage))
+                    return;
+                _dataPercentage = value;
+                OnPropertyChanged();
+            }
+        }
+        private double _vikingSmsPercentage;
+        public double VikingSmsPercentage
+        {
+            get { return _vikingSmsPercentage; }
+            set
+            {
+                if (value.Equals(_vikingSmsPercentage))
+                    return;
+                _vikingSmsPercentage = value;
+                OnPropertyChanged();
+            }
+        }
+        private double _vikingMinutesPercentage;
+        public double VikingMinutesPercentage
+        {
+            get { return _vikingMinutesPercentage; }
+            set
+            {
+                if (value.Equals(_vikingMinutesPercentage))
+                    return;
+                _vikingMinutesPercentage = value;
+                OnPropertyChanged();
+            }
+        }
+        #endregion
+
+        public void Load(string json)
+        {
+            _balance = JsonConvert.DeserializeObject<Balance>(json);
             ConvertValues();
         }
 
-        public string Credit { get; set; }
-        public string Remaining { get; set; }
-        public string Sms { get; set; }
-        public string Data { get; set; }
-        public string VikingSms { get; set; }
-        public string VikingMinutes { get; set; }
-
-        //percentages
-        public double RemainingPercentage { get; set; }
-        public double SmsPercentage { get; set; }
-        public double DataPercentage { get; set; }
-        public double VikingSmsPercentage { get; set; }
-        public double VikingMinutesPercentage { get; set; }
-
-        private void Load(string json)
-        {
-            _balance = JsonConvert.DeserializeObject<Balance>(json);
-        }
-
-        public void ConvertValues()
+        private void ConvertValues()
         {
             Credit = string.Format("€{0}", _balance.credits);
             Remaining = ConvertDate(_balance.valid_until);
@@ -53,17 +175,17 @@ namespace VikingApi.AppClasses
             TimeSpan difference = (expires - DateTime.Now);
             if (difference.Days > 0)
             {
-                return string.Format("{0} days", difference.Days);
+                return string.Format("{0} day{1}", difference.Days, (difference.Days == 1)?"":"s");
             }
             if (difference.Hours > 0)
             {
-                return string.Format("{0} hours", difference.Hours);
+                return string.Format("{0} hour{1}", difference.Hours, (difference.Hours == 1) ? "" : "s");
             }
             if (difference.Minutes > 0)
             {
-                return string.Format("{0} minutes", difference.Minutes);
+                return string.Format("{0} minute{1}", difference.Minutes, (difference.Minutes == 1) ? "" : "s");
             }
-            return difference.Seconds > 0 ? string.Format("{0} seconds", difference.Seconds) : "bundle expired";
+            return difference.Seconds > 0 ? string.Format("{0} second{1}", difference.Seconds, (difference.Seconds == 1) ? "" : "s") : "bundle expired";
         }
 
         private void CalculatePercentages()
@@ -79,6 +201,14 @@ namespace VikingApi.AppClasses
         private double Calculatepercentage(string bundle)
         {
             return 100 - Math.Round((_balance.bundles.Where(x => x.type == bundle).Sum(x => double.Parse(x.used.Split('.')[0])) / _balance.bundles.Where(x => x.type == bundle).Sum(x => double.Parse(x.assigned.Split('.')[0]))) * 100d, 2);
+        }
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null) 
+                handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

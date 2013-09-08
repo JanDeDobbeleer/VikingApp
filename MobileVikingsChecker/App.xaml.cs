@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Navigation;
 using Fuel.Resources;
+using Fuel.Viewmodel;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 
@@ -12,6 +13,8 @@ namespace Fuel
 {
     public partial class App : Application
     {
+        public static MainViewmodel Viewmodel { get; private set; }
+
         /// <summary>
         ///     Constructor for the Application object.
         /// </summary>
@@ -48,6 +51,9 @@ namespace Fuel
                 // and consume battery power when the user is not using the phone.
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
+
+            //Create new Viewmodel
+            Viewmodel = new MainViewmodel();
         }
 
         /// <summary>
@@ -73,11 +79,6 @@ namespace Fuel
         // This code will not execute when the application is first launched
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
-            // Ensure that application state is restored appropriately
-            /*if (!App.ViewModel.IsDataLoaded)
-            {
-                App.ViewModel.LoadData();
-            }*/
         }
 
         // Code to execute when the application is deactivated (sent to background)

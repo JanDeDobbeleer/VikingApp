@@ -12,7 +12,7 @@ using VikingApi.Json;
 
 namespace Fuel.Viewmodel
 {
-    class DetailsViewmodel
+    public class DetailsViewmodel
     {
         public IEnumerable<Usage> Usage;
 

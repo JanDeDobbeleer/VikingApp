@@ -12,21 +12,19 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
 using Tools;
-using VikingApi.AppClasses;
 using VikingApi.Json;
 
 namespace Fuel.View
 {
     public partial class MainPivot : PhoneApplicationPage
     {
-        private readonly MainPivotViewmodel _viewmodel;
         private bool _logout;
 
         public MainPivot()
         {
             InitializeComponent();
             BuildApplicationBar();
-            _viewmodel = new MainPivotViewmodel();
+            DataContext = App.Viewmodel.MainPivotViewmodel.Balance;
         }
 
         private void BuildApplicationBar()
@@ -37,7 +35,7 @@ namespace Fuel.View
 
         private async void RefreshOnClick(object sender, EventArgs e)
         {
-            if (await SetDataContext(SimBox.Text))
+            if (await SetData(SimBox.Text))
                 Loading.Begin();
         }
 
@@ -56,7 +54,6 @@ namespace Fuel.View
         {
             Tools.Tools.DefaultAllSettings();
             _logout = true;
-            _viewmodel.Balance = null;
             SimBox.Text = string.Empty;
             IsolatedStorageSettings.ApplicationSettings["login"] = true;
             Bundle.Visibility = Visibility.Collapsed;
@@ -126,17 +123,14 @@ namespace Fuel.View
         private async Task<bool> GetData()
         {
             await SetSimList();
-            await SetDataContext(SimBox.Text);
+            await SetData(SimBox.Text);
             return true;
         }
 
-        private async Task<bool> SetDataContext(string msisdn)
+        private async Task<bool> SetData(string msisdn)
         {
-            if (!await _viewmodel.GetData(msisdn)) 
+            if (!await App.Viewmodel.MainPivotViewmodel.GetData(msisdn)) 
                 return false;
-            DataContext = null;
-            //TODO: make it so this can be updated (InotifyPropertyChanged)
-            DataContext = _viewmodel.Balance;
             Bundle.Visibility = Visibility.Visible;
             Bonus.Visibility = Visibility.Visible;
             return true;
@@ -144,10 +138,10 @@ namespace Fuel.View
 
         private async Task<bool> SetSimList()
         {
-            await _viewmodel.GetSimInfo();
-            if (_viewmodel.Sims != null)
+            await App.Viewmodel.MainPivotViewmodel.GetSimInfo();
+            if (App.Viewmodel.MainPivotViewmodel.Sims != null)
             {
-                SimBox.Text = IsolatedStorageSettings.ApplicationSettings.Contains("sim") ? string.IsNullOrWhiteSpace((string)IsolatedStorageSettings.ApplicationSettings["sim"]) ? _viewmodel.Sims.Select(x => x.msisdn).FirstOrDefault() : (string)IsolatedStorageSettings.ApplicationSettings["sim"] : _viewmodel.Sims.Select(x => x.msisdn).FirstOrDefault();
+                SimBox.Text = IsolatedStorageSettings.ApplicationSettings.Contains("sim") ? string.IsNullOrWhiteSpace((string)IsolatedStorageSettings.ApplicationSettings["sim"]) ? App.Viewmodel.MainPivotViewmodel.Sims.Select(x => x.msisdn).FirstOrDefault() : (string)IsolatedStorageSettings.ApplicationSettings["sim"] : App.Viewmodel.MainPivotViewmodel.Sims.Select(x => x.msisdn).FirstOrDefault();
             }
             return true;
         }
@@ -156,13 +150,13 @@ namespace Fuel.View
 
         private void SimBox_OnTap(object sender, GestureEventArgs e)
         {
-            if (_viewmodel.Sims.Count() == 1)
+            if (App.Viewmodel.MainPivotViewmodel.Sims.Count() == 1)
                 return;
             Bundle.Visibility = Visibility.Collapsed;
             Bonus.Visibility = Visibility.Collapsed;
             SimBox.Visibility = Visibility.Collapsed;
             ApplicationBar.IsVisible = false;
-            LongListSelector.ItemsSource = _viewmodel.Sims.ToList();
+            LongListSelector.ItemsSource = App.Viewmodel.MainPivotViewmodel.Sims.ToList();
             LongListSelector.Visibility = Visibility.Visible;
         }
 
@@ -174,7 +168,7 @@ namespace Fuel.View
             LongListSelector.Visibility = Visibility.Collapsed;
             SimBox.Visibility = Visibility.Visible;
             ApplicationBar.IsVisible = true;
-            await SetDataContext(SimBox.Text);
+            await SetData(SimBox.Text);
         }
 
         private void Bundle_OnTap(object sender, GestureEventArgs e)
