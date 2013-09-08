@@ -1,13 +1,13 @@
 ﻿using System;
 using System.IO.IsolatedStorage;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
 using Fuel.LoginControl;
-using Fuel.Viewmodel;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
@@ -138,12 +138,31 @@ namespace Fuel.View
 
         private async Task<bool> SetSimList()
         {
-            await App.Viewmodel.MainPivotViewmodel.GetSimInfo();
-            if (App.Viewmodel.MainPivotViewmodel.Sims != null)
+            if (!await App.Viewmodel.MainPivotViewmodel.GetSimInfo()) 
+                return false;
+            if (App.Viewmodel.MainPivotViewmodel.Sims != null && App.Viewmodel.MainPivotViewmodel.Sims.Any())
             {
-                SimBox.Text = IsolatedStorageSettings.ApplicationSettings.Contains("sim") ? string.IsNullOrWhiteSpace((string)IsolatedStorageSettings.ApplicationSettings["sim"]) ? App.Viewmodel.MainPivotViewmodel.Sims.Select(x => x.msisdn).FirstOrDefault() : (string)IsolatedStorageSettings.ApplicationSettings["sim"] : App.Viewmodel.MainPivotViewmodel.Sims.Select(x => x.msisdn).FirstOrDefault();
+                if (IsolatedStorageSettings.ApplicationSettings.Contains("sim"))
+                {
+                    SimBox.Text = CheckDefaultSimValue();
+                    return true;
+                }
+                SimBox.Text = App.Viewmodel.MainPivotViewmodel.Sims.Select(x => x.msisdn).FirstOrDefault();
+                return true;
             }
-            return true;
+            Message.ShowToast("it seems like there is no sim linked to this account");
+            return false;
+        }
+
+        private string CheckDefaultSimValue()
+        {
+            if (App.Viewmodel.MainPivotViewmodel.Sims.Where(x => x.msisdn == (string) IsolatedStorageSettings.ApplicationSettings["sim"]).Any())
+            {
+                if (App.Viewmodel.MainPivotViewmodel.Sims.Count() > 1)
+                    Tools.Message.ShowToast("default sim does not exist anymore, loading first from list");
+                return (string)IsolatedStorageSettings.ApplicationSettings["sim"];
+            }
+            return App.Viewmodel.MainPivotViewmodel.Sims.Select(x => x.msisdn).FirstOrDefault();
         }
 
         #endregion
