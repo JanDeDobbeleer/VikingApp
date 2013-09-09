@@ -71,7 +71,10 @@ namespace Fuel
                 Tools.Tools.DefaultAllSettings();
             }
             if (!IsolatedStorageSettings.ApplicationSettings.Contains("login"))
+            {
                 IsolatedStorageSettings.ApplicationSettings["login"] = true;
+                Tools.Tools.DefaultAllSettings();
+            }
             RootFrame.Navigate(new Uri("/View/MainPivot.xaml", UriKind.Relative));
         }
 

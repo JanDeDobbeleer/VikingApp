@@ -95,7 +95,11 @@ namespace Fuel.Settings
         {
             if ((sender as CheckBox) == null)
                 return;
-            Tools.Tools.SaveSetting(new KeyValuePair { name = "lastusedsim", content = (sender as CheckBox).IsChecked ?? false });
+            Tools.Tools.SaveSetting(new []
+            {
+                new KeyValuePair { name = "lastusedsim", content = (sender as CheckBox).IsChecked ?? false },
+                new KeyValuePair {name = "sim", content = string.Empty }
+            });
             ShowHideDefaultSim(!((sender as CheckBox).IsChecked ?? false) && _sims.Count() > 1);
         }
 

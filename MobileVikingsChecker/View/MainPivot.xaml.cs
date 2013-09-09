@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO.IsolatedStorage;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -41,7 +40,7 @@ namespace Fuel.View
 
         private void ReloadOnClick(object sender, EventArgs e)
         {
-            var task = new SmsComposeTask { To = "8989", Body = string.Format("sim topup {0}", (string)IsolatedStorageSettings.ApplicationSettings["defaulttopupvalue"]) };
+            var task = new SmsComposeTask { To = "8989", Body = string.Format("sim topup {0}", IsolatedStorageSettings.ApplicationSettings["defaulttopupvalue"]) };
             task.Show();
         }
 
@@ -88,7 +87,7 @@ namespace Fuel.View
             {
                 ApplicationBar.IsVisible = true;
                 Pivot.Visibility = Visibility.Visible;
-                if (await GetData() && e.NavigationMode == NavigationMode.Back)
+                if (await GetData(false) && e.NavigationMode == NavigationMode.Back)
                     Loading.Begin();
             }
         }
@@ -113,16 +112,16 @@ namespace Fuel.View
             Pivot.Visibility = Visibility.Visible;
             ApplicationBar.IsVisible = true;
             LayoutRoot.Children.Remove(LayoutRoot.Children.First(c => c.GetType() == typeof(OauthLogin)));
-            if (await GetData() && _logout)
+            if (await GetData(true) && _logout)
             {
                 Loading.Begin();
                 _logout = false;
             }
         }
 
-        private async Task<bool> GetData()
+        private async Task<bool> GetData(bool login)
         {
-            await SetSimList();
+            await SetSimList(login);
             await SetData(SimBox.Text);
             return true;
         }
@@ -136,7 +135,7 @@ namespace Fuel.View
             return true;
         }
 
-        private async Task<bool> SetSimList()
+        private async Task<bool> SetSimList(bool login)
         {
             if (!await App.Viewmodel.MainPivotViewmodel.GetSimInfo()) 
                 return false;
@@ -144,24 +143,22 @@ namespace Fuel.View
             {
                 if (IsolatedStorageSettings.ApplicationSettings.Contains("sim"))
                 {
-                    SimBox.Text = CheckDefaultSimValue();
+                    SimBox.Text = CheckDefaultSimValue(login);
                     return true;
                 }
                 SimBox.Text = App.Viewmodel.MainPivotViewmodel.Sims.Select(x => x.msisdn).FirstOrDefault();
                 return true;
             }
-            Message.ShowToast("it seems like there is no sim linked to this account");
+            Message.ShowToast("there is no sim linked to this account");
             return false;
         }
 
-        private string CheckDefaultSimValue()
+        private string CheckDefaultSimValue(bool login)
         {
-            if (App.Viewmodel.MainPivotViewmodel.Sims.Where(x => x.msisdn == (string) IsolatedStorageSettings.ApplicationSettings["sim"]).Any())
-            {
-                if (App.Viewmodel.MainPivotViewmodel.Sims.Count() > 1)
-                    Tools.Message.ShowToast("default sim does not exist anymore, loading first from list");
+            if (App.Viewmodel.MainPivotViewmodel.Sims.Any(x => x.msisdn == (string) IsolatedStorageSettings.ApplicationSettings["sim"]))
                 return (string)IsolatedStorageSettings.ApplicationSettings["sim"];
-            }
+            if (App.Viewmodel.MainPivotViewmodel.Sims.Count() > 1 && !login && !string.IsNullOrWhiteSpace((string)IsolatedStorageSettings.ApplicationSettings["sim"]))
+                Message.ShowToast("default sim does not exist anymore, loading first");
             return App.Viewmodel.MainPivotViewmodel.Sims.Select(x => x.msisdn).FirstOrDefault();
         }
 

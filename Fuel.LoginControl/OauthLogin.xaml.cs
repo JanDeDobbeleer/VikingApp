@@ -88,7 +88,7 @@ namespace Fuel.LoginControl
             _startNavigating = false;
         }
 
-        private async void PinBrowserOnBrowserFinished(object sender, ApiBrowserEventArgs args)
+        private void PinBrowserOnBrowserFinished(object sender, ApiBrowserEventArgs args)
         {
             //fire correct event to show result
             if (args.Success)

@@ -82,7 +82,7 @@ namespace VikingApi.ApiTools
                 string json = await client.GetStringAsync(BaseUrl + path);
                 return json;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }

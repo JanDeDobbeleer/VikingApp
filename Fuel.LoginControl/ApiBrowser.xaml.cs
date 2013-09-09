@@ -71,24 +71,34 @@ namespace Fuel.LoginControl
                 Browser.InvokeScript("eval", "this.newfunc_getmyvalue = function() { return document.getElementsByClassName('code')[0].innerHTML; }");
                 // invoke the function and save the result
                 //TODO: add logic to send mail if this fails (no login possible)
-                string pin;
-                try
+                var success = false;
+                var count = 0;
+                while (count < 5 || success)
                 {
-                    pin = (string) Browser.InvokeScript("newfunc_getmyvalue");
-                }
-                catch (Exception e)
-                {
-                    Tools.Message.ShowToast("Please authorize the application to continue");
-                    Tools.Tools.SetProgressIndicator(false);
-                    LoginBrowser.Visibility = Visibility.Visible;
-                    return;
-                }
+                    string pin;
+                    try
+                    {
+                        pin = (string) Browser.InvokeScript("newfunc_getmyvalue");
+                    }
+                    catch (Exception)
+                    {
+                        count++;
+                        if (count != 2) 
+                            continue;
+                        Message.ShowToast("Please authorize the application to continue");
+                        Tools.Tools.SetProgressIndicator(false);
+                        LoginBrowser.Visibility = Visibility.Visible;
+                        LoginBrowser.GoBack();
+                        return;
+                    }
+                    success = true;
+                    LoginBrowser.Visibility = Visibility.Collapsed;
 
-                LoginBrowser.Visibility = Visibility.Collapsed;
-                //fire correct event to show result
-                var args = new ApiBrowserEventArgs {Success = await GetAccessToken(pin)};
-                await Browser.ClearCookiesAsync();
-                OnBrowserFinished(args);
+                    //fire correct event to show result
+                    var args = new ApiBrowserEventArgs { Success = await GetAccessToken(pin) };
+                    await Browser.ClearCookiesAsync();
+                    OnBrowserFinished(args);
+                }
             }
             catch (Exception)
             {
