@@ -158,6 +158,12 @@ namespace VikingApi.AppClasses
 
         private void ConvertValues()
         {
+            if (_balance.is_expired)
+            {
+                Tools.Message.ShowToast("bundle expired");
+                SetExpiredValues();
+                return;
+            }
             Credit = string.Format("€{0}", _balance.credits);
             Remaining = ConvertDate(_balance.valid_until);
             Data = string.Format("{0} / {1}", Math.Round(_balance.bundles.Where(x => x.type == "data").Sum(x => double.Parse(x.value.Split('.')[0])) / 1024d / 1024d, 0), Math.Round(_balance.bundles.Where(x => x.type == "data").Sum(x => double.Parse(x.assigned.Split('.')[0])) / 1024d / 1024d, 0));
@@ -167,6 +173,21 @@ namespace VikingApi.AppClasses
             int seconds = int.Parse(_balance.bundles.First(bundle => bundle.type == "voice_super_on_net").value.Split('.')[0]) % 60;
             VikingMinutes = string.Format("{0}m {1}s", minutes, seconds);
             CalculatePercentages();
+        }
+
+        private void SetExpiredValues()
+        {
+            Credit = string.Format("€{0}", (_balance.credits != null) ? _balance.credits : 0.ToString());
+            Remaining = ConvertDate(_balance.valid_until);
+            Data = string.Format("{0} / {1}",0,0);
+            Sms = string.Format("{0} / {1}", 0,0);
+            VikingSms = string.Format("{0} / {1}", 0,_balance.sms_super_on_net_max);
+            VikingMinutes = string.Format("{0}m {1}s", ((_balance.voice_super_on_net_max) / 60), 0);
+            VikingMinutesPercentage = 0;
+            VikingSmsPercentage = 0;
+            DataPercentage = 0;
+            SmsPercentage = 0;
+            RemainingPercentage = 0;
         }
 
         private string ConvertDate(string validUntil)

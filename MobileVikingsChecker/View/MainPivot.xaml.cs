@@ -185,11 +185,11 @@ namespace Fuel.View
             SimBox.Visibility = Visibility.Visible;
             ApplicationBar.IsVisible = true;
             await SetData(SimBox.Text);
-        }
+        }/*
 
         private void Bundle_OnTap(object sender, GestureEventArgs e)
         {
             NavigationService.Navigate(new Uri(string.Format("/Views/DetailsPage?msisdn={0}", SimBox.Text), UriKind.Relative));
-        }
+        }*/
     }
 }

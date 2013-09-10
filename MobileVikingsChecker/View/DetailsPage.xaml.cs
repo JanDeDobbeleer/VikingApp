@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Navigation;
-using Fuel.Viewmodel;
 using Microsoft.Phone.Controls;
 
 namespace Fuel.View
@@ -15,7 +14,7 @@ namespace Fuel.View
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            string parameterValue = NavigationContext.QueryString["msisdn"];
+            var parameterValue = NavigationContext.QueryString["msisdn"];
             if (await App.Viewmodel.DetailsViewmodel.GetUsage(parameterValue))
                 Viewer.Visibility = Visibility.Visible;
         }
