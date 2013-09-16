@@ -160,7 +160,6 @@ namespace VikingApi.AppClasses
         {
             if (_balance.is_expired)
             {
-                Tools.Message.ShowToast("bundle expired");
                 SetExpiredValues();
                 return;
             }

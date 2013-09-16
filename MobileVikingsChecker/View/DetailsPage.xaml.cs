@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
 
 namespace Fuel.View
 {
@@ -14,8 +15,10 @@ namespace Fuel.View
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            var parameterValue = NavigationContext.QueryString["msisdn"];
-            if (await App.Viewmodel.DetailsViewmodel.GetUsage(parameterValue))
+            if (App.Parameter == null) 
+                return;
+            SystemTray.ProgressIndicator = new ProgressIndicator();
+            if (await App.Viewmodel.DetailsViewmodel.GetUsage(App.Parameter))
                 Viewer.Visibility = Visibility.Visible;
         }
     }

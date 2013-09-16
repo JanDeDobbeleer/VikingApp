@@ -9,5 +9,5 @@
              FontSize="{StaticResource PhoneFontSizeNormal}"
              Foreground="{StaticResource PhoneForegroundBrush}">
 
-    <phone:WebBrowser x:Name="LoginBrowser" Navigated="BrowserOnNavigated" Navigating="AvoidPebcak" />
+    <phone:WebBrowser x:Name="LoginBrowser" Navigated="BrowserOnNavigated" Navigating="AvoidPebcak"/>
 </UserControl>

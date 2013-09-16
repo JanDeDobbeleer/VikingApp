@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using Coding4Fun.Toolkit.Controls;
@@ -16,7 +17,8 @@ namespace Tools
                 Message = message,
                 ImageSource = new BitmapImage(new Uri("/Assets/ToastIcon.png", UriKind.RelativeOrAbsolute)),
                 MillisecondsUntilHidden = 3000,
-                TextOrientation = Orientation.Vertical
+                TextOrientation = Orientation.Vertical, 
+                TextWrapping = TextWrapping.Wrap
             };
             toast.Show();
         }

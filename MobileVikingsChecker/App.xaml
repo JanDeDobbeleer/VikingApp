@@ -9,20 +9,17 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d">
     <!--Application Resources-->
     <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Common\ResourceDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
         <sys:Double x:Key="PanoramaItemHeaderFontSize">66</sys:Double>
         <Style x:Key="PanoramaItemHeaderTextStyle" TargetType="TextBlock">
             <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}" />
             <Setter Property="FontSize" Value="{StaticResource PanoramaItemHeaderFontSize}" />
             <Setter Property="CharacterSpacing" Value="-35" />
         </Style>
-
-        <!--Colorbrushes needed throughout the app-->
-        <SolidColorBrush x:Key="VikingColorBrush">#960808</SolidColorBrush>
-        <Color x:Key="VikingColor">#960808</Color>
-        <SolidColorBrush x:Key="DataColorBrush">#006ac1</SolidColorBrush>
-        <SolidColorBrush x:Key="SmsColorBrush">#f4b300</SolidColorBrush>
-        <SolidColorBrush x:Key="VikingSmsColorBrush">#f4b300</SolidColorBrush>
-        <SolidColorBrush x:Key="VikingMinutesColorBrush">#006ac1</SolidColorBrush>
+        </ResourceDictionary>
     </Application.Resources>
     <Application.ApplicationLifetimeObjects>
         <!--Required object that handles lifetime events for the application-->

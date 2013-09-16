@@ -79,12 +79,20 @@ namespace VikingApi.ApiTools
             try
             {
                 HttpClient client = OAuthUtility.CreateOAuthClient(ConsumerKey, ConsumerSecret, token);
-                string json = await client.GetStringAsync(BaseUrl + path);
+                var json = await client.GetStringAsync(BaseUrl + path);
                 return json;
+            }
+            catch (HttpRequestException e)
+            {
+                //((WebException) e.InnerException).Status == WebExceptionStatus.SecureChannelFailure;
+                if (e.InnerException.ToString().Contains("500"))
+                    Tools.Message.ShowToast("the MV api seems to be down, try again in a minute");
+                return null;
             }
             catch (Exception)
             {
                 return null;
+                //TODO: send mail to me with error
             }
         }
 

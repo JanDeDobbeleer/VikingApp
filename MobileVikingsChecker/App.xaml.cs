@@ -14,6 +14,7 @@ namespace Fuel
     public partial class App : Application
     {
         public static MainViewmodel Viewmodel { get; private set; }
+        public static string Parameter { get; set; }
 
         /// <summary>
         ///     Constructor for the Application object.

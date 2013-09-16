@@ -44,12 +44,6 @@
             <Setter Property="Height" Value="20" />
             <Setter Property="Width" Value="20" />
         </Style>
-        <Style x:Key="ReloadStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeExtraLarge}" />
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="Margin" Value="15,10,15,10" />
-        </Style>
         <Style x:Key="SimListStyle" TargetType="phone:LongListSelector">
             <Setter Property="Margin" Value="12,70,0,0"/>
             <Setter Property="ListHeader" Value="sims"/>
@@ -95,7 +89,7 @@
             
             <!--Pivot item one-->
             <phone:PivotItem Header="bundle" x:Name="Bundle">
-                <Grid x:Name="bundleGrid">
+                <Grid x:Name="BundleGrid">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="300" />
                         <RowDefinition Height="Auto" />
@@ -133,7 +127,7 @@
                     <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Credit}"
                                VerticalAlignment="Center" HorizontalAlignment="Center"
                                FontSize="{StaticResource PhoneFontSizeLarge}"
-                               Foreground="{StaticResource PhoneForegroundBrush}" FontWeight="Bold"/>
+                               Foreground="{StaticResource PhoneForegroundBrush}" FontWeight="Bold" Tap="Bundle_OnTap"/>
 
                     <Rectangle Fill="{StaticResource DataColorBrush}" Grid.Row="1" Grid.Column="0"
                                Style="{StaticResource RectangleStyle}" />
@@ -157,7 +151,7 @@
 
             <!--Pivot item two-->
             <phone:PivotItem Header="bonus" x:Name="Bonus">
-                <Grid x:Name="bonusGrid">
+                <Grid x:Name="BonusGrid">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="300" />
                         <RowDefinition Height="Auto" />
