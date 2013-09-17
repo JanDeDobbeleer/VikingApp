@@ -10,7 +10,7 @@ namespace Fuel.View
         public DetailsPage()
         {
             InitializeComponent();
-            DataContext = App.Viewmodel.DetailsViewmodel;
+            DataContext = App.Viewmodel.DetailsViewmodel.Usage;
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)

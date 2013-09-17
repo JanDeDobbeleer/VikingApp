@@ -16,10 +16,6 @@
 
     <phone:PhoneApplicationPage.Resources>
         <c:UsageImageConverter x:Key="UsageImageConverter"/>
-        <Style x:Key="UsageStyle" TargetType="ListBox">
-            <Setter Property="Margin" Value="10,0,10,0"/>
-            <Setter Property="Background" Value="Transparent"/>
-        </Style>
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -55,8 +51,8 @@
                                         <ColumnDefinition Width="10"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <Image Source="{Binding PicturePath, Converter={StaticResource ImageConverter}}" Grid.Column="1" Grid.Row="0" Height="100" Width="100" VerticalAlignment="Center"/>
-                                    <TextBlock Text="{Binding Name}" Grid.Column="3" Grid.Row="0" FontSize="50"  VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                    <Image Source="{Binding start_timestamp}" Grid.Column="1" Grid.Row="0" Height="100" Width="100" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding price}" Grid.Column="3" Grid.Row="0" FontSize="50"  VerticalAlignment="Center" HorizontalAlignment="Left"/>
                                 </Grid>
                             </StackPanel>
                         </DataTemplate>
