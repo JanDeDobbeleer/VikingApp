@@ -148,6 +148,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\download.png" />
     <Content Include="Assets\euro.png" />
     <Content Include="Assets\helmetred.png" />
     <Content Include="Assets\ToastIcon.png" />
@@ -156,6 +157,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\logo.png" />
+    <Content Include="Assets\upload.png" />
+    <Content Include="Assets\uploaddark.png" />
     <Content Include="Assets\vikinglogoblack.png" />
     <Content Include="Assets\vikinglogowhite.png" />
     <Content Include="Assets\refresh.png" />
@@ -174,6 +177,7 @@
     <Content Include="Assets\Tiles\IconicTileSmall.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\downloaddark.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\AppResources.resx">

@@ -2,6 +2,7 @@
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using Tools.Annotations;
 
 namespace Fuel.View
 {
@@ -10,7 +11,6 @@ namespace Fuel.View
         public DetailsPage()
         {
             InitializeComponent();
-            DataContext = App.Viewmodel.DetailsViewmodel.Usage;
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -19,7 +19,16 @@ namespace Fuel.View
                 return;
             SystemTray.ProgressIndicator = new ProgressIndicator();
             if (await App.Viewmodel.DetailsViewmodel.GetUsage(App.Parameter))
+            {
+                RefreshListBox();
                 Viewer.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void RefreshListBox()
+        {
+            DetailsBox.ItemsSource = null;
+            DetailsBox.ItemsSource = App.Viewmodel.DetailsViewmodel.Usage;
         }
     }
 }

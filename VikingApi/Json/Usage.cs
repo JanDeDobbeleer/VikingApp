@@ -232,6 +232,21 @@ namespace VikingApi.Json
                 OnPropertyChanged();
             }
         }
+
+        private bool _isSuperOnNet;
+
+        [JsonProperty(PropertyName = "is_super_on_net")]
+        public bool IsSuperOnNet
+        {
+            get { return _isSuperOnNet; }
+            set
+            {
+                if (value == _isSuperOnNet)
+                    return;
+                _isSuperOnNet = value;
+                OnPropertyChanged();
+            }
+        }
         #endregion
 
         #region INotifyPropertyChangedMembers
