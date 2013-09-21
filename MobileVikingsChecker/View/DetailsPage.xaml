@@ -43,7 +43,7 @@
             <ListBox x:Name="Viewer" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Visibility="Collapsed">
                 <ListBox.ItemTemplate >
                     <DataTemplate>
-                        <Grid>
+                        <Grid Margin="10,0,10,10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
@@ -54,8 +54,8 @@
                             </Grid.RowDefinitions>
                             <controls:CircularProgressBar Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" SegmentColor="{Binding Converter={StaticResource UsageColorConverter}}" Percentage="100" StrokeThickness="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             <Image Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Source="{Binding Converter={StaticResource UsageImageConverter}}" Width="50" Height="50"/>
-                            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Converter={StaticResource InformationConverter}}" FontSize="{StaticResource PhoneFontSizeNormal}"  VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding StartTimestamp, Converter={StaticResource TimestampConverter}}" VerticalAlignment="Center" FontSize="{StaticResource PhoneFontSizeNormal}"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Converter={StaticResource InformationConverter}}" FontSize="{StaticResource PhoneFontSizeMediumLarge}"  VerticalAlignment="Center" Margin="10,0,0,0"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding StartTimestamp, Converter={StaticResource TimestampConverter}}" VerticalAlignment="Center" FontSize="{StaticResource PhoneFontSizeNormal}" Margin="10,0,0,0"/>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

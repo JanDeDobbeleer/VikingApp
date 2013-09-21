@@ -62,6 +62,11 @@ namespace Fuel.View
 
         private void UsageOnClick(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(SimBox.Text))
+            {
+                Tools.Message.ShowToast("please wait till your sim information is loaded");
+                return;
+            }
             App.Parameter = SimBox.Text;
             NavigationService.Navigate(new Uri("/View/DetailsPage.xaml", UriKind.Relative));
         }

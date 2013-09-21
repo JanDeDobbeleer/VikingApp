@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO.IsolatedStorage;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
@@ -19,11 +18,9 @@ namespace Fuel.Viewmodel
         /// <summary>
         /// Get the usage for a certain period of time
         /// </summary>
-        /// <param name="msisdn">msisdn number</param>
-        /// <param name="from">date from when to start</param>
-        /// <param name="to">date where to end</param>
+        /// <param name="valuepair">data to be read from</param>
         /// <returns>Sets the Usage property of the Viewmodel</returns>
-        public async Task<bool> GetUsage(string msisdn, DateTime from, DateTime to)
+        public async Task<bool> GetUsage(KeyValuePair[] valuepair)
         {
             Tools.Tools.SetProgressIndicator(true);
             SystemTray.ProgressIndicator.Text = "retrieving information";
@@ -35,8 +32,7 @@ namespace Fuel.Viewmodel
                     return hmac.ComputeHash(buffer);
                 }
             };
-            //TODO: format string accordingly
-            string json = await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Usage, new[] { new KeyValuePair { content = msisdn, name = "msisdn" }, new KeyValuePair { content = to.ToVikingApiTimeFormat(), name = "until_date" }, new KeyValuePair { content = from.ToVikingApiTimeFormat(), name = "from_date" } });
+            string json = await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Usage, valuepair);
 
             if (string.IsNullOrEmpty(json))
                 return false;
