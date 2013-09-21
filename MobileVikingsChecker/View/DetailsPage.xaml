@@ -17,6 +17,9 @@
 
     <phone:PhoneApplicationPage.Resources>
         <c:UsageImageConverter x:Key="UsageImageConverter"/>
+        <c:UsageColorConverter x:Key="UsageColorConverter"/>
+        <c:TimestampConverter x:Key="TimestampConverter"/>
+        <c:InformationConverter x:Key="InformationConverter"/>
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -37,28 +40,26 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <ScrollViewer x:Name="Viewer" Visibility="Collapsed">
-                <ListBox x:Name="DetailsBox">
-                    <ListBox.ItemTemplate >
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <controls:CircularProgressBar Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" SegmentColor="{Binding Converter={StaticResource UsageColorConverter}}" Percentage="100" StrokeThickness="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <Image Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Source="{Binding Converter={StaticResource UsageImageConverter}}" Width="50" Height="50"/>
-                                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding StartTimestamp, Converter={StaticResource TimestampConverter}}" VerticalAlignment="Center"/>
-                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Price, Converter={StaticResource PriceConverter}}" FontSize="50"  VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                            </Grid>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </ScrollViewer>
+            <ListBox x:Name="Viewer" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Visibility="Collapsed">
+                <ListBox.ItemTemplate >
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <controls:CircularProgressBar Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" SegmentColor="{Binding Converter={StaticResource UsageColorConverter}}" Percentage="100" StrokeThickness="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <Image Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Source="{Binding Converter={StaticResource UsageImageConverter}}" Width="50" Height="50"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Converter={StaticResource InformationConverter}}" FontSize="50"  VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding StartTimestamp, Converter={StaticResource TimestampConverter}}" VerticalAlignment="Center"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Grid>
     </Grid>
 

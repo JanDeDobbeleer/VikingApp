@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
@@ -18,17 +19,16 @@ namespace Fuel.View
             if (App.Parameter == null) 
                 return;
             SystemTray.ProgressIndicator = new ProgressIndicator();
-            if (await App.Viewmodel.DetailsViewmodel.GetUsage(App.Parameter))
-            {
-                RefreshListBox();
-                Viewer.Visibility = Visibility.Visible;
-            }
+            if (!await App.Viewmodel.DetailsViewmodel.GetUsage(App.Parameter, DateTime.Now.AddDays(-7), DateTime.Now)) 
+                return;
+            RefreshListBox();
+            Viewer.Visibility = Visibility.Visible;
         }
 
         private void RefreshListBox()
         {
-            DetailsBox.ItemsSource = null;
-            DetailsBox.ItemsSource = App.Viewmodel.DetailsViewmodel.Usage;
+            Viewer.ItemsSource = null;
+            Viewer.ItemsSource = App.Viewmodel.DetailsViewmodel.Usage;
         }
     }
 }

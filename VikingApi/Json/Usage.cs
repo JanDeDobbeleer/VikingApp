@@ -10,8 +10,8 @@ namespace VikingApi.Json
         #region Json Properties
         private bool _isData;
 
-        [JsonProperty (PropertyName = "is_data")]
-        public bool Isdata
+        [JsonProperty(PropertyName = "is_data")]
+        public bool IsData
         {
             get { return _isData; }
             set
@@ -19,6 +19,21 @@ namespace VikingApi.Json
                 if (value == _isData)
                     return;
                 _isData = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _destinationNetworkSubgroup;
+
+        [JsonProperty(PropertyName = "destination_network_subgroup")]
+        public string DestinationNetworkSubgroup
+        {
+            get { return _destinationNetworkSubgroup; }
+            set
+            {
+                if (value == _destinationNetworkSubgroup)
+                    return;
+                _destinationNetworkSubgroup = value;
                 OnPropertyChanged();
             }
         }
@@ -53,17 +68,32 @@ namespace VikingApi.Json
             }
         }
 
-        private int _duration;
+        private string _from;
 
-        [JsonProperty(PropertyName = "duration_call")]
-        public int Duration
+        [JsonProperty(PropertyName = "from")]
+        public string From
         {
-            get { return _duration; }
+            get { return _from; }
             set
             {
-                if (value == _duration)
+                if (value == _from)
                     return;
-                _duration = value;
+                _from = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _durationCall;
+
+        [JsonProperty(PropertyName = "duration_call")]
+        public string DurationCall
+        {
+            get { return _durationCall; }
+            set
+            {
+                if (value == _durationCall)
+                    return;
+                _durationCall = value;
                 OnPropertyChanged();
             }
         }
@@ -98,17 +128,17 @@ namespace VikingApi.Json
             }
         }
 
-        private int _timestamp;
+        private bool _isIncoming;
 
-        [JsonProperty(PropertyName = "timestamp")]
-        public int Timestamp
+        [JsonProperty(PropertyName = "is_incoming")]
+        public bool IsIncoming
         {
-            get { return _timestamp; }
+            get { return _isIncoming; }
             set
             {
-                if (value == _timestamp)
+                if (value == _isIncoming)
                     return;
-                _timestamp = value;
+                _isIncoming = value;
                 OnPropertyChanged();
             }
         }
@@ -128,10 +158,25 @@ namespace VikingApi.Json
             }
         }
 
-        private int _durationConnection;
+        private bool _isSuperOnNet;
+
+        [JsonProperty(PropertyName = "is_super_on_net")]
+        public bool IsSuperOnNet
+        {
+            get { return _isSuperOnNet; }
+            set
+            {
+                if (value == _isSuperOnNet)
+                    return;
+                _isSuperOnNet = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _durationConnection;
 
         [JsonProperty(PropertyName = "duration_connection")]
-        public int DurationConnection
+        public string DurationConnection
         {
             get { return _durationConnection; }
             set
@@ -158,32 +203,17 @@ namespace VikingApi.Json
             }
         }
 
-        private string _pricePlan;
+        private string _destinationNetworkGroup;
 
-        [JsonProperty(PropertyName = "price_plan")]
-        public string PricePlan
+        [JsonProperty(PropertyName = "destination_network_group")]
+        public string DestinationNetworkGroup
         {
-            get { return _pricePlan; }
+            get { return _destinationNetworkGroup; }
             set
             {
-                if (value == _pricePlan)
+                if (value == _destinationNetworkGroup)
                     return;
-                _pricePlan = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private bool _isIncoming;
-
-        [JsonProperty(PropertyName = "is_incoming")]
-        public bool IsIncoming
-        {
-            get { return _isIncoming; }
-            set
-            {
-                if (value == _isIncoming)
-                    return;
-                _isIncoming = value;
+                _destinationNetworkGroup = value;
                 OnPropertyChanged();
             }
         }
@@ -229,21 +259,6 @@ namespace VikingApi.Json
                 if (value == _endTimestamp)
                     return;
                 _endTimestamp = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private bool _isSuperOnNet;
-
-        [JsonProperty(PropertyName = "is_super_on_net")]
-        public bool IsSuperOnNet
-        {
-            get { return _isSuperOnNet; }
-            set
-            {
-                if (value == _isSuperOnNet)
-                    return;
-                _isSuperOnNet = value;
                 OnPropertyChanged();
             }
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using AsyncOAuth;
 using Tools;
@@ -75,7 +76,11 @@ namespace VikingApi.ApiTools
 
         public async Task<string> GetInfo(AccessToken token, string path)
         {
-            if (!ApiTools.HasInternetConnection()) return null;
+            if (!ApiTools.HasInternetConnection())
+            {
+                Tools.Message.ShowToast("Please connect to the internet and try again.");
+                return null;
+            }
             try
             {
                 HttpClient client = OAuthUtility.CreateOAuthClient(ConsumerKey, ConsumerSecret, token);
@@ -84,9 +89,7 @@ namespace VikingApi.ApiTools
             }
             catch (HttpRequestException e)
             {
-                //((WebException) e.InnerException).Status == WebExceptionStatus.SecureChannelFailure;
-                if (e.InnerException.ToString().Contains("500"))
-                    Tools.Message.ShowToast("the MV api seems to be down, try again in a minute");
+                Tools.Message.ShowToast(e.Message.ToErrorMessage());
                 return null;
             }
             catch (Exception)
@@ -105,12 +108,14 @@ namespace VikingApi.ApiTools
 
         public async Task<string> GetInfo(AccessToken token, string path, KeyValuePair[] valuePair)
         {
-            if (valuePair[0].content != null && valuePair[0].name != null)
+            var builder = new StringBuilder();
+            builder.Append(string.Format("?{0}={1}", valuePair[0].name, HttpUtility.UrlEncode(((string)valuePair[0].content))));
+            for (var i = 1; i < valuePair.Count(); i++)
             {
-                string querystring = valuePair.Aggregate(string.Empty, (current, keyValuePair) => current + string.Format(Parameter, keyValuePair.name, HttpUtility.UrlEncode((string) keyValuePair.content)));
-                return await GetInfo(token, path + "?" + querystring);
+                builder.Append(string.Format("&{0}={1}", valuePair[i].name, valuePair[i].content));
             }
-            return null;
+            //var querystring = valuePair.Aggregate(string.Empty, (current, keyValuePair) => current + string.Format(Parameter, keyValuePair.name, HttpUtility.UrlEncode((string)keyValuePair.content)) + "&");
+            return await GetInfo(token, path + builder);
         }
 
         /*

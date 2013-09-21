@@ -93,6 +93,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\InformationConverter.cs" />
+    <Compile Include="Common\TimestampConverter.cs" />
+    <Compile Include="Common\UsageColorConverter.cs" />
     <Compile Include="Common\UsageImageConverter.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
