@@ -127,7 +127,7 @@
                     <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Credit}"
                                VerticalAlignment="Center" HorizontalAlignment="Center"
                                FontSize="{StaticResource PhoneFontSizeLarge}"
-                               Foreground="{StaticResource PhoneForegroundBrush}" FontWeight="Bold" Tap="Bundle_OnTap"/>
+                               Foreground="{StaticResource PhoneForegroundBrush}" FontWeight="Bold"/>
 
                     <Rectangle Fill="{StaticResource DataColorBrush}" Grid.Row="1" Grid.Column="0"
                                Style="{StaticResource RectangleStyle}" />

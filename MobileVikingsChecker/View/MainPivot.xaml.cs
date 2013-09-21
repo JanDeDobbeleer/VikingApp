@@ -60,6 +60,12 @@ namespace Fuel.View
             ShowLogin();
         }
 
+        private void UsageOnClick(object sender, EventArgs e)
+        {
+            App.Parameter = SimBox.Text;
+            NavigationService.Navigate(new Uri("/View/DetailsPage.xaml", UriKind.Relative));
+        }
+
         #region startup
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -67,12 +73,14 @@ namespace Fuel.View
             ApplicationBar.MenuItems.Clear();
             if ((bool) IsolatedStorageSettings.ApplicationSettings["topup"])
             {
+                ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("usage", true, UsageOnClick));
                 ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("sms topup", true, ReloadOnClick));
                 ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("settings", true, SettingsOnClick));
                 ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("logout", true, OnClickLogout));
             }
             else
             {
+                ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("usage", true, UsageOnClick));
                 ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("settings", true, SettingsOnClick));
                 ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("logout", true, OnClickLogout));
             }
@@ -185,12 +193,6 @@ namespace Fuel.View
             SimBox.Visibility = Visibility.Visible;
             ApplicationBar.IsVisible = true;
             await SetData(SimBox.Text);
-        }
-
-        private void Bundle_OnTap(object sender, GestureEventArgs e)
-        {
-            App.Parameter = SimBox.Text;
-            NavigationService.Navigate(new Uri("/View/DetailsPage.xaml", UriKind.Relative));
         }
     }
 }
