@@ -21,8 +21,11 @@ namespace Fuel.Common
 
         private BitmapImage ReturnImage(Usage usage)
         {
-            if(usage.IsSuperOnNet)
-                return new BitmapImage(new Uri("/Assets/helmetred.png", UriKind.Relative));
+            if (usage.IsSuperOnNet)
+            {
+                var helmet = (Visibility.Visible == (Visibility) Application.Current.Resources["PhoneDarkThemeVisibility"]) ? "/Assets/helmetWhite.png":"/Assets/helmetDark.png";
+                return new BitmapImage(new Uri(helmet, UriKind.Relative));
+            }
             return usage.IsIncoming ? new BitmapImage((new Uri((Visibility.Visible == (Visibility)Application.Current.Resources["PhoneDarkThemeVisibility"]) ? "/Assets/download.png" : "/Assets/downloaddark.png", UriKind.Relative))) : new BitmapImage((new Uri((Visibility.Visible == (Visibility)Application.Current.Resources["PhoneDarkThemeVisibility"]) ? "/Assets/upload.png" : "/Assets/uploaddark.png", UriKind.Relative)));
         }
     }

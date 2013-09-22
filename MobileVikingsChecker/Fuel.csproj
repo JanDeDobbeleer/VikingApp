@@ -93,10 +93,12 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\ExtraInformationConverter.cs" />
     <Compile Include="Common\InformationConverter.cs" />
     <Compile Include="Common\TimestampConverter.cs" />
     <Compile Include="Common\UsageColorConverter.cs" />
     <Compile Include="Common\UsageImageConverter.cs" />
+    <Compile Include="Common\VisibilityConverter.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\AppResources.Designer.cs">
@@ -153,7 +155,9 @@
   <ItemGroup>
     <Content Include="Assets\download.png" />
     <Content Include="Assets\euro.png" />
+    <Content Include="Assets\helmetBlack.png" />
     <Content Include="Assets\helmetred.png" />
+    <Content Include="Assets\helmetWhite.png" />
     <Content Include="Assets\ToastIcon.png" />
     <Content Include="Assets\AlignmentGrid.png" />
     <Content Include="Assets\ApplicationIcon.png">
