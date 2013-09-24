@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="Fuel.Controls.DatePicker"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:primitives="clr-namespace:Microsoft.Phone.Controls.Primitives;assembly=Microsoft.Phone.Controls.Toolkit"
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    Background="{StaticResource PhoneBackgroundBrush}">
+    
+    <UserControl.Resources>
+        <Style x:Key="LoopingSelectorStyle" TargetType="primitives:LoopingSelector">
+            <Setter Property="FontSize" Value="38"/>
+            <Setter Property="Background" Value="{StaticResource VikingColorBrush}"/>
+            <Setter Property="Margin" Value="5,0,5,0"/>
+        </Style>
+        <DataTemplate x:Key="LoopingDataTemplate">
+            <Grid>
+                <TextBlock Text="{Binding}" FontSize="50" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid x:Name="LayoutRoot" Background="{StaticResource PhoneBackgroundBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <primitives:LoopingSelector Grid.Column="1" x:Name="SelectorDay" ItemSize="100,100" Style="{StaticResource LoopingSelectorStyle}" ItemTemplate="{StaticResource LoopingDataTemplate}"/>
+        <primitives:LoopingSelector Grid.Column="2" x:Name="SelectorMonth" ItemSize="100,100" Style="{StaticResource LoopingSelectorStyle}" ItemTemplate="{StaticResource LoopingDataTemplate}"/>
+        <primitives:LoopingSelector Grid.Column="3" x:Name="SelectorYear" ItemSize="150,100" Style="{StaticResource LoopingSelectorStyle}" ItemTemplate="{StaticResource LoopingDataTemplate}"/>
+        </Grid>
+</UserControl>

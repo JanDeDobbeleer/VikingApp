@@ -12,6 +12,7 @@ using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
 using Tools;
 using VikingApi.Json;
+using GestureEventArgs = System.Windows.Input.GestureEventArgs;
 
 namespace Fuel.View
 {
@@ -174,7 +175,6 @@ namespace Fuel.View
                 Message.ShowToast("default sim does not exist anymore, loading first");
             return App.Viewmodel.MainPivotViewmodel.Sims.Select(x => x.msisdn).FirstOrDefault();
         }
-
         #endregion
 
         private void SimBox_OnTap(object sender, GestureEventArgs e)

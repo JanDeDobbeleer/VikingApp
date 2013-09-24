@@ -83,9 +83,11 @@ namespace VikingApi.ApiTools
             }
             try
             {
-                HttpClient client = OAuthUtility.CreateOAuthClient(ConsumerKey, ConsumerSecret, token);
-                var json = await client.GetStringAsync(BaseUrl + path);
-                return json;
+                using (var client = OAuthUtility.CreateOAuthClient(ConsumerKey, ConsumerSecret, token))
+                {
+                    var json = await client.GetStringAsync(BaseUrl + path);
+                    return json;
+                }
             }
             catch (HttpRequestException e)
             {
@@ -114,79 +116,7 @@ namespace VikingApi.ApiTools
             {
                 builder.Append(string.Format("&{0}={1}", valuePair[i].name, valuePair[i].content));
             }
-            //var querystring = valuePair.Aggregate(string.Empty, (current, keyValuePair) => current + string.Format(Parameter, keyValuePair.name, HttpUtility.UrlEncode((string)keyValuePair.content)) + "&");
             return await GetInfo(token, path + builder);
         }
-
-        /*
-        public async Task<string> GetPricePlan(AccessToken token)
-        {
-            try
-            {
-                var client = OAuthUtility.CreateOAuthClient(ConsumerKey, ConsumerSecret, token);
-
-                var json = await client.GetStringAsync(BaseUrl + "price_plan_details.json");
-                return json;
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
-        }
-
-        public async Task<string> GetTopUpHistory(AccessToken token)
-        {
-            var fromdate = DateTime.Now.AddMonths(-1);
-            //API requires: YYYY-MM-DDTHH:MM:SS
-            //TODO: write extension to convert time to API format
-            var client = OAuthUtility.CreateOAuthClient(ConsumerKey, ConsumerSecret, token);
-
-            var json = await client.GetStringAsync(BaseUrl + string.Format("top_up_history.json?fromdate={0}", fromdate.ToString("yyyy-MM-ddTHH:mm:ss")));
-            return json;
-        }
-
-        public async Task<string> GetUsage(AccessToken token)
-        {
-            var fromdate = DateTime.Now.AddMonths(-1);
-            //API requires: YYYY-MM-DDTHH:MM:SS
-            //write extension to convert time to API format
-            var client = OAuthUtility.CreateOAuthClient(ConsumerKey, ConsumerSecret, token);
-
-            var json = await client.GetStringAsync(BaseUrl + string.Format("usage.json?fromdate={0}", fromdate.ToString("yyyy-MM-ddTHH:mm:ss")));
-            return json;
-        }
-
-        public async Task<string> GetSimInfo(AccessToken token)
-        {
-            var client = OAuthUtility.CreateOAuthClient(ConsumerKey, ConsumerSecret, token);
-
-            var json = await client.GetStringAsync(BaseUrl + "price_plan_details.json");
-            return json;
-        }
-
-        public async Task<string> GetVikingPointsStats(AccessToken token)
-        {
-            var client = OAuthUtility.CreateOAuthClient(ConsumerKey, ConsumerSecret, token);
-
-            var json = await client.GetStringAsync(BaseUrl + "points/stats.json");
-            return json;
-        }
-
-        public async Task<string> GetVikingPointsReferalLinks(AccessToken token)
-        {
-            var client = OAuthUtility.CreateOAuthClient(ConsumerKey, ConsumerSecret, token);
-
-            var json = await client.GetStringAsync(BaseUrl + "points/links.json");
-            return json;
-        }
-
-        //REFERRALS
-        public async Task<string> GetVikingPointsReferrals(AccessToken token)
-        {
-            var client = OAuthUtility.CreateOAuthClient(ConsumerKey, ConsumerSecret, token);
-
-            var json = await client.GetStringAsync(BaseUrl + "points/referrals.json");
-            return json;
-        }*/
     }
 }

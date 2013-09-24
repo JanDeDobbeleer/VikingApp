@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO.IsolatedStorage;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using AsyncOAuth;
@@ -32,12 +33,23 @@ namespace Fuel.Viewmodel
                     return hmac.ComputeHash(buffer);
                 }
             };
-            string json = await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Usage, valuepair);
 
-            if (string.IsNullOrEmpty(json))
-                return false;
+            var loop = false;
+            var list = valuepair.ToList();
+            for (var i = 1; !loop; i++)
+            {
+                if (list.Any(x => x.name == VikingApi.Json.Usage.Page))
+                    list.RemoveAt(list.Count - 1);
+                list.Add(new KeyValuePair { content = i, name = VikingApi.Json.Usage.Page });
+                var json = await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Usage, list.ToArray());
 
-            Usage = JsonConvert.DeserializeObject<Usage[]>(json);
+                if (string.Equals(json, "[]"))
+                    loop = true;
+                if (string.IsNullOrEmpty(json) && i == 1)
+                    return false;
+
+                Usage = (i == 1) ? JsonConvert.DeserializeObject<Usage[]>(json) : Usage.Concat(JsonConvert.DeserializeObject<Usage[]>(json));
+            }
             Tools.Tools.SetProgressIndicator(false);
             return true;
         }

@@ -7,6 +7,16 @@ namespace VikingApi.Json
 {
     public class Usage:INotifyPropertyChanged
     {
+        #region static properties
+
+        public static string Msisdn = "msisdn"; //number
+        public static string FromDate = "from_date"; //results after given date (format: `YYYY-MM-DDTHH:MM:SS`). Default: today
+        public static string UntilDate = "until_date"; //results before given date (format: `YYYY-MM-DDTHH:MM:SS`). Default: tomorrow
+        public static string PageSize = "page_size"; //how many results are on 1 page. Default: 25
+        public static string Page = "page"; //page number of results. Default: 1
+        public static string PricePlan = "add_price_plan"; //will add the price plan to each record, if set to 1. Default: 0
+        #endregion
+
         #region Json Properties
         private bool _isData;
 

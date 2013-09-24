@@ -192,20 +192,6 @@
                 </Grid>
             </phone:PivotItem>
         </phone:Pivot>
-        <!--
-
-        ~1~Grid to be able to reload the wished amount@1@
-        <Grid x:Name="ReloadMenu" VerticalAlignment="Bottom" HorizontalAlignment="Center"
-              Background="{StaticResource PhoneBackgroundBrush}" Width="350" Height="60" Margin="0,0,0,10"
-              Visibility="Collapsed">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <TextBlock Text="10" Style="{StaticResource ReloadStyle}" Tap="UIElement_OnTap" />
-                <TextBlock Text="15" Style="{StaticResource ReloadStyle}" Tap="UIElement_OnTap" />
-                <TextBlock Text="25" Style="{StaticResource ReloadStyle}" Tap="UIElement_OnTap" />
-                <TextBlock Text="40" Style="{StaticResource ReloadStyle}" Tap="UIElement_OnTap" />
-                <TextBlock Text="60" Style="{StaticResource ReloadStyle}" Tap="UIElement_OnTap" />
-            </StackPanel>
-        </Grid>-->
 
         <!--Selector to be able to show SIM numbers and select-->
         <phone:LongListSelector x:Name="LongListSelector" SelectionChanged="LongListSelector_OnSelectionChanged" Visibility="Collapsed" LayoutMode="List" Style="{StaticResource SimListStyle}"/>
