@@ -44,6 +44,7 @@ namespace Fuel.View
         private void CalendarCheckOnClick(object sender, EventArgs e)
         {
             ResetAppbar();
+            //TODO: fix date not formatting correctly in datepicker.xaml.cs
             var date = DatePicker.SelectedDate;
         }
 
