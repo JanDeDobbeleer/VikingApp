@@ -9,18 +9,60 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     Background="{StaticResource PhoneBackgroundBrush}">
-    
+
     <UserControl.Resources>
         <Style x:Key="LoopingSelectorStyle" TargetType="primitives:LoopingSelector">
             <Setter Property="FontSize" Value="38"/>
-            <Setter Property="Background" Value="{StaticResource VikingColorBrush}"/>
             <Setter Property="Margin" Value="5,0,5,0"/>
         </Style>
         <DataTemplate x:Key="LoopingDataTemplate">
             <Grid>
-                <TextBlock Text="{Binding}" FontSize="50" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Rectangle Fill="{StaticResource VikingColorBrush}"/>
+                <TextBlock Text="{Binding}" FontSize="50" HorizontalAlignment="Center" VerticalAlignment="Center" />
             </Grid>
         </DataTemplate>
+        <Style TargetType="primitives:LoopingSelectorItem" x:Key="LoopingItemStyle">
+            <Setter Property="Foreground" Value="{StaticResource PhoneForegroundBrush}"/>
+            <Setter Property="Padding" Value="6"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Border x:Name="root" Opacity="0" CacheMode="BitmapCache" Background="Transparent" Padding="{TemplateBinding Padding}">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualStateGroup.Transitions>
+                                        <VisualTransition GeneratedDuration="0:0:0.2"/>
+                                    </VisualStateGroup.Transitions>
+                                    <VisualState x:Name="Normal"/>
+                                    <VisualState x:Name="Expanded">
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="root" Storyboard.TargetProperty="Opacity" To="1" Duration="0"/>
+                                            <DoubleAnimation Storyboard.TargetName="background" Storyboard.TargetProperty="Opacity" To="0" Duration="0"/>
+                                            <DoubleAnimation Storyboard.TargetName="contentPresenter" Storyboard.TargetProperty="Opacity" To=".6" Duration="0"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Selected">
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="root" Storyboard.TargetProperty="Opacity" To="1" Duration="0"/>
+                                            <DoubleAnimation Storyboard.TargetName="background" Storyboard.TargetProperty="Opacity" To="1" Duration="0"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Border.RenderTransform>
+                                <TranslateTransform x:Name="Transform"/>
+                            </Border.RenderTransform>
+                            <Grid Margin="{TemplateBinding Margin}">
+                                <Rectangle x:Name="background" Margin="2" Opacity="0" Fill="{StaticResource VikingColorBrush}" CacheMode="BitmapCache"/>
+                                <Border BorderThickness="2" BorderBrush="{StaticResource VikingColorBrush}">
+                                    <ContentPresenter x:Name="contentPresenter" CacheMode="BitmapCache" />
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
 
     <Grid x:Name="LayoutRoot" Background="{StaticResource PhoneBackgroundBrush}">
@@ -31,8 +73,8 @@
             <ColumnDefinition Width="150"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <primitives:LoopingSelector Grid.Column="1" x:Name="SelectorDay" ItemSize="100,100" Style="{StaticResource LoopingSelectorStyle}" ItemTemplate="{StaticResource LoopingDataTemplate}"/>
-        <primitives:LoopingSelector Grid.Column="2" x:Name="SelectorMonth" ItemSize="100,100" Style="{StaticResource LoopingSelectorStyle}" ItemTemplate="{StaticResource LoopingDataTemplate}"/>
-        <primitives:LoopingSelector Grid.Column="3" x:Name="SelectorYear" ItemSize="150,100" Style="{StaticResource LoopingSelectorStyle}" ItemTemplate="{StaticResource LoopingDataTemplate}"/>
-        </Grid>
+        <primitives:LoopingSelector Grid.Column="1" x:Name="SelectorDay" ItemSize="100,100" Style="{StaticResource LoopingSelectorStyle}" ItemTemplate="{StaticResource LoopingDataTemplate}" ItemStyle="{StaticResource LoopingItemStyle}"/>
+        <primitives:LoopingSelector Grid.Column="2" x:Name="SelectorMonth" ItemSize="100,100" Style="{StaticResource LoopingSelectorStyle}" ItemTemplate="{StaticResource LoopingDataTemplate}" ItemStyle="{StaticResource LoopingItemStyle}"/>
+        <primitives:LoopingSelector Grid.Column="3" x:Name="SelectorYear" ItemSize="150,100" Style="{StaticResource LoopingSelectorStyle}" ItemTemplate="{StaticResource LoopingDataTemplate}" ItemStyle="{StaticResource LoopingItemStyle}"/>
+    </Grid>
 </UserControl>
