@@ -17,7 +17,6 @@
         </Style>
         <DataTemplate x:Key="LoopingDataTemplate">
             <Grid>
-                <Rectangle Fill="{StaticResource VikingColorBrush}"/>
                 <TextBlock Text="{Binding}" FontSize="50" HorizontalAlignment="Center" VerticalAlignment="Center" />
             </Grid>
         </DataTemplate>
@@ -54,7 +53,7 @@
                             </Border.RenderTransform>
                             <Grid Margin="{TemplateBinding Margin}">
                                 <Rectangle x:Name="background" Margin="2" Opacity="0" Fill="{StaticResource VikingColorBrush}" CacheMode="BitmapCache"/>
-                                <Border BorderThickness="2" BorderBrush="{StaticResource VikingColorBrush}">
+                                <Border BorderThickness="2" BorderBrush="{StaticResource TransparentBrush}">
                                     <ContentPresenter x:Name="contentPresenter" CacheMode="BitmapCache" />
                                 </Border>
                             </Grid>

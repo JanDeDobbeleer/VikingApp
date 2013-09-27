@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO.IsolatedStorage;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
@@ -13,15 +14,17 @@ namespace Fuel.Viewmodel
 {
     public class DetailsViewmodel
     {
+        public string Msisdn;
         public IEnumerable<Usage> Usage;
 
-        /// <summary>
-        /// Get the usage for a certain period of time
-        /// </summary>
-        /// <param name="valuepair">data to be read from</param>
-        /// <returns>Sets the Usage property of the Viewmodel</returns>
-        public async Task<bool> GetUsage(KeyValuePair[] valuepair)
+        public async Task<bool> GetUsage(DateTime fromDate, DateTime untilDate)
         {
+            var pair = new[]
+            {
+                new KeyValuePair{content = Msisdn, name = VikingApi.Json.Usage.Msisdn},
+                new KeyValuePair{content = fromDate.ToVikingApiTimeFormat(), name = VikingApi.Json.Usage.FromDate},
+                new KeyValuePair{content = untilDate.ToVikingApiTimeFormat(), name = VikingApi.Json.Usage.UntilDate}
+            };
             Tools.Tools.SetProgressIndicator(true);
             SystemTray.ProgressIndicator.Text = "retrieving information";
             var client = new VikingsApi();
@@ -32,7 +35,7 @@ namespace Fuel.Viewmodel
                     return hmac.ComputeHash(buffer);
                 }
             };
-            var json = await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Usage, valuepair);
+            var json = await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Usage, pair);
             if (string.IsNullOrEmpty(json) || string.Equals(json, "[]"))
                 return false;
             Usage = JsonConvert.DeserializeObject<Usage[]>(json);

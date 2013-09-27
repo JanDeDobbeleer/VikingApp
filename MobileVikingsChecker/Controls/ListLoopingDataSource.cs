@@ -9,6 +9,7 @@ namespace Fuel.Controls
         private List<LinkedListNode<T>> _sortedList;
         private IComparer<T> _comparer;
         private NodeComparer _nodeComparer;
+        public string Tag { get; set; }
 
         public IEnumerable<T> Items
         {

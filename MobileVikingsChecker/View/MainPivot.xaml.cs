@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Navigation;
 using Fuel.LoginControl;
 using Microsoft.Phone.Controls;
@@ -68,7 +67,7 @@ namespace Fuel.View
                 Tools.Message.ShowToast("please wait till your sim information is loaded");
                 return;
             }
-            App.Parameter = SimBox.Text;
+            App.Viewmodel.DetailsViewmodel.Msisdn = SimBox.Text;
             NavigationService.Navigate(new Uri("/View/DetailsPage.xaml", UriKind.Relative));
         }
 
@@ -107,7 +106,7 @@ namespace Fuel.View
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
-        {
+        {   
             if ((bool)IsolatedStorageSettings.ApplicationSettings["lastusedsim"])
                 Tools.Tools.SaveSetting(new KeyValuePair { name = "sim", content = SimBox.Text });
         }

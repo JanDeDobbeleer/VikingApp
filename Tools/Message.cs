@@ -18,7 +18,8 @@ namespace Tools
                 ImageSource = new BitmapImage(new Uri("/Assets/ToastIcon.png", UriKind.RelativeOrAbsolute)),
                 MillisecondsUntilHidden = 3000,
                 TextOrientation = Orientation.Vertical, 
-                TextWrapping = TextWrapping.Wrap
+                TextWrapping = TextWrapping.Wrap,
+                Margin = new Thickness(0,-10,0,0)
             };
             toast.Show();
         }

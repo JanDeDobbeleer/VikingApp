@@ -26,14 +26,14 @@ namespace Fuel.View
         private void BuildUsageAppbar()
         {
             ApplicationBar.Buttons.Clear();
-            ApplicationBar.Buttons.Add(Tools.Tools.CreateButton("/Assets/feature.calendar.png", "refresh", true, CalendarOnClick));
+            ApplicationBar.Buttons.Add(Tools.Tools.CreateButton("/Assets/feature.calendar.png", "calendar", true, CalendarOnClick));
         }
 
         private void BuildCalendarAppbar()
         {
             ApplicationBar.Buttons.Clear();
-            ApplicationBar.Buttons.Add(Tools.Tools.CreateButton("/Assets/check.png", "refresh", true, CalendarCheckOnClick));
-            ApplicationBar.Buttons.Add(Tools.Tools.CreateButton("/Assets/cancel.png", "refresh", true, CalendarCancelOnClick));
+            ApplicationBar.Buttons.Add(Tools.Tools.CreateButton("/Assets/check.png", "check", true, CalendarCheckOnClick));
+            ApplicationBar.Buttons.Add(Tools.Tools.CreateButton("/Assets/cancel.png", "cancel", true, CalendarCancelOnClick));
         }
 
         private void CalendarCancelOnClick(object sender, EventArgs e)
@@ -41,11 +41,15 @@ namespace Fuel.View
             ResetAppbar();
         }
 
-        private void CalendarCheckOnClick(object sender, EventArgs e)
+        private async void CalendarCheckOnClick(object sender, EventArgs e)
         {
-            ResetAppbar();
-            //TODO: fix date not formatting correctly in datepicker.xaml.cs
+            Viewer.IsEnabled = false;
             var date = DatePicker.SelectedDate;
+            if (!await App.Viewmodel.DetailsViewmodel.GetUsage(date, date.AddDays(1)))
+                return;
+            DatePicker.IsEnabled = false;
+            RefreshListBox();
+            ResetAppbar();
         }
 
         private void ResetAppbar()
@@ -57,6 +61,7 @@ namespace Fuel.View
 
         private void CalendarOnClick(object sender, EventArgs e)
         {
+            DatePicker.IsEnabled = true;
             BuildCalendarAppbar();
             Viewer.Visibility = Visibility.Collapsed;
             DatePicker.Visibility = Visibility.Visible;
@@ -64,10 +69,10 @@ namespace Fuel.View
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (App.Parameter == null)
+            if (string.IsNullOrWhiteSpace(App.Viewmodel.DetailsViewmodel.Msisdn))
                 return;
             SystemTray.ProgressIndicator = new ProgressIndicator();
-            if (!await App.Viewmodel.DetailsViewmodel.GetUsage(new[] { ValuePair(App.Parameter, Usage.Msisdn), ValuePair(DateTime.Now.AddDays(-1).ToVikingApiTimeFormat(), Usage.FromDate), ValuePair("50", Usage.PageSize), ValuePair(DateTime.Now.ToVikingApiTimeFormat(), Usage.UntilDate)}))
+            if (!await App.Viewmodel.DetailsViewmodel.GetUsage(DateTime.Now.AddDays(-1), DateTime.Now))
                 return;
             RefreshListBox();
             Viewer.Visibility = Visibility.Visible;
@@ -77,11 +82,6 @@ namespace Fuel.View
         {
             Viewer.ItemsSource = null;
             Viewer.ItemsSource = App.Viewmodel.DetailsViewmodel.Usage;
-        }
-
-        private KeyValuePair ValuePair(object content, string name)
-        {
-            return new KeyValuePair {content = content, name = name};
         }
     }
 }
