@@ -12,7 +12,7 @@ namespace VikingApi.ApiTools
 
         public static string ToVikingApiTimeFormat(this DateTime date)
         {
-            return date.ToString("yyyy-MM-ddThh:mm:ss");
+            return date.ToString("yyyy-MM-ddTHH:mm:ss");
         }
 
         public static string ToErrorMessage(this string message)

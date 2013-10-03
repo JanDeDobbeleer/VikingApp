@@ -37,7 +37,7 @@
                 <Image Source="/Assets/logo.png" />
                 <TextBlock Text="Fuel" FontSize="{StaticResource PhoneFontSizeLarge}" />
             </StackPanel>
-            <TextBlock Text="details" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock x:Name="SubTitleBlock" Text="usage" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->

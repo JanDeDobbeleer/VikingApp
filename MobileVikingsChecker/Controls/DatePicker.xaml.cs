@@ -4,7 +4,7 @@ using System.Windows.Controls;
 
 namespace Fuel.Controls
 {
-    public partial class DatePicker
+    public partial class DatePicker: UserControl
     {
         private ListLoopingDataSource<int> _dayList;
         private ListLoopingDataSource<int> _monthList;

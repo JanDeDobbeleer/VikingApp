@@ -17,15 +17,16 @@ namespace Fuel.View
 {
     public partial class MainPivot : PhoneApplicationPage
     {
-        private bool _logout;
-
         public MainPivot()
         {
             InitializeComponent();
             BuildApplicationBar();
             DataContext = App.Viewmodel.MainPivotViewmodel.Balance;
+            App.Viewmodel.MainPivotViewmodel.GetBalanceInfoFinished += MainPivotViewmodel_GetBalanceInfoFinished;
+            App.Viewmodel.MainPivotViewmodel.GetSimInfoFinished += MainPivotViewmodel_GetSimInfoFinished;
         }
 
+        #region buttons
         private void BuildApplicationBar()
         {
             ApplicationBar = new ApplicationBar { Mode = ApplicationBarMode.Default, Opacity = 1, IsVisible = true };
@@ -34,8 +35,7 @@ namespace Fuel.View
 
         private async void RefreshOnClick(object sender, EventArgs e)
         {
-            if (await SetData(SimBox.Text))
-                Loading.Begin();
+            await App.Viewmodel.MainPivotViewmodel.GetData(SimBox.Text);
         }
 
         private void ReloadOnClick(object sender, EventArgs e)
@@ -52,7 +52,6 @@ namespace Fuel.View
         private void OnClickLogout(object sender, EventArgs e)
         {
             Tools.Tools.DefaultAllSettings();
-            _logout = true;
             SimBox.Text = string.Empty;
             IsolatedStorageSettings.ApplicationSettings["login"] = true;
             Bundle.Visibility = Visibility.Collapsed;
@@ -64,15 +63,16 @@ namespace Fuel.View
         {
             if (string.IsNullOrWhiteSpace(SimBox.Text))
             {
-                Tools.Message.ShowToast("please wait till your sim information is loaded");
+                Message.ShowToast("please wait till your sim information is loaded");
                 return;
             }
+            App.Viewmodel.MainPivotViewmodel.CancelTask();
             App.Viewmodel.DetailsViewmodel.Msisdn = SimBox.Text;
             NavigationService.Navigate(new Uri("/View/DetailsPage.xaml", UriKind.Relative));
         }
+        #endregion
 
         #region startup
-
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             ApplicationBar.MenuItems.Clear();
@@ -100,13 +100,56 @@ namespace Fuel.View
             {
                 ApplicationBar.IsVisible = true;
                 Pivot.Visibility = Visibility.Visible;
-                if (await GetData(false) && e.NavigationMode == NavigationMode.Back)
-                    Loading.Begin();
+                App.Viewmodel.MainPivotViewmodel.RenewToken();
+                await App.Viewmodel.MainPivotViewmodel.GetSimInfo();
+            }
+        }
+        #endregion
+
+        #region events
+        async void MainPivotViewmodel_GetSimInfoFinished(object sender, VikingApi.ApiTools.GetInfoCompletedArgs args)
+        {
+            if (App.Viewmodel.MainPivotViewmodel.Sims != null && App.Viewmodel.MainPivotViewmodel.Sims.Any() && !args.Canceled)
+            {
+                if (IsolatedStorageSettings.ApplicationSettings.Contains("sim"))
+                {
+                    SimBox.Text = CheckDefaultSimValue((bool)IsolatedStorageSettings.ApplicationSettings["login"]);
+                }
+                SimBox.Text = App.Viewmodel.MainPivotViewmodel.Sims.Select(x => x.msisdn).FirstOrDefault();
+                await App.Viewmodel.MainPivotViewmodel.GetData(SimBox.Text);
+            }
+            else
+            {
+                Message.ShowToast("there is no sim linked to this account");
             }
         }
 
+        void MainPivotViewmodel_GetBalanceInfoFinished(object sender, VikingApi.ApiTools.GetInfoCompletedArgs args)
+        {
+            if (!args.Canceled)
+            {
+                Bundle.Visibility = Visibility.Visible;
+                Bonus.Visibility = Visibility.Visible;
+                Loading.Begin();
+            }
+            if ((bool)IsolatedStorageSettings.ApplicationSettings["login"])
+                IsolatedStorageSettings.ApplicationSettings["login"] = false;
+
+        }
+
+        private async void OauthLoginFinished(object sender, ApiBrowserEventArgs args)
+        {
+            Pivot.Visibility = Visibility.Visible;
+            ApplicationBar.IsVisible = true;
+            LayoutRoot.Children.Remove(LayoutRoot.Children.First(c => c.GetType() == typeof(OauthLogin)));
+            App.Viewmodel.MainPivotViewmodel.RenewToken();
+            await App.Viewmodel.MainPivotViewmodel.GetSimInfo();
+        }
+        #endregion
+
+        #region functions
         protected override void OnNavigatedFrom(NavigationEventArgs e)
-        {   
+        {
             if ((bool)IsolatedStorageSettings.ApplicationSettings["lastusedsim"])
                 Tools.Tools.SaveSetting(new KeyValuePair { name = "sim", content = SimBox.Text });
         }
@@ -120,61 +163,14 @@ namespace Fuel.View
             LayoutRoot.Children.Add(login);
         }
 
-        private async void OauthLoginFinished(object sender, ApiBrowserEventArgs args)
-        {
-            Pivot.Visibility = Visibility.Visible;
-            ApplicationBar.IsVisible = true;
-            LayoutRoot.Children.Remove(LayoutRoot.Children.First(c => c.GetType() == typeof(OauthLogin)));
-            if (await GetData(true) && _logout)
-            {
-                Loading.Begin();
-                _logout = false;
-            }
-        }
-
-        private async Task<bool> GetData(bool login)
-        {
-            await SetSimList(login);
-            await SetData(SimBox.Text);
-            return true;
-        }
-
-        private async Task<bool> SetData(string msisdn)
-        {
-            if (!await App.Viewmodel.MainPivotViewmodel.GetData(msisdn)) 
-                return false;
-            Bundle.Visibility = Visibility.Visible;
-            Bonus.Visibility = Visibility.Visible;
-            return true;
-        }
-
-        private async Task<bool> SetSimList(bool login)
-        {
-            if (!await App.Viewmodel.MainPivotViewmodel.GetSimInfo()) 
-                return false;
-            if (App.Viewmodel.MainPivotViewmodel.Sims != null && App.Viewmodel.MainPivotViewmodel.Sims.Any())
-            {
-                if (IsolatedStorageSettings.ApplicationSettings.Contains("sim"))
-                {
-                    SimBox.Text = CheckDefaultSimValue(login);
-                    return true;
-                }
-                SimBox.Text = App.Viewmodel.MainPivotViewmodel.Sims.Select(x => x.msisdn).FirstOrDefault();
-                return true;
-            }
-            Message.ShowToast("there is no sim linked to this account");
-            return false;
-        }
-
         private string CheckDefaultSimValue(bool login)
         {
-            if (App.Viewmodel.MainPivotViewmodel.Sims.Any(x => x.msisdn == (string) IsolatedStorageSettings.ApplicationSettings["sim"]))
+            if (App.Viewmodel.MainPivotViewmodel.Sims.Any(x => x.msisdn == (string)IsolatedStorageSettings.ApplicationSettings["sim"]))
                 return (string)IsolatedStorageSettings.ApplicationSettings["sim"];
             if (App.Viewmodel.MainPivotViewmodel.Sims.Count() > 1 && !login && !string.IsNullOrWhiteSpace((string)IsolatedStorageSettings.ApplicationSettings["sim"]))
                 Message.ShowToast("default sim does not exist anymore, loading first");
             return App.Viewmodel.MainPivotViewmodel.Sims.Select(x => x.msisdn).FirstOrDefault();
         }
-        #endregion
 
         private void SimBox_OnTap(object sender, GestureEventArgs e)
         {
@@ -196,7 +192,8 @@ namespace Fuel.View
             LongListSelector.Visibility = Visibility.Collapsed;
             SimBox.Visibility = Visibility.Visible;
             ApplicationBar.IsVisible = true;
-            await SetData(SimBox.Text);
+            await App.Viewmodel.MainPivotViewmodel.GetData(SimBox.Text);
         }
+        #endregion
     }
 }

@@ -84,6 +84,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ApiTools\ApiTools.cs" />
+    <Compile Include="ApiTools\GetInfoCompletedArgs.cs" />
+    <Compile Include="ApiTools\CancelTask.cs" />
     <Compile Include="ApiTools\VikingApi.cs" />
     <Compile Include="AppClasses\UserBalance.cs" />
     <Compile Include="Json\Balance.cs" />

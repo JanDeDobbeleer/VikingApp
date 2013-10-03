@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,30 +22,37 @@ namespace Fuel.Settings
     {
         private IEnumerable<Sim> _sims;
         private readonly List<String> _topupValues = new List<string>{ "10", "15", "25", "40", "60" };
+        private readonly CancellationTokenSource _cts = new CancellationTokenSource();
 
         public Settings()
         {
             InitializeComponent();
+
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             SystemTray.ProgressIndicator = new ProgressIndicator();
             ShowHideSimTopup((bool)IsolatedStorageSettings.ApplicationSettings["topup"]);
-            if (await GetSimInfo())
+            if (await GetSimInfo(_cts))
             {
                 ShowHideDefaultSim(_sims.Count() > 1);
             }
         }
 
-        public async Task<bool> GetSimInfo()
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            _cts.Cancel();
+        }
+
+        public async Task<bool> GetSimInfo(CancellationTokenSource cts)
         {
             Tools.Tools.SetProgressIndicator(true);
             try
             {
-                Tools.Tools.SetProgressIndicator(true);
                 SystemTray.ProgressIndicator.Text = "loading sims";
                 var client = new VikingsApi();
+                client.GetInfoFinished += client_GetInfoFinished;
                 OAuthUtility.ComputeHash = (key, buffer) =>
                 {
                     using (var hmac = new HMACSHA1(key))
@@ -52,15 +60,29 @@ namespace Fuel.Settings
                         return hmac.ComputeHash(buffer);
                     }
                 };
-                string json = await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Sim, new KeyValuePair { content = "1", name = "alias" });
-                _sims = JsonConvert.DeserializeObject<Sim[]>(json);
-                Tools.Tools.SetProgressIndicator(false);
+                await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Sim, new KeyValuePair { content = "1", name = "alias" }, _cts);
                 return true;
             }
             catch (Exception)
             {
                 Message.ShowToast("Could not load sim information, please try again later");
                 return false;
+            }
+        }
+
+        void client_GetInfoFinished(object sender, GetInfoCompletedArgs args)
+        {
+            switch (args.Canceled)
+            {
+                case true:
+                    Tools.Tools.SetProgressIndicator(false);
+                    break;
+                case false:
+                    if (string.IsNullOrEmpty(args.Json) || string.Equals(args.Json, "[]"))
+                        return;
+                    _sims = JsonConvert.DeserializeObject<Sim[]>(args.Json);
+                    Tools.Tools.SetProgressIndicator(false);
+                    break;
             }
         }
 
@@ -88,7 +110,7 @@ namespace Fuel.Settings
             if ((sender as ListPicker) == null)
                 return;
             if (!string.IsNullOrWhiteSpace((string)(sender as ListPicker).SelectedItem))
-                Tools.Tools.SaveSetting(new KeyValuePair { name = (sender as ListPicker).Tag.ToString(), content = (string)(sender as ListPicker).SelectedItem });
+                Tools.Tools.SaveSetting(new KeyValuePair { name = (sender as ListPicker).Tag.ToString(), content = (sender as ListPicker).SelectedItem });
         }
 
         private void SimCheck_OnChecked(object sender, RoutedEventArgs e)

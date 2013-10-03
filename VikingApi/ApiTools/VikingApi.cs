@@ -4,12 +4,15 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using AsyncOAuth;
 using Tools;
 
 namespace VikingApi.ApiTools
 {
+    public delegate void GetInfoFinishedEventHandler(object sender, GetInfoCompletedArgs args);
+
     public class VikingsApi
     {
         //data to authenticate
@@ -46,6 +49,18 @@ namespace VikingApi.ApiTools
             get { return _usage; }
         }
 
+        //event handling
+
+        public event GetInfoFinishedEventHandler GetInfoFinished;
+
+        protected void OnGetInfoFinished(GetInfoCompletedArgs args)
+        {
+            if (GetInfoFinished != null)
+            {
+                GetInfoFinished(this, args);
+            }
+        }
+
         public static async Task<string> GetPinUrl()
         {
             if (!ApiTools.HasInternetConnection()) return null;
@@ -74,41 +89,58 @@ namespace VikingApi.ApiTools
             return accessToken;
         }
 
-        public async Task<string> GetInfo(AccessToken token, string path)
+        public async Task<bool> GetInfo(AccessToken token, string path, CancellationTokenSource cts)
         {
+            var args = new GetInfoCompletedArgs();
             if (!ApiTools.HasInternetConnection())
             {
-                Tools.Message.ShowToast("Please connect to the internet and try again.");
-                return null;
+                Message.ShowToast("Please connect to the internet and try again.");
+                return false;
             }
             try
             {
                 using (var client = OAuthUtility.CreateOAuthClient(ConsumerKey, ConsumerSecret, token))
                 {
-                    var json = await client.GetStringAsync(BaseUrl + path);
-                    return json;
+                    if (!cts.Token.IsCancellationRequested)
+                    {
+                        using (cts.Token.Register(() => client.CancelPendingRequests()))
+                        {
+                            args.Json = await client.GetStringAsync(BaseUrl + path);
+                            args.Canceled = false;
+                        }
+                        OnGetInfoFinished(args);
+                    }
                 }
             }
             catch (HttpRequestException e)
             {
-                Tools.Message.ShowToast(e.Message.ToErrorMessage());
-                return null;
+                Message.ShowToast(e.Message.ToErrorMessage());
+                args.Canceled = true;
+                OnGetInfoFinished(args);
+            }
+            catch (TaskCanceledException)
+            {
+                args.Canceled = true;
+                OnGetInfoFinished(args);
             }
             catch (Exception)
             {
-                return null;
+                args.Canceled = true;
+                OnGetInfoFinished(args);
+
                 //TODO: send mail to me with error
             }
+            return true;
         }
 
-        public async Task<string> GetInfo(AccessToken token, string path, KeyValuePair valuePair)
+        public async Task<bool> GetInfo(AccessToken token, string path, KeyValuePair valuePair , CancellationTokenSource cts)
         {
             if (valuePair.content != null && valuePair.name != null)
-                return await GetInfo(token, path + "?" + string.Format(Parameter, valuePair.name, HttpUtility.UrlEncode((string)valuePair.content)));
-            return null;
+                return await GetInfo(token, path + "?" + string.Format(Parameter, valuePair.name, HttpUtility.UrlEncode((string)valuePair.content)), cts);
+            return false;
         }
 
-        public async Task<string> GetInfo(AccessToken token, string path, KeyValuePair[] valuePair)
+        public async Task<bool> GetInfo(AccessToken token, string path, KeyValuePair[] valuePair, CancellationTokenSource cts)
         {
             var builder = new StringBuilder();
             builder.Append(string.Format("?{0}={1}", valuePair[0].name, HttpUtility.UrlEncode(((string)valuePair[0].content))));
@@ -116,7 +148,7 @@ namespace VikingApi.ApiTools
             {
                 builder.Append(string.Format("&{0}={1}", valuePair[i].name, valuePair[i].content));
             }
-            return await GetInfo(token, path + builder);
+            return await GetInfo(token, path + builder, cts);
         }
     }
 }
