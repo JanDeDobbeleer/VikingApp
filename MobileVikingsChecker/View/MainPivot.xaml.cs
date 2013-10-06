@@ -150,6 +150,7 @@ namespace Fuel.View
         #region functions
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
+            App.Viewmodel.MainPivotViewmodel.CancelTask();
             if ((bool)IsolatedStorageSettings.ApplicationSettings["lastusedsim"])
                 Tools.Tools.SaveSetting(new KeyValuePair { name = "sim", content = SimBox.Text });
         }

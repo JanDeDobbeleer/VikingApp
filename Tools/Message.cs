@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Coding4Fun.Toolkit.Controls;
 
@@ -19,7 +20,7 @@ namespace Tools
                 MillisecondsUntilHidden = 3000,
                 TextOrientation = Orientation.Vertical, 
                 TextWrapping = TextWrapping.Wrap,
-                Margin = new Thickness(0,-10,0,0)
+                Background = (SolidColorBrush)Application.Current.Resources["VikingColorBrush"]
             };
             toast.Show();
         }

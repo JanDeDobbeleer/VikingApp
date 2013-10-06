@@ -40,7 +40,7 @@ namespace Fuel.Settings
             }
         }
 
-        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
         {
             _cts.Cancel();
         }
