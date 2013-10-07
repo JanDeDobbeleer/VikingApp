@@ -102,6 +102,9 @@ namespace UpdateTile
                     SetTile();
                 }
             }
+#if(DEBUG)
+            System.Diagnostics.Debug.WriteLine("Periodic task has finished updating");
+#endif
             NotifyComplete();
         }
 

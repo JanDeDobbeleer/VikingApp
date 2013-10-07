@@ -79,7 +79,20 @@ namespace Fuel.Viewmodel
         {
             Tools.Tools.SetProgressIndicator(true);
             SystemTray.ProgressIndicator.Text = "fetching data";
-            var client = new VikingsApi();
+            using (var client = new VikingsApi())
+            {
+                client.GetInfoFinished += client_GetDataFinished;
+                OAuthUtility.ComputeHash = (key, buffer) =>
+                {
+                    using (var hmac = new HMACSHA1(key))
+                    {
+                        return hmac.ComputeHash(buffer);
+                    }
+                };
+                await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Balance, new KeyValuePair { name = "msisdn", content = msisdn }, Cts);
+            }
+            return true;
+            /*var client = new VikingsApi();
             client.GetInfoFinished += client_GetDataFinished;
             OAuthUtility.ComputeHash = (key, buffer) =>
             {
@@ -89,7 +102,7 @@ namespace Fuel.Viewmodel
                 }
             };
             await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Balance, new KeyValuePair { name = "msisdn", content = msisdn }, Cts);
-            return true;
+            return true;*/
         }
 
         void client_GetDataFinished(object sender, GetInfoCompletedArgs args)
@@ -113,8 +126,20 @@ namespace Fuel.Viewmodel
         {
             Tools.Tools.SetProgressIndicator(true);
             SystemTray.ProgressIndicator.Text = "loading sims";
-            var client = new VikingsApi();
-            client.GetInfoFinished += client_GetSimInfoFinished;
+            using (var client = new VikingsApi())
+            {
+                client.GetInfoFinished += client_GetSimInfoFinished;
+                OAuthUtility.ComputeHash = (key, buffer) =>
+                {
+                    using (var hmac = new HMACSHA1(key))
+                    {
+                        return hmac.ComputeHash(buffer);
+                    }
+                };
+                await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Sim, new KeyValuePair { content = "1", name = "alias" }, Cts);
+            }
+            //var client = new VikingsApi();
+            /*client.GetInfoFinished += client_GetSimInfoFinished;
             OAuthUtility.ComputeHash = (key, buffer) =>
             {
                 using (var hmac = new HMACSHA1(key))
@@ -122,7 +147,7 @@ namespace Fuel.Viewmodel
                     return hmac.ComputeHash(buffer);
                 }
             };
-            await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Sim, new KeyValuePair { content = "1", name = "alias" }, Cts);
+            await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Sim, new KeyValuePair { content = "1", name = "alias" }, Cts);*/
             return true;
         }
 
@@ -169,7 +194,7 @@ namespace Fuel.Viewmodel
             // create a new task
             _periodicTask = new PeriodicTask(PeriodicTaskName)
             {
-                Description = "This is the Fuel application update agent.", 
+                Description = "This is the Fuel application update agent.",
                 ExpirationTime = DateTime.Now.AddDays(14)
             };
             // load description from localized strings
@@ -178,7 +203,7 @@ namespace Fuel.Viewmodel
             {
                 // add thas to scheduled action service
                 ScheduledActionService.Add(_periodicTask);
-                // debug, so run in every 30 secs
+                // debug, so run in every 10 secs
 #if(DEBUG)
                 ScheduledActionService.LaunchForTest(PeriodicTaskName, TimeSpan.FromSeconds(10));
                 System.Diagnostics.Debug.WriteLine("Periodic task is started: " + _periodicTask);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace VikingApi.ApiTools
 {
     public delegate void GetInfoFinishedEventHandler(object sender, GetInfoCompletedArgs args);
 
-    public class VikingsApi
+    public class VikingsApi:IDisposable
     {
         //data to authenticate
         private const string ConsumerKey = "un9HyMLftXRtDf89jP";
@@ -32,6 +33,8 @@ namespace VikingApi.ApiTools
         private const string _usage = "usage.json";
         private static RequestToken _requestToken;
         private static OAuthAuthorizer _authorizer;
+
+        private IntPtr _nativeResource = Marshal.AllocHGlobal(100);
 
         //public properties
         public string Balance
@@ -108,9 +111,9 @@ namespace VikingApi.ApiTools
                             args.Json = await client.GetStringAsync(BaseUrl + path);
                             args.Canceled = false;
                         }
-                        OnGetInfoFinished(args);
                     }
                 }
+                OnGetInfoFinished(args);
             }
             catch (HttpRequestException e)
             {
@@ -127,13 +130,12 @@ namespace VikingApi.ApiTools
             {
                 args.Canceled = true;
                 OnGetInfoFinished(args);
-
                 //TODO: send mail to me with error
             }
             return true;
         }
 
-        public async Task<bool> GetInfo(AccessToken token, string path, KeyValuePair valuePair , CancellationTokenSource cts)
+        public async Task<bool> GetInfo(AccessToken token, string path, KeyValuePair valuePair, CancellationTokenSource cts)
         {
             if (valuePair.content != null && valuePair.name != null)
                 return await GetInfo(token, path + "?" + string.Format(Parameter, valuePair.name, HttpUtility.UrlEncode((string)valuePair.content)), cts);
@@ -150,5 +152,31 @@ namespace VikingApi.ApiTools
             }
             return await GetInfo(token, path + builder, cts);
         }
+
+        #region IDisposable
+        // Dispose() calls Dispose(true)
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        // NOTE: Leave out the finalizer altogether if this class doesn't 
+        // own unmanaged resources itself, but leave the other methods
+        // exactly as they are. 
+        ~VikingsApi()
+        {
+            // Finalizer calls Dispose(false)
+            Dispose(false);
+        }
+        // The bulk of the clean-up code is implemented in Dispose(bool)
+        protected virtual void Dispose(bool disposing)
+        {
+            // free native resources if there are any.
+            if (_nativeResource == IntPtr.Zero)
+                return;
+            Marshal.FreeHGlobal(_nativeResource);
+            _nativeResource = IntPtr.Zero;
+        }
+        #endregion
     }
 }
