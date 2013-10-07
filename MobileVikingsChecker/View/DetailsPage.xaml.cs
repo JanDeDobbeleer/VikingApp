@@ -13,6 +13,10 @@ namespace Fuel.View
     {
         private bool _calendar;
         private bool _datepicker;
+        private bool _isSecondDate;
+
+        private DateTime _firstDate;
+        private DateTime _secondDate;
 
         public DetailsPage()
         {
@@ -38,9 +42,9 @@ namespace Fuel.View
         {
             _datepicker = true;
             ApplicationBar.Buttons.Clear();
-            ApplicationBar.Buttons.Add(Tools.Tools.CreateButton("/Assets/check.png", "check", true, CalendarCheckOnClick));
+            ApplicationBar.Buttons.Add(Tools.Tools.CreateButton("/Assets/arrow.png", "next", true, CalendarCheckOnClick));
             ApplicationBar.Buttons.Add(Tools.Tools.CreateButton("/Assets/cancel.png", "cancel", true, CalendarCancelOnClick));
-            SubTitleBlock.Text = "pick a day";
+            SubTitleBlock.Text = "from";
         }
 
         private void CalendarCancelOnClick(object sender, EventArgs e)
@@ -56,26 +60,56 @@ namespace Fuel.View
         {
             if (_calendar)
                 return;
-            var date = DateTime.Now.AddDays(-1);
+            if (!CheckForValidDate())
+                return;
+            if (_isSecondDate)
+            {
+                _calendar = true;
+                Viewer.IsEnabled = false;
+                DatePicker.IsEnabled = false;
+                App.Viewmodel.DetailsViewmodel.RenewToken();
+                _isSecondDate = false;
+                await App.Viewmodel.DetailsViewmodel.GetUsage(_firstDate, _secondDate);
+            }
+            else
+            {
+                SubTitleBlock.Text = "until";
+                ((ApplicationBarIconButton)ApplicationBar.Buttons[0]).IconUri = new Uri("/Assets/check.png", UriKind.Relative);
+                ((ApplicationBarIconButton)ApplicationBar.Buttons[0]).Text = "ok";
+                _isSecondDate = true;
+            }
+        }
+
+        private bool CheckForValidDate()
+        {
             try
             {
-                date = DatePicker.SelectedDate;
+                if (DatePicker.SelectedDate > DateTime.Now)
+                {
+                    Message.ShowToast("Hey now, Marty McFly, let's stick to the present!");
+                    return false;
+                }
+                if (!_isSecondDate)
+                {
+                    _firstDate = DatePicker.SelectedDate;
+                }
+                else
+                {
+                    _secondDate = (DatePicker.SelectedDate.Date == DateTime.Now.Date) ? DateTime.Now : DatePicker.SelectedDate;
+                    if (_secondDate < _firstDate)
+                    {
+                        Message.ShowToast("Please select a date later than the first one");
+                        return false;
+                    }
+
+                }
             }
             catch (Exception)
             {
                 Message.ShowToast("Looks like that's not a valid date, check again professor!");
-                return;
+                return false;
             }
-            if (date > DateTime.Now)
-            {
-                Message.ShowToast("Hey now, Marty McFly, let's stick to the present!");
-                return;
-            }
-            _calendar = true;
-            Viewer.IsEnabled = false;
-            DatePicker.IsEnabled = false;
-            App.Viewmodel.DetailsViewmodel.RenewToken();
-            await App.Viewmodel.DetailsViewmodel.GetUsage(date, date.AddDays(1));
+            return true;
         }
 
         private void ResetAppbar()
@@ -106,12 +140,21 @@ namespace Fuel.View
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
         {
-            if (_datepicker)
+            if (_datepicker && !_isSecondDate)
             {
                 ResetAppbar();
                 e.Cancel = true;
                 base.OnBackKeyPress(e);
                 Viewer.ScrollIntoView(App.Viewmodel.DetailsViewmodel.Usage.ElementAt(0));
+            }
+            else if (_isSecondDate)
+            {
+                SubTitleBlock.Text = "from";
+                ((ApplicationBarIconButton)ApplicationBar.Buttons[0]).IconUri = new Uri("/Assets/arrow.png", UriKind.Relative);
+                ((ApplicationBarIconButton)ApplicationBar.Buttons[0]).Text = "next";
+                _isSecondDate = false;
+                e.Cancel = true;
+                base.OnBackKeyPress(e);
             }
             else
             {

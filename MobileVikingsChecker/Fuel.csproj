@@ -162,10 +162,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\336x336.png" />
+    <Content Include="Assets\arrow.png" />
     <Content Include="Assets\cancel.png" />
     <Content Include="Assets\check.png" />
     <Content Include="Assets\download.png" />
     <Content Include="Assets\feature.calendar.png" />
+    <Content Include="Assets\159x159.png" />
     <Content Include="Assets\helmetBlack.png" />
     <Content Include="Assets\helmetred.png" />
     <Content Include="Assets\helmetWhite.png" />
@@ -253,6 +256,10 @@
     <ProjectReference Include="..\Tools\Tools.csproj">
       <Project>{CF7909FE-98C4-48C2-B7EE-B2E9187B8BAE}</Project>
       <Name>Tools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UpdateTile\UpdateTile.csproj">
+      <Project>{AE3D66A8-E5BC-4294-9CDC-D5E22C5E28D8}</Project>
+      <Name>UpdateTile</Name>
     </ProjectReference>
     <ProjectReference Include="..\VikingApi\VikingApi.csproj">
       <Project>{4C3CF688-1220-4CF6-9A4D-25F45234FE71}</Project>

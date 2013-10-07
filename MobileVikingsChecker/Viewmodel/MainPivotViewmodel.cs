@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO.IsolatedStorage;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using AsyncOAuth;
+using Microsoft.Phone.Scheduler;
 using Microsoft.Phone.Shell;
 using Newtonsoft.Json;
 using Tools;
@@ -18,6 +20,8 @@ namespace Fuel.Viewmodel
     public class MainPivotViewmodel : CancelAsyncTask, INotifyPropertyChanged
     {
         #region properties
+        private const string PeriodicTaskName = "UpdateTile";
+        private PeriodicTask _periodicTask;
         private IEnumerable<Sim> _sims;
         public IEnumerable<Sim> Sims
         {
@@ -146,6 +150,56 @@ namespace Fuel.Viewmodel
         {
             PropertyChangedEventHandler handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public void StartPeriodicAgent()
+        {
+            // is old task running, remove it
+            _periodicTask = ScheduledActionService.Find(PeriodicTaskName) as PeriodicTask;
+            if (_periodicTask != null)
+            {
+                try
+                {
+                    ScheduledActionService.Remove(PeriodicTaskName);
+                }
+                catch (Exception)
+                {
+                }
+            }
+            // create a new task
+            _periodicTask = new PeriodicTask(PeriodicTaskName)
+            {
+                Description = "This is the Fuel application update agent.", 
+                ExpirationTime = DateTime.Now.AddDays(14)
+            };
+            // load description from localized strings
+            // set expiration days
+            try
+            {
+                // add thas to scheduled action service
+                ScheduledActionService.Add(_periodicTask);
+                // debug, so run in every 30 secs
+#if(DEBUG)
+                ScheduledActionService.LaunchForTest(PeriodicTaskName, TimeSpan.FromSeconds(10));
+                System.Diagnostics.Debug.WriteLine("Periodic task is started: " + _periodicTask);
+#endif
+
+            }
+            catch (InvalidOperationException exception)
+            {
+                if (exception.Message.Contains("BNS Error: The action is disabled"))
+                {
+                    // load error text from localized strings
+                }
+                if (exception.Message.Contains("BNS Error: The maximum number of ScheduledActions of this type have already been added."))
+                {
+                    // No user action required. The system prompts the user when the hard limit of periodic tasks has been reached.
+                }
+            }
+            catch (SchedulerServiceException)
+            {
+                // No user action required.
+            }
         }
     }
 }

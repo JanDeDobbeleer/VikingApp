@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO.IsolatedStorage;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using System.Windows;
 using AsyncOAuth;
+using Microsoft.Phone.Scheduler;
 using Microsoft.Phone.Shell;
 using Newtonsoft.Json;
 using Tools;
@@ -12,10 +15,14 @@ using VikingApi.Json;
 
 namespace Fuel.Viewmodel
 {
-    public class DetailsViewmodel: CancelAsyncTask
+    public class DetailsViewmodel : CancelAsyncTask
     {
         public string Msisdn;
         public IEnumerable<Usage> Usage;
+        private int _page;
+        private DateTime _date1;
+        private DateTime _date2;
+
 
         #region event handling
         public event GetInfoFinishedEventHandler GetInfoFinished;
@@ -29,14 +36,21 @@ namespace Fuel.Viewmodel
         }
         #endregion
 
-        public async Task<bool> GetUsage(DateTime fromDate, DateTime untilDate)
+        public async Task<bool> GetUsage(DateTime fromDate, DateTime untilDate, int page = 1)
         {
+            if (page == 1)
+            {
+                _page = page;
+                _date1 = fromDate;
+                _date2 = untilDate;
+            }
             var pair = new[]
             {
                 new KeyValuePair{content = Msisdn, name = VikingApi.Json.Usage.Msisdn},
                 new KeyValuePair{content = fromDate.ToVikingApiTimeFormat(), name = VikingApi.Json.Usage.FromDate},
                 new KeyValuePair{content = untilDate.ToVikingApiTimeFormat(), name = VikingApi.Json.Usage.UntilDate},
-                new KeyValuePair{content = "100", name = VikingApi.Json.Usage.PageSize} 
+                new KeyValuePair{content = "100", name = VikingApi.Json.Usage.PageSize},
+                new KeyValuePair{content = page, name = VikingApi.Json.Usage.Page},
             };
             Tools.Tools.SetProgressIndicator(true);
             SystemTray.ProgressIndicator.Text = "retrieving information";
@@ -53,7 +67,7 @@ namespace Fuel.Viewmodel
             return true;
         }
 
-        private void client_GetInfoFinished(object sender, GetInfoCompletedArgs args)
+        private async void client_GetInfoFinished(object sender, GetInfoCompletedArgs args)
         {
             switch (args.Canceled)
             {
@@ -61,9 +75,14 @@ namespace Fuel.Viewmodel
                     Tools.Tools.SetProgressIndicator(false);
                     break;
                 case false:
-                    if (string.IsNullOrEmpty(args.Json) || string.Equals(args.Json, "[]"))
+                    if (string.IsNullOrEmpty(args.Json))
                         return;
-                    Usage = JsonConvert.DeserializeObject<Usage[]>(args.Json);
+                    if (!string.Equals(args.Json, "[]"))
+                    {
+                        Usage = (_page == 1) ? JsonConvert.DeserializeObject<Usage[]>(args.Json) : Usage.Concat(JsonConvert.DeserializeObject<Usage[]>(args.Json));
+                        await GetUsage(_date1, _date2, ++_page);
+                        return;
+                    }
                     Tools.Tools.SetProgressIndicator(false);
                     break;
             }

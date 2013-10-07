@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO.IsolatedStorage;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
@@ -31,6 +30,7 @@ namespace Fuel.View
         {
             ApplicationBar = new ApplicationBar { Mode = ApplicationBarMode.Default, Opacity = 1, IsVisible = true };
             ApplicationBar.Buttons.Add(Tools.Tools.CreateButton("/Assets/refresh.png", "refresh", true, RefreshOnClick));
+            ApplicationBar.Buttons.Add(Tools.Tools.CreateButton("/Assets/feature.calendar.png", "usage", true, UsageOnClick));
         }
 
         private async void RefreshOnClick(object sender, EventArgs e)
@@ -78,14 +78,12 @@ namespace Fuel.View
             ApplicationBar.MenuItems.Clear();
             if ((bool) IsolatedStorageSettings.ApplicationSettings["topup"])
             {
-                ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("usage", true, UsageOnClick));
                 ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("sms topup", true, ReloadOnClick));
                 ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("settings", true, SettingsOnClick));
                 ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("logout", true, OnClickLogout));
             }
             else
             {
-                ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("usage", true, UsageOnClick));
                 ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("settings", true, SettingsOnClick));
                 ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("logout", true, OnClickLogout));
             }
@@ -115,7 +113,9 @@ namespace Fuel.View
                 {
                     SimBox.Text = CheckDefaultSimValue((bool)IsolatedStorageSettings.ApplicationSettings["login"]);
                 }
-                SimBox.Text = App.Viewmodel.MainPivotViewmodel.Sims.Select(x => x.msisdn).FirstOrDefault();
+                if (string.IsNullOrEmpty((string) IsolatedStorageSettings.ApplicationSettings["sim"]))
+                    IsolatedStorageSettings.ApplicationSettings["sim"] = SimBox.Text;
+                App.Viewmodel.MainPivotViewmodel.StartPeriodicAgent();
                 await App.Viewmodel.MainPivotViewmodel.GetData(SimBox.Text);
             }
             else
