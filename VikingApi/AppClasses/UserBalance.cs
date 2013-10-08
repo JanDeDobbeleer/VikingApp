@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
-using Tools.Annotations;
+using Tools.Properties;
 using VikingApi.Classes;
 
 namespace VikingApi.AppClasses

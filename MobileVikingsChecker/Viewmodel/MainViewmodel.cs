@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Tools.Annotations;
+using Tools.Properties;
 
 namespace Fuel.Viewmodel
 {

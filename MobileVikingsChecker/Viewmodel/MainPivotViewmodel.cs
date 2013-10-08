@@ -10,7 +10,7 @@ using Microsoft.Phone.Scheduler;
 using Microsoft.Phone.Shell;
 using Newtonsoft.Json;
 using Tools;
-using Tools.Annotations;
+using Tools.Properties;
 using VikingApi.ApiTools;
 using VikingApi.AppClasses;
 using VikingApi.Json;

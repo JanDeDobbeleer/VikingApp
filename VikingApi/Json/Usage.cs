@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
-using Tools.Annotations;
+using Tools.Properties;
 
 namespace VikingApi.Json
 {

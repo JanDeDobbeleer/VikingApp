@@ -3,11 +3,18 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using AsyncOAuth;
-using Tools;
-using VikingApi.ApiTools;
+using Microsoft.Phone.Net.NetworkInformation;
 
 namespace UpdateTile
 {
+    public struct KeyValuePair
+    {
+        public object content;
+        public string name;
+    }
+
+    public delegate void GetInfoFinishedEventHandler(object sender, GetInfoCompletedArgs args);
+
     class Api
     {
         public event GetInfoFinishedEventHandler GetInfoFinished;
@@ -39,33 +46,33 @@ namespace UpdateTile
         public async Task<bool> GetInfo(AccessToken token, string path)
         {
             var args = new GetInfoCompletedArgs();
-            if (!ApiTools.HasInternetConnection())
+            if (NetworkInterface.NetworkInterfaceType != NetworkInterfaceType.None)
             {
-                Message.ShowToast("Please connect to the internet and try again.");
-                return false;
-            }
-            try
-            {
-                using (var client = OAuthUtility.CreateOAuthClient(ConsumerKey, ConsumerSecret, token))
+
+                try
                 {
-                    if (!Cts.Token.IsCancellationRequested)
+                    using (var client = OAuthUtility.CreateOAuthClient(ConsumerKey, ConsumerSecret, token))
                     {
-                        using (Cts.Token.Register(() => client.CancelPendingRequests()))
+                        if (!Cts.Token.IsCancellationRequested)
                         {
-                            args.Json = await client.GetStringAsync(BaseUrl + path);
-                            args.Canceled = false;
+                            using (Cts.Token.Register(() => client.CancelPendingRequests()))
+                            {
+                                args.Json = await client.GetStringAsync(BaseUrl + path);
+                                args.Canceled = false;
+                            }
+                            OnGetInfoFinished(args);
                         }
-                        OnGetInfoFinished(args);
                     }
                 }
+                catch (Exception)
+                {
+                    CancelTask();
+                    args.Canceled = true;
+                    OnGetInfoFinished(args);
+                }
+                return true;
             }
-            catch (Exception)
-            {
-                CancelTask();
-                args.Canceled = true;
-                OnGetInfoFinished(args);
-            }
-            return true;
+            return false;
         }
 
         public async Task<bool> GetInfo(AccessToken token, KeyValuePair valuePair)

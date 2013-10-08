@@ -9,9 +9,6 @@ using System.Windows;
 using AsyncOAuth;
 using Microsoft.Phone.Scheduler;
 using Microsoft.Phone.Shell;
-using Tools;
-using VikingApi.ApiTools;
-using VikingApi.AppClasses;
 
 namespace UpdateTile
 {
@@ -19,7 +16,6 @@ namespace UpdateTile
     {
         private readonly UserBalance _balance = new UserBalance();
         private readonly Api _client = new Api();
-        private ScheduledTask _task;
 
         protected CancellationTokenSource Cts = new CancellationTokenSource();
 
@@ -66,8 +62,6 @@ namespace UpdateTile
         /// </remarks>
         protected async override void OnInvoke(ScheduledTask task)
         {
-            //TODO: Add code to perform your task in background
-            _task = task;
             await GetData((string)IsolatedStorageSettings.ApplicationSettings["sim"]);
         }
 
@@ -93,7 +87,7 @@ namespace UpdateTile
                 if (string.IsNullOrEmpty(args.Json) || string.Equals(args.Json, "[]"))
                     return;
                 _balance.Load(args.Json);
-                if (_balance.Remaining == "expired")
+                if (_balance.Remaining == 0)
                 {
                     SetExpiredTile();
                 }
@@ -103,7 +97,7 @@ namespace UpdateTile
                 }
             }
 #if(DEBUG)
-            System.Diagnostics.Debug.WriteLine("Periodic task has finished updating");
+            Debug.WriteLine("Periodic task has finished updating");
 #endif
             NotifyComplete();
         }
@@ -112,27 +106,31 @@ namespace UpdateTile
         {
             var newTile = new FlipTileData
             {
-                Count = (_balance.Remaining.Contains("day")) ? int.Parse(_balance.Remaining.Split(' ')[0]) : 1,
+                Count = _balance.Remaining,
                 BackContent = BuildInfoString()
             };
-            ShellTile.ActiveTiles.FirstOrDefault().Update(newTile);
+            var firstOrDefault = ShellTile.ActiveTiles.FirstOrDefault();
+            if (firstOrDefault != null) 
+                firstOrDefault.Update(newTile);
         }
 
         private void SetExpiredTile()
         {
             var newTile = new FlipTileData
             {
-                Count = 0,
+                Count = _balance.Remaining,
                 BackContent = "expired"
             };
-            ShellTile.ActiveTiles.FirstOrDefault().Update(newTile);
+            var firstOrDefault = ShellTile.ActiveTiles.FirstOrDefault();
+            if (firstOrDefault != null) 
+                firstOrDefault.Update(newTile);
         }
 
         private string BuildInfoString()
         {
             var info = _balance.Credit + Environment.NewLine;
-            info += _balance.Data.Split('/')[0].TrimEnd() + " MB" + Environment.NewLine;
-            info += _balance.Sms.Split('/')[0].TrimEnd() + " SMS";
+            info += _balance.Data + " MB" + Environment.NewLine;
+            info += _balance.Sms + " SMS" + Environment.NewLine;
             return info;
         }
     }
