@@ -123,9 +123,9 @@ namespace Fuel.LoginControl
                         {
                             success = Tools.Tools.SaveSetting(new[]
                             {
-                                new KeyValuePair {name = "login", content = false},
-                                new KeyValuePair {name = "tokenKey", content = accesstoken.Key},
-                                new KeyValuePair {name = "tokenSecret", content = accesstoken.Secret}
+                                new KeyValuePair {Name = "login", Content = false},
+                                new KeyValuePair {Name = "tokenKey", Content = accesstoken.Key},
+                                new KeyValuePair {Name = "tokenSecret", Content = accesstoken.Secret}
                             });
                         }
                     }

@@ -49,16 +49,6 @@ namespace Fuel.View
             NavigationService.Navigate(new Uri("/Fuel.Settings;component/Settings.xaml", UriKind.Relative));
         }
 
-        private void OnClickLogout(object sender, EventArgs e)
-        {
-            Tools.Tools.DefaultAllSettings();
-            SimBox.Text = string.Empty;
-            IsolatedStorageSettings.ApplicationSettings["login"] = true;
-            Bundle.Visibility = Visibility.Collapsed;
-            Bonus.Visibility = Visibility.Collapsed;
-            ShowLogin();
-        }
-
         private void UsageOnClick(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(SimBox.Text))
@@ -80,12 +70,10 @@ namespace Fuel.View
             {
                 ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("sms topup", true, ReloadOnClick));
                 ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("settings", true, SettingsOnClick));
-                ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("logout", true, OnClickLogout));
             }
             else
             {
                 ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("settings", true, SettingsOnClick));
-                ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("logout", true, OnClickLogout));
             }
             SystemTray.ProgressIndicator = new ProgressIndicator();
             Bundle.Visibility = Visibility.Collapsed;
@@ -152,7 +140,7 @@ namespace Fuel.View
         {
             App.Viewmodel.MainPivotViewmodel.CancelTask();
             if ((bool)IsolatedStorageSettings.ApplicationSettings["lastusedsim"])
-                Tools.Tools.SaveSetting(new KeyValuePair { name = "sim", content = SimBox.Text });
+                Tools.Tools.SaveSetting(new KeyValuePair { Name = "sim", Content = SimBox.Text });
         }
 
         private void ShowLogin()

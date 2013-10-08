@@ -46,11 +46,11 @@ namespace Fuel.Viewmodel
             }
             var pair = new[]
             {
-                new KeyValuePair{content = Msisdn, name = VikingApi.Json.Usage.Msisdn},
-                new KeyValuePair{content = fromDate.ToVikingApiTimeFormat(), name = VikingApi.Json.Usage.FromDate},
-                new KeyValuePair{content = untilDate.ToVikingApiTimeFormat(), name = VikingApi.Json.Usage.UntilDate},
-                new KeyValuePair{content = "100", name = VikingApi.Json.Usage.PageSize},
-                new KeyValuePair{content = page, name = VikingApi.Json.Usage.Page},
+                new KeyValuePair{Content = Msisdn, Name = VikingApi.Json.Usage.Msisdn},
+                new KeyValuePair{Content = fromDate.ToVikingApiTimeFormat(), Name = VikingApi.Json.Usage.FromDate},
+                new KeyValuePair{Content = untilDate.ToVikingApiTimeFormat(), Name = VikingApi.Json.Usage.UntilDate},
+                new KeyValuePair{Content = "100", Name = VikingApi.Json.Usage.PageSize},
+                new KeyValuePair{Content = page, Name = VikingApi.Json.Usage.Page},
             };
             Tools.Tools.SetProgressIndicator(true);
             SystemTray.ProgressIndicator.Text = "retrieving information";

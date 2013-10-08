@@ -8,8 +8,8 @@ namespace Tools
 {
     public struct KeyValuePair
     {
-        public object content;
-        public string name;
+        public object Content;
+        public string Name;
     }
 
     public static class Tools
@@ -34,7 +34,7 @@ namespace Tools
         {
             try
             {
-                IsolatedStorageSettings.ApplicationSettings[keyValuePair.name] = keyValuePair.content;
+                IsolatedStorageSettings.ApplicationSettings[keyValuePair.Name] = keyValuePair.Content;
                 IsolatedStorageSettings.ApplicationSettings.Save();
             }
             catch (Exception)
@@ -77,7 +77,7 @@ namespace Tools
             IsolatedStorageSettings.ApplicationSettings["lastusedsim"] = false;
             IsolatedStorageSettings.ApplicationSettings["sim"] = string.Empty;
             IsolatedStorageSettings.ApplicationSettings["boot"] = false;
-            IsolatedStorageSettings.ApplicationSettings["tileAccentColor"] = false;
+            IsolatedStorageSettings.ApplicationSettings["tileAccentColor"] = true;
         }
     }
 }

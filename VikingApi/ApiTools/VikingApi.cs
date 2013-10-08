@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -108,7 +109,14 @@ namespace VikingApi.ApiTools
                     {
                         using (cts.Token.Register(() => client.CancelPendingRequests()))
                         {
-                            args.Json = await client.GetStringAsync(BaseUrl + path);
+                            try
+                            {
+                                args.Json = await client.GetStringAsync(BaseUrl + path);
+                            }
+                            catch (Exception e)
+                            {
+                                Debug.WriteLine(e);
+                            }
                             args.Canceled = false;
                         }
                     }
@@ -137,18 +145,18 @@ namespace VikingApi.ApiTools
 
         public async Task<bool> GetInfo(AccessToken token, string path, KeyValuePair valuePair, CancellationTokenSource cts)
         {
-            if (valuePair.content != null && valuePair.name != null)
-                return await GetInfo(token, path + "?" + string.Format(Parameter, valuePair.name, HttpUtility.UrlEncode((string)valuePair.content)), cts);
+            if (valuePair.Content != null && valuePair.Name != null)
+                return await GetInfo(token, path + "?" + string.Format(Parameter, valuePair.Name, HttpUtility.UrlEncode((string)valuePair.Content)), cts);
             return false;
         }
 
         public async Task<bool> GetInfo(AccessToken token, string path, KeyValuePair[] valuePair, CancellationTokenSource cts)
         {
             var builder = new StringBuilder();
-            builder.Append(string.Format("?{0}={1}", valuePair[0].name, HttpUtility.UrlEncode(((string)valuePair[0].content))));
+            builder.Append(string.Format("?{0}={1}", valuePair[0].Name, HttpUtility.UrlEncode(((string)valuePair[0].Content))));
             for (var i = 1; i < valuePair.Count(); i++)
             {
-                builder.Append(string.Format("&{0}={1}", valuePair[i].name, valuePair[i].content));
+                builder.Append(string.Format("&{0}={1}", valuePair[i].Name, valuePair[i].Content));
             }
             return await GetInfo(token, path + builder, cts);
         }

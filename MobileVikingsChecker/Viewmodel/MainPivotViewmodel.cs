@@ -89,20 +89,9 @@ namespace Fuel.Viewmodel
                         return hmac.ComputeHash(buffer);
                     }
                 };
-                await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Balance, new KeyValuePair { name = "msisdn", content = msisdn }, Cts);
+                await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Balance, new KeyValuePair { Name = "msisdn", Content = msisdn }, Cts);
             }
             return true;
-            /*var client = new VikingsApi();
-            client.GetInfoFinished += client_GetDataFinished;
-            OAuthUtility.ComputeHash = (key, buffer) =>
-            {
-                using (var hmac = new HMACSHA1(key))
-                {
-                    return hmac.ComputeHash(buffer);
-                }
-            };
-            await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Balance, new KeyValuePair { name = "msisdn", content = msisdn }, Cts);
-            return true;*/
         }
 
         void client_GetDataFinished(object sender, GetInfoCompletedArgs args)
@@ -136,19 +125,8 @@ namespace Fuel.Viewmodel
                         return hmac.ComputeHash(buffer);
                     }
                 };
-                await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Sim, new KeyValuePair { content = "1", name = "alias" }, Cts);
-            }
-            //var client = new VikingsApi();
-            /*client.GetInfoFinished += client_GetSimInfoFinished;
-            OAuthUtility.ComputeHash = (key, buffer) =>
-            {
-                using (var hmac = new HMACSHA1(key))
-                {
-                    return hmac.ComputeHash(buffer);
-                }
-            };
-            await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Sim, new KeyValuePair { content = "1", name = "alias" }, Cts);*/
-            return true;
+                await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Sim, new KeyValuePair { Content = "1", Name = "alias" }, Cts);
+            }return true;
         }
 
         void client_GetSimInfoFinished(object sender, GetInfoCompletedArgs args)

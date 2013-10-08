@@ -21,19 +21,25 @@ namespace Fuel.Settings
     public partial class Settings : PhoneApplicationPage
     {
         private IEnumerable<Sim> _sims;
-        private readonly List<String> _topupValues = new List<string>{ "10", "15", "25", "40", "60" };
-        private readonly CancellationTokenSource _cts = new CancellationTokenSource();
+        private readonly List<String> _topupValues = new List<string> { "10", "15", "25", "40", "60" };
+        private readonly List<string> _tileValues = new List<string> { "phone theme", "viking red" };
+        private CancellationTokenSource _cts = new CancellationTokenSource();
+        private bool _starting = false;
 
         public Settings()
         {
             InitializeComponent();
-
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            _starting = true;
+            TileColorPicker.ItemsSource = _tileValues.ToList();
+            TileColorPicker.SelectedIndex = (bool)IsolatedStorageSettings.ApplicationSettings["tileAccentColor"] ? 0 : 1;
             SystemTray.ProgressIndicator = new ProgressIndicator();
             ShowHideSimTopup((bool)IsolatedStorageSettings.ApplicationSettings["topup"]);
+            _starting = false;
+            _cts = new CancellationTokenSource();
             if (await GetSimInfo(_cts))
             {
                 ShowHideDefaultSim(_sims.Count() > 1);
@@ -48,11 +54,10 @@ namespace Fuel.Settings
         public async Task<bool> GetSimInfo(CancellationTokenSource cts)
         {
             Tools.Tools.SetProgressIndicator(true);
-            try
+            SystemTray.ProgressIndicator.Text = "loading sims";
+            using (var client = new VikingsApi())
             {
-                SystemTray.ProgressIndicator.Text = "loading sims";
-                var client = new VikingsApi();
-                client.GetInfoFinished += client_GetInfoFinished;
+                client.GetInfoFinished += client_GetSimInfoFinished;
                 OAuthUtility.ComputeHash = (key, buffer) =>
                 {
                     using (var hmac = new HMACSHA1(key))
@@ -60,17 +65,11 @@ namespace Fuel.Settings
                         return hmac.ComputeHash(buffer);
                     }
                 };
-                await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Sim, new KeyValuePair { content = "1", name = "alias" }, _cts);
-                return true;
-            }
-            catch (Exception)
-            {
-                Message.ShowToast("Could not load sim information, please try again later");
-                return false;
-            }
+                await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Sim, new KeyValuePair { Content = "1", Name = "alias" }, _cts);
+            } return true;
         }
 
-        void client_GetInfoFinished(object sender, GetInfoCompletedArgs args)
+        void client_GetSimInfoFinished(object sender, GetInfoCompletedArgs args)
         {
             switch (args.Canceled)
             {
@@ -90,6 +89,7 @@ namespace Fuel.Settings
         {
             Switch.IsChecked = on;
             ReloadPicker.ItemsSource = _topupValues.ToList();
+            ReloadPicker.SelectedIndex = ReloadPicker.Items.IndexOf(IsolatedStorageSettings.ApplicationSettings["defaulttopupvalue"].ToString());
             var visible = (on) ? Visibility.Visible : Visibility.Collapsed;
             TopupText.Visibility = visible;
             ReloadPicker.Visibility = visible;
@@ -97,30 +97,60 @@ namespace Fuel.Settings
 
         private void ShowHideDefaultSim(bool on)
         {
-            SimPicker.ItemsSource = _sims.Select(x=>x.msisdn);
+            SimPicker.ItemsSource = _sims.Select(x => x.msisdn);
             var visible = (on) ? Visibility.Visible : Visibility.Collapsed;
             SimText.Visibility = visible;
             SimPicker.Visibility = visible;
-            SimCheck.Visibility = (_sims.Count() == 1)? visible:Visibility.Visible;
+            SimCheck.Visibility = (_sims.Count() == 1) ? visible : Visibility.Visible;
             LastUsedText.Visibility = (_sims.Count() == 1) ? visible : Visibility.Visible;
         }
 
         private void Picker_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if ((sender as ListPicker) == null)
+            if ((sender as ListPicker) == null || _starting)
                 return;
-            if (!string.IsNullOrWhiteSpace((string)(sender as ListPicker).SelectedItem))
-                Tools.Tools.SaveSetting(new KeyValuePair { name = (sender as ListPicker).Tag.ToString(), content = (sender as ListPicker).SelectedItem });
+            switch ((sender as ListPicker).Tag.ToString())
+            {
+                case "defaulttopupvalue":
+                    if (!string.IsNullOrWhiteSpace((string)(sender as ListPicker).SelectedItem))
+                        Tools.Tools.SaveSetting(new KeyValuePair { Name = (sender as ListPicker).Tag.ToString(), Content = (sender as ListPicker).SelectedItem });
+                    break;
+                case "defaulttilevalue":
+                    if (ReferenceEquals((sender as ListPicker).SelectedItem, "phone theme"))
+                    {
+                        IsolatedStorageSettings.ApplicationSettings["tileAccentColor"] = true;
+                        BuildTile("/Assets/336x336.png", null, "/Assets/159x159.png");
+                    }
+                    else
+                    {
+                        IsolatedStorageSettings.ApplicationSettings["tileAccentColor"] = false;
+                        BuildTile("/Assets/336x336red.png", "/Assets/336x336redempty.png", "/Assets/159x159red.png");
+                    }
+                    break;
+            }
+        }
+
+        private void BuildTile(string frontImageUri, string backImageUri, string smallBackImageUri)
+        {
+            var newTile = new FlipTileData
+            {
+                BackgroundImage = new Uri(frontImageUri, UriKind.Relative),
+                BackBackgroundImage = (string.IsNullOrWhiteSpace(backImageUri)) ? null : new Uri(backImageUri, UriKind.Relative),
+                SmallBackgroundImage = new Uri(smallBackImageUri, UriKind.Relative)
+            };
+            var firstOrDefault = ShellTile.ActiveTiles.FirstOrDefault();
+            if (firstOrDefault != null)
+                firstOrDefault.Update(newTile);
         }
 
         private void SimCheck_OnChecked(object sender, RoutedEventArgs e)
         {
             if ((sender as CheckBox) == null)
                 return;
-            Tools.Tools.SaveSetting(new []
+            Tools.Tools.SaveSetting(new[]
             {
-                new KeyValuePair { name = "lastusedsim", content = (sender as CheckBox).IsChecked ?? false },
-                new KeyValuePair {name = "sim", content = string.Empty }
+                new KeyValuePair { Name = "lastusedsim", Content = (sender as CheckBox).IsChecked ?? false },
+                new KeyValuePair {Name = "sim", Content = string.Empty }
             });
             ShowHideDefaultSim(!((sender as CheckBox).IsChecked ?? false) && _sims.Count() > 1);
         }
@@ -129,8 +159,17 @@ namespace Fuel.Settings
         {
             if ((sender as ToggleSwitch) == null)
                 return;
-            Tools.Tools.SaveSetting(new KeyValuePair { name = "topup", content = (sender as ToggleSwitch).IsChecked ?? false });
+            Tools.Tools.SaveSetting(new KeyValuePair { Name = "topup", Content = (sender as ToggleSwitch).IsChecked ?? false });
             ShowHideSimTopup((sender as ToggleSwitch).IsChecked ?? false);
+        }
+
+        private void Logout_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Are you sure?", "Logout", MessageBoxButton.OKCancel) == MessageBoxResult.Cancel)
+                return;
+            IsolatedStorageSettings.ApplicationSettings["login"] = true;
+            Tools.Tools.DefaultAllSettings();
+            NavigationService.Navigate(new Uri("/Fuel;component/View/MainPivot.xaml", UriKind.Relative));
         }
     }
 }

@@ -46,18 +46,24 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <CheckBox Grid.Row="0" HorizontalAlignment="Left" x:Name="SimCheck" Checked="SimCheck_OnChecked" Unchecked="SimCheck_OnChecked" VerticalAlignment="Center" Visibility="Collapsed"/>
-            <TextBlock Grid.Row="0" HorizontalAlignment="Right" Style="{StaticResource TextStyle}" Text="Remember last used sim" x:Name="LastUsedText" VerticalAlignment="Center" Margin="11,0,0,0" Visibility="Collapsed"/>
-            <TextBlock Grid.Row="1" Text="Default sim on startup" Style="{StaticResource TextStyle}" x:Name="SimText" Visibility="Collapsed"/>
+            <TextBlock Grid.Row="0" HorizontalAlignment="Right" Style="{StaticResource TextStyle}" Text="remember last used sim" x:Name="LastUsedText" VerticalAlignment="Center" Margin="11,0,0,0" Visibility="Collapsed"/>
+            <TextBlock Grid.Row="1" Text="default sim on startup" Style="{StaticResource TextStyle}" x:Name="SimText" Visibility="Collapsed"/>
             <toolkit:ListPicker Grid.Row="2" x:Name="SimPicker" Tag="sim" SelectionChanged="Picker_OnSelectionChanged" Visibility="Collapsed"/>
             <toolkit:ToggleSwitch Grid.Row="3" x:Name="Switch" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,0,0,-10" SwitchForeground="#960808" Checked="Switch_OnChecked" Unchecked="Switch_OnChecked">
                 <toolkit:ToggleSwitch.Header>
-                    <TextBlock Text="Sms topup" Style="{StaticResource TextStyle}" Margin="0,0,0,0"/>
+                    <TextBlock Text="sms topup" Style="{StaticResource TextStyle}" Margin="0,0,0,0"/>
                 </toolkit:ToggleSwitch.Header>
             </toolkit:ToggleSwitch>
-            <TextBlock Grid.Row="4" x:Name="TopupText" Text="Default sms topup value" Style="{StaticResource TextStyle}" Margin="11,-10,0,-10" Visibility="Collapsed"/>
+            <TextBlock Grid.Row="4" x:Name="TopupText" Text="default sms topup value" Style="{StaticResource TextStyle}" Margin="11,-10,0,-10" Visibility="Collapsed"/>
             <toolkit:ListPicker Grid.Row="5" x:Name="ReloadPicker" Tag="defaulttopupvalue" SelectionChanged="Picker_OnSelectionChanged" Visibility="Collapsed"/>
+            <TextBlock Grid.Row="6" Text="tile color" Style="{StaticResource TextStyle}"/>
+            <toolkit:ListPicker x:Name="TileColorPicker" Grid.Row="7" Tag="defaulttilevalue" SelectionChanged="Picker_OnSelectionChanged" />
+            <Button Grid.Row="8" Content="logout" x:Name="Logout" Click="Logout_OnClick" HorizontalAlignment="Center" Margin="0,10,0,0"/>
         </Grid>
     </Grid>
 
