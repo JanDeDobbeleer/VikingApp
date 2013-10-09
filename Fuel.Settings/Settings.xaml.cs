@@ -21,29 +21,27 @@ namespace Fuel.Settings
     public partial class Settings : PhoneApplicationPage
     {
         private IEnumerable<Sim> _sims;
-        private readonly List<String> _topupValues = new List<string> { "10", "15", "25", "40", "60" };
-        private readonly List<string> _tileValues = new List<string> { "phone theme", "viking red" };
+        //private readonly List<String> _topupValues = new List<string> { "10", "15", "25", "40", "60" };
+        //private readonly List<string> _tileValues = new List<string> { "phone theme", "viking red" };
         private CancellationTokenSource _cts = new CancellationTokenSource();
-        private bool _starting = false;
+        private bool _starting;
 
         public Settings()
         {
+            _starting = true;
             InitializeComponent();
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             _starting = true;
-            TileColorPicker.ItemsSource = _tileValues.ToList();
+            //TileColorPicker.ItemsSource = _tileValues.ToList();
             TileColorPicker.SelectedIndex = (bool)IsolatedStorageSettings.ApplicationSettings["tileAccentColor"] ? 0 : 1;
             SystemTray.ProgressIndicator = new ProgressIndicator();
             ShowHideSimTopup((bool)IsolatedStorageSettings.ApplicationSettings["topup"]);
             _starting = false;
             _cts = new CancellationTokenSource();
-            if (await GetSimInfo(_cts))
-            {
-                ShowHideDefaultSim(_sims.Count() > 1);
-            }
+            await GetSimInfo(_cts);
         }
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
@@ -66,7 +64,8 @@ namespace Fuel.Settings
                     }
                 };
                 await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Sim, new KeyValuePair { Content = "1", Name = "alias" }, _cts);
-            } return true;
+            } 
+            return true;
         }
 
         void client_GetSimInfoFinished(object sender, GetInfoCompletedArgs args)
@@ -83,21 +82,44 @@ namespace Fuel.Settings
                     Tools.Tools.SetProgressIndicator(false);
                     break;
             }
+            ShowHideDefaultSim(_sims.Count() > 1);
         }
 
         private void ShowHideSimTopup(bool on)
         {
             Switch.IsChecked = on;
-            ReloadPicker.ItemsSource = _topupValues.ToList();
-            ReloadPicker.SelectedIndex = ReloadPicker.Items.IndexOf(IsolatedStorageSettings.ApplicationSettings["defaulttopupvalue"].ToString());
+            //ReloadPicker.ItemsSource = _topupValues.ToList();
+            var item = IsolatedStorageSettings.ApplicationSettings["defaulttopupvalue"].ToString();
+            ReloadPicker.SelectedIndex = SetIndex(item);
             var visible = (on) ? Visibility.Visible : Visibility.Collapsed;
             TopupText.Visibility = visible;
             ReloadPicker.Visibility = visible;
         }
 
+        private int SetIndex(string topUpValue)
+        {
+            switch (topUpValue)
+            {
+                case "15":
+                    return 1;
+                case "25":
+                    return 2;
+                case "40":
+                    return 3;
+                case "60":
+                    return 4;
+                default:
+                    return 0;
+            }
+        }
+
         private void ShowHideDefaultSim(bool on)
         {
-            SimPicker.ItemsSource = _sims.Select(x => x.msisdn);
+            foreach (var item in _sims.Select(sim => new ListPickerItem {Content = sim.msisdn, Style = ItemStyle}))
+            {
+                SimPicker.Items.Add(item);
+            }
+            //SimPicker.ItemsSource = _sims.Select(x => x.msisdn);
             var visible = (on) ? Visibility.Visible : Visibility.Collapsed;
             SimText.Visibility = visible;
             SimPicker.Visibility = visible;
@@ -107,16 +129,18 @@ namespace Fuel.Settings
 
         private void Picker_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if ((sender as ListPicker) == null || _starting)
+            if ((sender as ListPicker) == null || _starting || ((sender as ListPicker).SelectedItem as ListPickerItem) == null)
                 return;
             switch ((sender as ListPicker).Tag.ToString())
             {
                 case "defaulttopupvalue":
-                    if (!string.IsNullOrWhiteSpace((string)(sender as ListPicker).SelectedItem))
-                        Tools.Tools.SaveSetting(new KeyValuePair { Name = (sender as ListPicker).Tag.ToString(), Content = (sender as ListPicker).SelectedItem });
+                    var listPickerItem = (sender as ListPicker).SelectedItem as ListPickerItem;
+                    if (listPickerItem != null && !string.IsNullOrWhiteSpace(listPickerItem.Content.ToString()))
+                        Tools.Tools.SaveSetting(new KeyValuePair { Name = (sender as ListPicker).Tag.ToString(), Content = listPickerItem.Content });
                     break;
                 case "defaulttilevalue":
-                    if (ReferenceEquals((sender as ListPicker).SelectedItem, "phone theme"))
+                    var pickerItem = (sender as ListPicker).SelectedItem as ListPickerItem;
+                    if (pickerItem != null && ReferenceEquals(pickerItem.Content.ToString(), "theme"))
                     {
                         IsolatedStorageSettings.ApplicationSettings["tileAccentColor"] = true;
                         BuildTile("/Assets/336x336.png", null, "/Assets/159x159.png");
@@ -145,8 +169,11 @@ namespace Fuel.Settings
 
         private void SimCheck_OnChecked(object sender, RoutedEventArgs e)
         {
-            if ((sender as CheckBox) == null)
+            if ((sender as CheckBox) == null || _starting)
+            {
+                Message.ShowToast("Please wait until the sim information is loaded");
                 return;
+            }
             Tools.Tools.SaveSetting(new[]
             {
                 new KeyValuePair { Name = "lastusedsim", Content = (sender as CheckBox).IsChecked ?? false },
@@ -157,7 +184,7 @@ namespace Fuel.Settings
 
         private void Switch_OnChecked(object sender, RoutedEventArgs e)
         {
-            if ((sender as ToggleSwitch) == null)
+            if ((sender as ToggleSwitch) == null || _starting)
                 return;
             Tools.Tools.SaveSetting(new KeyValuePair { Name = "topup", Content = (sender as ToggleSwitch).IsChecked ?? false });
             ShowHideSimTopup((sender as ToggleSwitch).IsChecked ?? false);

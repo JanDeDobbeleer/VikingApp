@@ -23,7 +23,7 @@ namespace Fuel.Common
         {
             if (usage.IsSuperOnNet)
             {
-                var helmet = (Visibility.Visible == (Visibility) Application.Current.Resources["PhoneDarkThemeVisibility"]) ? "/Assets/helmetWhite.png":"/Assets/helmetDark.png";
+                var helmet = (Visibility.Visible == (Visibility) Application.Current.Resources["PhoneDarkThemeVisibility"]) ? "/Assets/helmetWhite.png":"/Assets/helmetBlack.png";
                 return new BitmapImage(new Uri(helmet, UriKind.Relative));
             }
             return usage.IsIncoming ? new BitmapImage((new Uri((Visibility.Visible == (Visibility)Application.Current.Resources["PhoneDarkThemeVisibility"]) ? "/Assets/download.png" : "/Assets/downloaddark.png", UriKind.Relative))) : new BitmapImage((new Uri((Visibility.Visible == (Visibility)Application.Current.Resources["PhoneDarkThemeVisibility"]) ? "/Assets/upload.png" : "/Assets/uploaddark.png", UriKind.Relative)));
