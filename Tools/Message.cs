@@ -23,7 +23,9 @@ namespace Tools
                 MillisecondsUntilHidden = 3000,
                 TextOrientation = Orientation.Vertical, 
                 TextWrapping = TextWrapping.Wrap,
-                Background = (SolidColorBrush)Application.Current.Resources["VikingColorBrush"]
+                Background = (SolidColorBrush)Application.Current.Resources["VikingColorBrush"],
+                Margin = new Thickness(0,0,0,-10)
+                
             };
             toast.Show();
         }

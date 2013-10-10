@@ -63,14 +63,17 @@ namespace Fuel.LoginControl
         private async Task GetPinUri()
         {
             // initialize computehash function
-            OAuthUtility.ComputeHash = (key, buffer) =>
+            using (var client = new VikingsApi())
             {
-                using (var hmac = new HMACSHA1(key))
+                OAuthUtility.ComputeHash = (key, buffer) =>
                 {
-                    return hmac.ComputeHash(buffer);
-                }
-            };
-            PinBrowser.PinUrl = await VikingsApi.GetPinUrl();
+                    using (var hmac = new HMACSHA1(key))
+                    {
+                        return hmac.ComputeHash(buffer);
+                    }
+                };
+                PinBrowser.PinUrl = await client.GetPinUrl();
+            }
         }
 
         #endregion

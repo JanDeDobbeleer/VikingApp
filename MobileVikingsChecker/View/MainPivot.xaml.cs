@@ -46,6 +46,11 @@ namespace Fuel.View
 
         private void SettingsOnClick(object sender, EventArgs e)
         {
+            if (!Tools.Tools.HasInternetConnection())
+            {
+                Message.ShowToast("I'm sorry Dave, I'm afraid I can't do that without an internet connection");
+                return;
+            }
             NavigationService.Navigate(new Uri("/Fuel.Settings;component/Settings.xaml", UriKind.Relative));
         }
 

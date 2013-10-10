@@ -73,17 +73,17 @@ namespace Fuel.LoginControl
                 //TODO: add logic to send mail if this fails (no login possible)
                 var success = false;
                 var count = 0;
-                while (count < 5 || success)
+                while (count < 5 && !success)
                 {
                     string pin;
                     try
                     {
-                        pin = (string) Browser.InvokeScript("newfunc_getmyvalue");
+                        pin = (string)Browser.InvokeScript("newfunc_getmyvalue");
                     }
                     catch (Exception)
                     {
                         count++;
-                        if (count != 4) 
+                        if (count != 4)
                             continue;
                         Message.ShowToast("Please authorize the application to continue");
                         Tools.Tools.SetProgressIndicator(false);
@@ -102,39 +102,34 @@ namespace Fuel.LoginControl
             }
             catch (Exception)
             {
-                var args = new ApiBrowserEventArgs {Success = false};
+                var args = new ApiBrowserEventArgs { Success = false };
                 OnBrowserFinished(args);
             }
         }
 
         private async Task<bool> GetAccessToken(string pincode)
         {
-            bool success = false;
             try
             {
-                //try connecting to the service
-                for (int i = 1; (i <= 3) && !success; i++)
+                AccessToken accesstoken;
+                using (var client = new VikingsApi())
                 {
-                    AccessToken accesstoken = await VikingsApi.GetAccessToken(pincode);
-                    if (accesstoken != null)
-                    {
-                        //try saving the token
-                        for (int j = 1; (j <= 3) && !success; j++)
-                        {
-                            success = Tools.Tools.SaveSetting(new[]
-                            {
-                                new KeyValuePair {Name = "login", Content = false},
-                                new KeyValuePair {Name = "tokenKey", Content = accesstoken.Key},
-                                new KeyValuePair {Name = "tokenSecret", Content = accesstoken.Secret}
-                            });
-                        }
-                    }
+                    accesstoken = await client.GetAccessToken(pincode);
                 }
-                return success;
+                if (accesstoken == null)
+                    return false;
+                //save the token
+                Tools.Tools.SaveSetting(new[]
+                        {
+                            new KeyValuePair {Name = "login", Content = false},
+                            new KeyValuePair {Name = "tokenKey", Content = accesstoken.Key},
+                            new KeyValuePair {Name = "tokenSecret", Content = accesstoken.Secret}
+                        });
+                return true;
             }
             catch (Exception)
             {
-                return success;
+                return false;
             }
         }
 

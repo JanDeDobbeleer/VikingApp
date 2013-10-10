@@ -65,7 +65,7 @@ namespace VikingApi.ApiTools
             }
         }
 
-        public static async Task<string> GetPinUrl()
+        public async Task<string> GetPinUrl()
         {
             try
             {
@@ -93,17 +93,17 @@ namespace VikingApi.ApiTools
             return null;
         }
 
-        public static async Task<AccessToken> GetAccessToken(string pinCode)
+        public async Task<AccessToken> GetAccessToken(string pinCode)
         {
             try
             {
                 if (!ApiTools.HasInternetConnection()) return null;
                 // get access token
+                _authorizer = new OAuthAuthorizer(ConsumerKey, ConsumerSecret);
                 var accessTokenResponse = await _authorizer.GetAccessToken(AccessTokenUrl, _requestToken, pinCode);
 
                 // save access token.
                 var accessToken = accessTokenResponse.Token;
-
                 return accessToken;
             }
             catch (HttpRequestException e)
@@ -206,6 +206,7 @@ namespace VikingApi.ApiTools
             // free native resources if there are any.
             if (_nativeResource == IntPtr.Zero)
                 return;
+            _authorizer = null;
             Marshal.FreeHGlobal(_nativeResource);
             _nativeResource = IntPtr.Zero;
         }
