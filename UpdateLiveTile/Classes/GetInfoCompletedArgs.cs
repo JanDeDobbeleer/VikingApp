@@ -1,4 +1,4 @@
-﻿namespace UpdateTile
+﻿namespace UpdateLiveTile.Classes
 {
     public class GetInfoCompletedArgs
     {

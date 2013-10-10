@@ -260,6 +260,10 @@
       <Project>{CF7909FE-98C4-48C2-B7EE-B2E9187B8BAE}</Project>
       <Name>Tools</Name>
     </ProjectReference>
+    <ProjectReference Include="..\UpdateLiveTile\UpdateLiveTile.csproj">
+      <Project>{389A1E7A-7D41-4679-9040-57B3DABD4DA5}</Project>
+      <Name>UpdateLiveTile</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UpdateTile\UpdateTile.csproj">
       <Project>{AE3D66A8-E5BC-4294-9CDC-D5E22C5E28D8}</Project>
       <Name>UpdateTile</Name>

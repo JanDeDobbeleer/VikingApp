@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace UpdateTile
+namespace UpdateLiveTile.Classes
 {
     public class Bundle
     {

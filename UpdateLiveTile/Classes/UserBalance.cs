@@ -3,9 +3,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
-using UpdateTile.Properties;
+using UpdateLiveTile.Properties;
 
-namespace UpdateTile
+namespace UpdateLiveTile.Classes
 {
     public class UserBalance : INotifyPropertyChanged
     {

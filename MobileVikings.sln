@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fuel.Settings", "Fuel.Setti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpdateTile", "UpdateTile\UpdateTile.csproj", "{AE3D66A8-E5BC-4294-9CDC-D5E22C5E28D8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpdateLiveTile", "UpdateLiveTile\UpdateLiveTile.csproj", "{389A1E7A-7D41-4679-9040-57B3DABD4DA5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -111,6 +113,18 @@ Global
 		{AE3D66A8-E5BC-4294-9CDC-D5E22C5E28D8}.Release|ARM.Build.0 = Release|ARM
 		{AE3D66A8-E5BC-4294-9CDC-D5E22C5E28D8}.Release|x86.ActiveCfg = Release|x86
 		{AE3D66A8-E5BC-4294-9CDC-D5E22C5E28D8}.Release|x86.Build.0 = Release|x86
+		{389A1E7A-7D41-4679-9040-57B3DABD4DA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{389A1E7A-7D41-4679-9040-57B3DABD4DA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{389A1E7A-7D41-4679-9040-57B3DABD4DA5}.Debug|ARM.ActiveCfg = Debug|ARM
+		{389A1E7A-7D41-4679-9040-57B3DABD4DA5}.Debug|ARM.Build.0 = Debug|ARM
+		{389A1E7A-7D41-4679-9040-57B3DABD4DA5}.Debug|x86.ActiveCfg = Debug|x86
+		{389A1E7A-7D41-4679-9040-57B3DABD4DA5}.Debug|x86.Build.0 = Debug|x86
+		{389A1E7A-7D41-4679-9040-57B3DABD4DA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{389A1E7A-7D41-4679-9040-57B3DABD4DA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{389A1E7A-7D41-4679-9040-57B3DABD4DA5}.Release|ARM.ActiveCfg = Release|ARM
+		{389A1E7A-7D41-4679-9040-57B3DABD4DA5}.Release|ARM.Build.0 = Release|ARM
+		{389A1E7A-7D41-4679-9040-57B3DABD4DA5}.Release|x86.ActiveCfg = Release|x86
+		{389A1E7A-7D41-4679-9040-57B3DABD4DA5}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -203,6 +203,9 @@ namespace Fuel.Viewmodel
             {
                 // No user action required.
             }
+            //update tile right now
+            var update = new UpdateLiveTile.UpdateLiveTile();
+            update.Start();
         }
     }
 }

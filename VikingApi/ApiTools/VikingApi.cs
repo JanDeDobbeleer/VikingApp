@@ -67,30 +67,54 @@ namespace VikingApi.ApiTools
 
         public static async Task<string> GetPinUrl()
         {
-            if (!ApiTools.HasInternetConnection()) return null;
-            // create authorizer
-            _authorizer = new OAuthAuthorizer(ConsumerKey, ConsumerSecret);
+            try
+            {
+                if (!ApiTools.HasInternetConnection()) return null;
+                // create authorizer
+                _authorizer = new OAuthAuthorizer(ConsumerKey, ConsumerSecret);
 
-            // get request token
-            var tokenResponse = await _authorizer.GetRequestToken(
-                RequestTokenUrl,
-                new[] { new KeyValuePair<string, string>("oauth_callback", "oob") });
-            _requestToken = tokenResponse.Token;
+                // get request token
+                var tokenResponse = await _authorizer.GetRequestToken(
+                    RequestTokenUrl,
+                    new[] { new KeyValuePair<string, string>("oauth_callback", "oob") });
+                _requestToken = tokenResponse.Token;
 
-            //Get and return Pin URL
-            return _authorizer.BuildAuthorizeUrl(AuthorizeTokenUrl, _requestToken);
+                //Get and return Pin URL
+                return _authorizer.BuildAuthorizeUrl(AuthorizeTokenUrl, _requestToken);
+            }
+            catch (HttpRequestException e)
+            {
+                Message.ShowToast(e.Message.ToErrorMessage());
+            }
+            catch (Exception e)
+            {
+                Message.SendErrorEmail(e.Message + Environment.NewLine + e.InnerException, "Viking api at pin url request");
+            }
+            return null;
         }
 
         public static async Task<AccessToken> GetAccessToken(string pinCode)
         {
-            if (!ApiTools.HasInternetConnection()) return null;
-            // get access token
-            var accessTokenResponse = await _authorizer.GetAccessToken(AccessTokenUrl, _requestToken, pinCode);
+            try
+            {
+                if (!ApiTools.HasInternetConnection()) return null;
+                // get access token
+                var accessTokenResponse = await _authorizer.GetAccessToken(AccessTokenUrl, _requestToken, pinCode);
 
-            // save access token.
-            var accessToken = accessTokenResponse.Token;
+                // save access token.
+                var accessToken = accessTokenResponse.Token;
 
-            return accessToken;
+                return accessToken;
+            }
+            catch (HttpRequestException e)
+            {
+                Message.ShowToast(e.Message.ToErrorMessage());
+            }
+            catch (Exception e)
+            {
+                Message.SendErrorEmail(e.Message + Environment.NewLine + e.InnerException, "Viking api at request token");
+            }
+            return null;
         }
 
         public async Task<bool> GetInfo(AccessToken token, string path, CancellationTokenSource cts)
@@ -134,11 +158,11 @@ namespace VikingApi.ApiTools
                 args.Canceled = true;
                 OnGetInfoFinished(args);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 args.Canceled = true;
                 OnGetInfoFinished(args);
-                //TODO: send mail to me with error
+                Message.SendErrorEmail(e.Message + Environment.NewLine + e.InnerException, "Viking api at " + path);
             }
             return true;
         }

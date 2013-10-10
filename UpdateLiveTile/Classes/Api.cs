@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using AsyncOAuth;
 using Microsoft.Phone.Net.NetworkInformation;
 
-namespace UpdateTile
+namespace UpdateLiveTile.Classes
 {
     public struct KeyValuePair
     {

@@ -83,7 +83,7 @@ namespace Fuel.LoginControl
                     catch (Exception)
                     {
                         count++;
-                        if (count != 2) 
+                        if (count != 4) 
                             continue;
                         Message.ShowToast("Please authorize the application to continue");
                         Tools.Tools.SetProgressIndicator(false);
