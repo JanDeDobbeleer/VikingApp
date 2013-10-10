@@ -151,6 +151,12 @@ namespace Fuel.Settings
                         BuildTile("/Assets/336x336red.png", "/Assets/336x336redempty.png", "/Assets/159x159red.png");
                     }
                     break;
+                case "sim":
+                    if (!string.IsNullOrWhiteSpace((sender as ListPicker).SelectedItem.ToString()))
+                    {
+                        IsolatedStorageSettings.ApplicationSettings["sim"] = (sender as ListPicker).SelectedItem.ToString();
+                    }
+                    break;
             }
         }
 
