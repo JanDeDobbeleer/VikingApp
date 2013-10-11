@@ -146,6 +146,7 @@ namespace Fuel.View
             App.Viewmodel.MainPivotViewmodel.CancelTask();
             if ((bool)IsolatedStorageSettings.ApplicationSettings["lastusedsim"])
                 Tools.Tools.SaveSetting(new KeyValuePair { Name = "sim", Content = SimBox.Text });
+            SimBox.Text = string.Empty;
         }
 
         private void ShowLogin()

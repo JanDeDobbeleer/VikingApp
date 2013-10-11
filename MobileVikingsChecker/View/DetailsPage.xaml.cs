@@ -52,7 +52,8 @@ namespace Fuel.View
             App.Viewmodel.DetailsViewmodel.CancelTask();
             Tools.Tools.SetProgressIndicator(false);
             Viewer.IsEnabled = true;
-            Viewer.ScrollIntoView(App.Viewmodel.DetailsViewmodel.Usage.ElementAt(0));
+            if (App.Viewmodel.DetailsViewmodel.Usage != null)
+                Viewer.ScrollIntoView(App.Viewmodel.DetailsViewmodel.Usage.ElementAt(0));
             ResetAppbar();
         }
 
@@ -145,7 +146,8 @@ namespace Fuel.View
                 ResetAppbar();
                 e.Cancel = true;
                 base.OnBackKeyPress(e);
-                Viewer.ScrollIntoView(App.Viewmodel.DetailsViewmodel.Usage.ElementAt(0));
+                if (App.Viewmodel.DetailsViewmodel.Usage != null)
+                    Viewer.ScrollIntoView(App.Viewmodel.DetailsViewmodel.Usage.ElementAt(0));
             }
             else if (_isSecondDate)
             {
@@ -174,6 +176,11 @@ namespace Fuel.View
             RefreshListBox();
             Viewer.IsEnabled = true;
             Viewer.Visibility = Visibility.Visible;
+            if (App.Viewmodel.DetailsViewmodel.Usage == null)
+            {
+                Message.ShowToast("There is no data for this period");
+                return;
+            }
             Viewer.ScrollIntoView(App.Viewmodel.DetailsViewmodel.Usage.ElementAt(0));
         }
 

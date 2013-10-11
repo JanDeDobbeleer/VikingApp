@@ -52,14 +52,14 @@ namespace Tools
 
         public static ApplicationBarIconButton CreateButton(string uri, string text, bool enabled, EventHandler handler)
         {
-            var button = new ApplicationBarIconButton {IconUri = new Uri(uri, UriKind.Relative), Text = text, IsEnabled = enabled};
+            var button = new ApplicationBarIconButton { IconUri = new Uri(uri, UriKind.Relative), Text = text, IsEnabled = enabled };
             button.Click += handler;
             return button;
         }
 
         public static ApplicationBarMenuItem CreateMenuItem(string text, bool enabled, EventHandler handler)
         {
-            var appBarMenuItem = new ApplicationBarMenuItem { Text = text, IsEnabled = enabled};
+            var appBarMenuItem = new ApplicationBarMenuItem { Text = text, IsEnabled = enabled };
             appBarMenuItem.Click += handler;
             return appBarMenuItem;
         }
@@ -78,6 +78,42 @@ namespace Tools
             IsolatedStorageSettings.ApplicationSettings["sim"] = string.Empty;
             IsolatedStorageSettings.ApplicationSettings["boot"] = false;
             IsolatedStorageSettings.ApplicationSettings["tileAccentColor"] = true;
+            var newTile = new FlipTileData
+            {
+                BackContent = "Not loaded",
+                Count = 0
+            };
+            var firstOrDefault = ShellTile.ActiveTiles.FirstOrDefault();
+            if (firstOrDefault != null)
+                firstOrDefault.Update(newTile);
+            ResetLiveTile();
+        }
+
+        public static void ResetLiveTile()
+        {
+            if ((bool)IsolatedStorageSettings.ApplicationSettings["tileAccentColor"])
+            {
+                BuildTile("/Assets/336x336.png", "/Assets/336x336empty.png", "/Assets/159x159.png");
+            }
+            else
+            {
+                BuildTile("/Assets/336x336red.png", "/Assets/336x336redempty.png", "/Assets/159x159red.png");
+            }
+        }
+
+
+
+        public static void BuildTile(string frontImageUri, string backImageUri, string smallBackImageUri)
+        {
+            var newTile = new FlipTileData
+            {
+                BackgroundImage = new Uri(frontImageUri, UriKind.Relative),
+                BackBackgroundImage = (string.IsNullOrWhiteSpace(backImageUri)) ? null : new Uri(backImageUri, UriKind.Relative),
+                SmallBackgroundImage = new Uri(smallBackImageUri, UriKind.Relative)
+            };
+            var firstOrDefault = ShellTile.ActiveTiles.FirstOrDefault();
+            if (firstOrDefault != null)
+                firstOrDefault.Update(newTile);
         }
     }
 }

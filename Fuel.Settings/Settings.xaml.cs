@@ -117,6 +117,7 @@ namespace Fuel.Settings
         {
             foreach (var item in _sims.Select(sim => new ListPickerItem {Content = sim.msisdn, Style = ItemStyle}))
             {
+                item.Style = ItemStyle;
                 SimPicker.Items.Add(item);
             }
             //SimPicker.ItemsSource = _sims.Select(x => x.msisdn);
@@ -140,37 +141,16 @@ namespace Fuel.Settings
                     break;
                 case "defaulttilevalue":
                     var pickerItem = (sender as ListPicker).SelectedItem as ListPickerItem;
-                    if (pickerItem != null && ReferenceEquals(pickerItem.Content.ToString(), "theme"))
-                    {
-                        IsolatedStorageSettings.ApplicationSettings["tileAccentColor"] = true;
-                        BuildTile("/Assets/336x336.png", null, "/Assets/159x159.png");
-                    }
-                    else
-                    {
-                        IsolatedStorageSettings.ApplicationSettings["tileAccentColor"] = false;
-                        BuildTile("/Assets/336x336red.png", "/Assets/336x336redempty.png", "/Assets/159x159red.png");
-                    }
+                    if (pickerItem != null)
+                        IsolatedStorageSettings.ApplicationSettings["tileAccentColor"] = string.Equals(pickerItem.Content.ToString(), "theme");
+                    Tools.Tools.ResetLiveTile();
                     break;
                 case "sim":
-                    if (!string.IsNullOrWhiteSpace((sender as ListPicker).SelectedItem.ToString()))
-                    {
-                        IsolatedStorageSettings.ApplicationSettings["sim"] = (sender as ListPicker).SelectedItem.ToString();
-                    }
+                    var pickerItem3 = (sender as ListPicker).SelectedItem as ListPickerItem;
+                    if (pickerItem3 != null && !string.IsNullOrWhiteSpace(pickerItem3.Content.ToString()))
+                        IsolatedStorageSettings.ApplicationSettings["sim"] = pickerItem3.Content.ToString();
                     break;
             }
-        }
-
-        private void BuildTile(string frontImageUri, string backImageUri, string smallBackImageUri)
-        {
-            var newTile = new FlipTileData
-            {
-                BackgroundImage = new Uri(frontImageUri, UriKind.Relative),
-                BackBackgroundImage = (string.IsNullOrWhiteSpace(backImageUri)) ? null : new Uri(backImageUri, UriKind.Relative),
-                SmallBackgroundImage = new Uri(smallBackImageUri, UriKind.Relative)
-            };
-            var firstOrDefault = ShellTile.ActiveTiles.FirstOrDefault();
-            if (firstOrDefault != null)
-                firstOrDefault.Update(newTile);
         }
 
         private void SimCheck_OnChecked(object sender, RoutedEventArgs e)
