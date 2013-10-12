@@ -115,9 +115,8 @@ namespace Fuel.Settings
 
         private void ShowHideDefaultSim(bool on)
         {
-            foreach (var item in _sims.Select(sim => new ListPickerItem {Content = sim.msisdn, Style = ItemStyle}))
+            foreach (var item in _sims.Select(sim => new ListPickerItem {Content = sim.msisdn}))
             {
-                item.Style = ItemStyle;
                 SimPicker.Items.Add(item);
             }
             //SimPicker.ItemsSource = _sims.Select(x => x.msisdn);
@@ -148,7 +147,10 @@ namespace Fuel.Settings
                 case "sim":
                     var pickerItem3 = (sender as ListPicker).SelectedItem as ListPickerItem;
                     if (pickerItem3 != null && !string.IsNullOrWhiteSpace(pickerItem3.Content.ToString()))
+                    {
                         IsolatedStorageSettings.ApplicationSettings["sim"] = pickerItem3.Content.ToString();
+                        Tools.Tools.UpdateLiveTile();
+                    }
                     break;
             }
         }

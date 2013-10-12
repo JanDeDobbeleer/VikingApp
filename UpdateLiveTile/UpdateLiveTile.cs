@@ -90,7 +90,7 @@ namespace UpdateLiveTile
             {
                 Count = _balance.Remaining,
                 BackBackgroundImage = new Uri("isostore:" + Filename, UriKind.Absolute),
-                BackContent = null,
+                BackContent = string.Empty,
             };
             var firstOrDefault = ShellTile.ActiveTiles.FirstOrDefault();
             if (firstOrDefault != null)
@@ -113,15 +113,7 @@ namespace UpdateLiveTile
         public void SaveImage()
         {
             var color = (bool)IsolatedStorageSettings.ApplicationSettings["tileAccentColor"] ? (SolidColorBrush)Application.Current.Resources["PhoneAccentBrush"] : (SolidColorBrush)Application.Current.Resources["VikingColorBrush"];
-            var data = _balance.Data ?? "0";
-            data += " MB";
-            var sms = _balance.Sms ?? "0"; 
-            sms += " SMS";
-            var vSms = _balance.VikingSms ?? "0";
-            vSms += " vSMS";
-            var vCall = _balance.VikingMinutes ?? "0"; 
-            vCall += " vCall";
-            var customTile = new Tile(color,_balance.Credit, data, sms, vSms, vCall);
+            var customTile = (_balance.Data != null) ? new Tile(color, _balance.Credit, _balance.Data, _balance.Sms, _balance.VikingSms, _balance.VikingMinutes) : new Tile(color, _balance.Credit, "0 MB", "0 SMS", string.Empty, string.Empty);
             customTile.Measure(new Size(336, 336));
             customTile.Arrange(new Rect(0, 0, 336, 336));
 

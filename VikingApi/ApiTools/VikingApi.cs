@@ -84,13 +84,13 @@ namespace VikingApi.ApiTools
             }
             catch (HttpRequestException e)
             {
-                Message.ShowToast(e.Message.ToErrorMessage());
+                return null;
             }
             catch (Exception e)
             {
                 Message.SendErrorEmail(e.Message + Environment.NewLine + e.InnerException, "Viking api at pin url request");
+                return null;
             }
-            return null;
         }
 
         public async Task<AccessToken> GetAccessToken(string pinCode)
@@ -108,14 +108,13 @@ namespace VikingApi.ApiTools
             }
             catch (HttpRequestException e)
             {
-                Message.ShowToast(e.Message.ToErrorMessage());
+                return null;
             }
             catch (Exception e)
             {
-
                 Message.SendErrorEmail(e.Message + Environment.NewLine + e.InnerException, "Viking api at request token");
+                return null;
             }
-            return null;
         }
 
         public async Task<bool> GetInfo(AccessToken token, string path, CancellationTokenSource cts)

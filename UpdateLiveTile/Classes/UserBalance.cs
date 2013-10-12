@@ -100,12 +100,12 @@ namespace UpdateLiveTile.Classes
             Remaining = ConvertDate(_balance.valid_until);
             if(Remaining > 0)
             {
-                Data = Math.Round(_balance.bundles.Where(x => x.type == "data").Sum(x => double.Parse(x.value.Split('.')[0])) / 1024d / 1024d, 0).ToString();
-                Sms = _balance.bundles.Where(x => x.type == "sms").Sum(x => double.Parse(x.value.Split('.')[0])).ToString();
-                VikingSms = _balance.bundles.First(bundle => bundle.type == "sms_super_on_net").value.Split('.')[0];
+                Data = Math.Round(_balance.bundles.Where(x => x.type == "data").Sum(x => double.Parse(x.value.Split('.')[0])) / 1024d / 1024d, 0).ToString() + " MB";
+                Sms = _balance.bundles.Where(x => x.type == "sms").Sum(x => double.Parse(x.value.Split('.')[0])).ToString() + " SMS";
+                VikingSms = _balance.bundles.First(bundle => bundle.type == "sms_super_on_net").value.Split('.')[0] + " vSMS";
                 var minutes = int.Parse(_balance.bundles.First(bundle => bundle.type == "voice_super_on_net").value.Split('.')[0]) / 60;
                 var seconds = int.Parse(_balance.bundles.First(bundle => bundle.type == "voice_super_on_net").value.Split('.')[0]) % 60;
-                VikingMinutes = string.Format("{0}m {1}s", minutes, seconds);
+                VikingMinutes = string.Format("{0}m {1}s vCall", minutes, seconds);
             }
 #if(DEBUG)
             Debug.WriteLine("Live tile: Credit = " + Credit);

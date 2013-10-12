@@ -80,8 +80,9 @@ namespace Tools
             IsolatedStorageSettings.ApplicationSettings["tileAccentColor"] = true;
             var newTile = new FlipTileData
             {
-                BackContent = "Not loaded",
-                Count = 0
+                BackContent = string.Empty,
+                Count = 0,
+                BackBackgroundImage = new Uri("/Assets/336x336empty.png", UriKind.Relative)
             };
             var firstOrDefault = ShellTile.ActiveTiles.FirstOrDefault();
             if (firstOrDefault != null)
@@ -99,6 +100,11 @@ namespace Tools
             {
                 BuildTile("/Assets/336x336red.png", "/Assets/159x159red.png");
             }
+            UpdateLiveTile();
+        }
+
+        public static void UpdateLiveTile()
+        {
             var update = new UpdateLiveTile.UpdateLiveTile();
             update.Start();
         }

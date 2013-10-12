@@ -24,8 +24,7 @@ namespace Tools
                 TextOrientation = Orientation.Vertical, 
                 TextWrapping = TextWrapping.Wrap,
                 Background = (SolidColorBrush)Application.Current.Resources["VikingColorBrush"],
-                Margin = new Thickness(0,0,0,-10)
-                
+                Margin = new Thickness(0,-20,0,-20)
             };
             toast.Show();
         }

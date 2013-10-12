@@ -12,7 +12,7 @@
     <UserControl.Resources>
         <Style TargetType="TextBlock" x:Key="TextStyle">
             <Setter Property="HorizontalAlignment" Value="Left"/>
-            <Setter Property="Margin" Value="10,-5,0,-10"/>
+            <Setter Property="Margin" Value="13,-5,0,-10"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="FontSize" Value="47"/>
             <Setter Property="TextAlignment" Value="Left"/>
@@ -22,7 +22,7 @@
     </UserControl.Resources>
 
     <Grid x:Name="MainGrid" Background="Red">
-        <StackPanel Margin="0,5,0,0">
+        <StackPanel Margin="0,4,0,0">
             <TextBlock x:Name="Credit" Style="{StaticResource TextStyle}" />
             <TextBlock x:Name="Data" Style="{StaticResource TextStyle}" />
             <TextBlock x:Name="Sms" Style="{StaticResource TextStyle}"/>

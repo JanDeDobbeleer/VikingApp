@@ -93,7 +93,6 @@ namespace Fuel.LoginControl
                         return;
                     }
                     success = true;
-                    LoginBrowser.Visibility = Visibility.Collapsed;
 
                     //fire correct event to show result
                     var args = new ApiBrowserEventArgs { Success = await GetAccessToken(pin) };

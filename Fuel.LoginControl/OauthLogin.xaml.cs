@@ -47,7 +47,7 @@ namespace Fuel.LoginControl
             await Task.Run(() => GetPinUri());
 
             //Check URL to see whether or not an error was thrown
-            if (Error.HandleError(PinBrowser.PinUrl, "there seems to be no connection"))
+            if (Error.HandleError(PinBrowser.PinUrl, "there seems to be no connection or you do not have a sim card installed"))
                 return;
 
             //Load pages in browser and login
@@ -102,7 +102,6 @@ namespace Fuel.LoginControl
                 Visibility = Visibility.Collapsed;
             }
         }
-
         #endregion
     }
 }
