@@ -20,8 +20,7 @@
           <Count></Count>
           <BackgroundImageURI IsRelative="true" IsResource="false">Assets\336x336.png</BackgroundImageURI>
           <Title>Fuel</Title>
-          <BackContent>Not Loaded</BackContent>
-          <BackTitle>Status</BackTitle>
+          <BackTitle>Bundle info</BackTitle>
           <DeviceLockImageURI IsRelative="true" IsResource="false">Assets\lockscreen.png</DeviceLockImageURI>
         </TemplateFlip>
       </PrimaryToken>

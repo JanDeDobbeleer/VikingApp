@@ -15,6 +15,8 @@ namespace Fuel.LoginControl
 
     public partial class ApiBrowser : UserControl
     {
+        private int _count = 1;
+
         public ApiBrowser()
         {
             InitializeComponent();
@@ -70,22 +72,21 @@ namespace Fuel.LoginControl
                 // first define a new function which returns the content of "code" as string
                 Browser.InvokeScript("eval", "this.newfunc_getmyvalue = function() { return document.getElementsByClassName('code')[0].innerHTML; }");
                 // invoke the function and save the result
-                //TODO: add logic to send mail if this fails (no login possible)
                 var success = false;
-                var count = 0;
-                while (count < 5 && !success)
+                while (!success)
                 {
-                    string pin;
+                    var pin = string.Empty;
                     try
                     {
-                        pin = (string)Browser.InvokeScript("newfunc_getmyvalue");
+                        pin = (string) Browser.InvokeScript("newfunc_getmyvalue");
                     }
-                    catch (Exception)
+                    catch (SystemException e)
                     {
-                        count++;
-                        if (count != 4)
-                            continue;
-                        Message.ShowToast("Please authorize the application to continue");
+                        _count++;
+                        BrowserOnNavigated(sender, navigationEventArgs);
+                        if(_count != 5)
+                            return;
+                        Message.SendErrorEmail(e.Message + Environment.NewLine + e.InnerException, "Fuel at login screen, request token script");
                         Tools.Tools.SetProgressIndicator(false);
                         LoginBrowser.Visibility = Visibility.Visible;
                         LoginBrowser.GoBack();

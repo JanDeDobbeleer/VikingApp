@@ -182,7 +182,8 @@ namespace Fuel.Settings
                 return;
             IsolatedStorageSettings.ApplicationSettings["login"] = true;
             Tools.Tools.DefaultAllSettings();
-            NavigationService.Navigate(new Uri("/Fuel;component/View/MainPivot.xaml", UriKind.Relative));
+            NavigationService.GoBack();
+            //NavigationService.Navigate(new Uri("/Fuel;component/View/MainPivot.xaml", UriKind.Relative));
         }
     }
 }

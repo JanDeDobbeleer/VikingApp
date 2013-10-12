@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Windows;
@@ -16,6 +17,8 @@ namespace Fuel.View
 {
     public partial class MainPivot : PhoneApplicationPage
     {
+        private bool _isLoginControlEnabled;
+
         public MainPivot()
         {
             InitializeComponent();
@@ -35,7 +38,7 @@ namespace Fuel.View
 
         private async void RefreshOnClick(object sender, EventArgs e)
         {
-            await App.Viewmodel.MainPivotViewmodel.GetData(SimBox.Text);
+            await App.Viewmodel.MainPivotViewmodel.GetData(string.IsNullOrWhiteSpace(SimBox.Text) ? (string)IsolatedStorageSettings.ApplicationSettings["sim"] : SimBox.Text);
         }
 
         private void ReloadOnClick(object sender, EventArgs e)
@@ -71,7 +74,7 @@ namespace Fuel.View
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             ApplicationBar.MenuItems.Clear();
-            if ((bool) IsolatedStorageSettings.ApplicationSettings["topup"])
+            if ((bool)IsolatedStorageSettings.ApplicationSettings["topup"])
             {
                 ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("sms topup", true, ReloadOnClick));
                 ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("settings", true, SettingsOnClick));
@@ -85,7 +88,8 @@ namespace Fuel.View
             Bonus.Visibility = Visibility.Collapsed;
             if ((bool)IsolatedStorageSettings.ApplicationSettings["login"])
             {
-                ShowLogin();
+                if (!_isLoginControlEnabled)
+                    ShowLogin();
             }
             else
             {
@@ -106,7 +110,7 @@ namespace Fuel.View
                 {
                     SimBox.Text = CheckDefaultSimValue((bool)IsolatedStorageSettings.ApplicationSettings["login"]);
                 }
-                if (string.IsNullOrEmpty((string) IsolatedStorageSettings.ApplicationSettings["sim"]))
+                if (string.IsNullOrEmpty((string)IsolatedStorageSettings.ApplicationSettings["sim"]))
                     IsolatedStorageSettings.ApplicationSettings["sim"] = SimBox.Text;
                 App.Viewmodel.MainPivotViewmodel.StartPeriodicAgent();
                 await App.Viewmodel.MainPivotViewmodel.GetData(SimBox.Text);
@@ -118,7 +122,7 @@ namespace Fuel.View
         }
 
         void MainPivotViewmodel_GetBalanceInfoFinished(object sender, VikingApi.ApiTools.GetInfoCompletedArgs args)
-        {
+        { 
             if (!args.Canceled)
             {
                 Bundle.Visibility = Visibility.Visible;
@@ -135,6 +139,7 @@ namespace Fuel.View
             Pivot.Visibility = Visibility.Visible;
             ApplicationBar.IsVisible = true;
             LayoutRoot.Children.Remove(LayoutRoot.Children.First(c => c.GetType() == typeof(OauthLogin)));
+            _isLoginControlEnabled = false;
             App.Viewmodel.MainPivotViewmodel.RenewToken();
             await App.Viewmodel.MainPivotViewmodel.GetSimInfo();
         }
@@ -144,13 +149,14 @@ namespace Fuel.View
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             App.Viewmodel.MainPivotViewmodel.CancelTask();
-            if ((bool)IsolatedStorageSettings.ApplicationSettings["lastusedsim"])
-                Tools.Tools.SaveSetting(new KeyValuePair { Name = "sim", Content = SimBox.Text });
+            if ((bool)IsolatedStorageSettings.ApplicationSettings["lastusedsim"] || (App.Viewmodel.MainPivotViewmodel.Sims !=null && App.Viewmodel.MainPivotViewmodel.Sims.Count() == 1))
+                Tools.Tools.SaveSetting(new KeyValuePair { Name = "sim", Content = SimBox.Text ?? string.Empty });
             SimBox.Text = string.Empty;
         }
 
         private void ShowLogin()
         {
+            _isLoginControlEnabled = true;
             var login = new OauthLogin();
             ApplicationBar.IsVisible = false;
             Pivot.Visibility = Visibility.Collapsed;
@@ -162,6 +168,13 @@ namespace Fuel.View
         {
             if (App.Viewmodel.MainPivotViewmodel.Sims.Any(x => x.msisdn == (string)IsolatedStorageSettings.ApplicationSettings["sim"]))
                 return (string)IsolatedStorageSettings.ApplicationSettings["sim"];
+#if(DEBUG)
+            foreach (var sim in App.Viewmodel.MainPivotViewmodel.Sims)
+            {
+                Debug.WriteLine("Sim number: " + sim.msisdn);
+            }
+            Debug.WriteLine("Number " + (string)IsolatedStorageSettings.ApplicationSettings["sim"] + " not in list");
+#endif
             if (App.Viewmodel.MainPivotViewmodel.Sims.Count() > 1 && !login && !string.IsNullOrWhiteSpace((string)IsolatedStorageSettings.ApplicationSettings["sim"]))
                 Message.ShowToast("default sim does not exist anymore, loading first");
             return App.Viewmodel.MainPivotViewmodel.Sims.Select(x => x.msisdn).FirstOrDefault();

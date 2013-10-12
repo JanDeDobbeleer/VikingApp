@@ -32,7 +32,7 @@ namespace Tools
 
         public static void SendErrorEmail(string error, string location)
         {
-            if (MessageBox.Show("This is not supposed to appen, would you like to send a report?", "Oops", MessageBoxButton.OKCancel) == MessageBoxResult.Cancel)
+            if (MessageBox.Show("This is not supposed to happen, would you like to send a report?", "Oops", MessageBoxButton.OKCancel) == MessageBoxResult.Cancel)
                 return;
             var task = new EmailComposeTask 
                 {

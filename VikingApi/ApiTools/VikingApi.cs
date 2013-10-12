@@ -112,6 +112,7 @@ namespace VikingApi.ApiTools
             }
             catch (Exception e)
             {
+
                 Message.SendErrorEmail(e.Message + Environment.NewLine + e.InnerException, "Viking api at request token");
             }
             return null;

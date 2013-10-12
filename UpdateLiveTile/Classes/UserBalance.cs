@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
@@ -95,20 +96,33 @@ namespace UpdateLiveTile.Classes
 
         private void ConvertValues()
         {
-            Credit = string.Format("€{0}", _balance.credits);
+            Credit = string.Format("€{0}", _balance.credits ?? "0");
             Remaining = ConvertDate(_balance.valid_until);
-            Data = Math.Round(_balance.bundles.Where(x => x.type == "data").Sum(x => double.Parse(x.value.Split('.')[0])) / 1024d / 1024d, 0).ToString();
-            Sms = _balance.bundles.Where(x => x.type == "sms").Sum(x => double.Parse(x.value.Split('.')[0])).ToString();
-            VikingSms = _balance.bundles.First(bundle => bundle.type == "sms_super_on_net").value.Split('.')[0];
-            var minutes = int.Parse(_balance.bundles.First(bundle => bundle.type == "voice_super_on_net").value.Split('.')[0]) / 60;
-            var seconds = int.Parse(_balance.bundles.First(bundle => bundle.type == "voice_super_on_net").value.Split('.')[0]) % 60;
-            VikingMinutes = string.Format("{0}m {1}s", minutes, seconds);
+            if(Remaining > 0)
+            {
+                Data = Math.Round(_balance.bundles.Where(x => x.type == "data").Sum(x => double.Parse(x.value.Split('.')[0])) / 1024d / 1024d, 0).ToString();
+                Sms = _balance.bundles.Where(x => x.type == "sms").Sum(x => double.Parse(x.value.Split('.')[0])).ToString();
+                VikingSms = _balance.bundles.First(bundle => bundle.type == "sms_super_on_net").value.Split('.')[0];
+                var minutes = int.Parse(_balance.bundles.First(bundle => bundle.type == "voice_super_on_net").value.Split('.')[0]) / 60;
+                var seconds = int.Parse(_balance.bundles.First(bundle => bundle.type == "voice_super_on_net").value.Split('.')[0]) % 60;
+                VikingMinutes = string.Format("{0}m {1}s", minutes, seconds);
+            }
+#if(DEBUG)
+            Debug.WriteLine("Live tile: Credit = " + Credit);
+            Debug.WriteLine("Live tile: Data = " + Data);
+            Debug.WriteLine("Live tile: SMS = " + Sms);
+            Debug.WriteLine("Live tile: VikingSms = " + VikingSms);
+            Debug.WriteLine("Live tile: Viking minutes = " + VikingMinutes);
+#endif
         }
 
         private int ConvertDate(string validUntil)
         {
             var expires = Convert.ToDateTime(validUntil);
             var difference = (expires - DateTime.Now);
+#if(DEBUG)
+            Debug.WriteLine("Live tile: Remaining days = " + difference.Days);
+#endif
             if (difference.Days > 0)
             {
                 return difference.Days;
