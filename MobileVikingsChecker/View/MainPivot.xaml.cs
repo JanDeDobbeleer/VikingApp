@@ -48,6 +48,12 @@ namespace Fuel.View
             task.Show();
         }
 
+        private void BalanceOnClick(object sender, EventArgs e)
+        {
+            var task = new SmsComposeTask { To = "1966 ", Body = "BAL" };
+            task.Show();
+        }
+
         private void SimOnClick(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(SimBox.Text))
@@ -107,12 +113,14 @@ namespace Fuel.View
             if ((bool)IsolatedStorageSettings.ApplicationSettings["topup"])
             {
                 ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("sms topup", true, ReloadOnClick));
+                ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("sms balance", true, BalanceOnClick));
                 ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("profile", true, ProfileOnClick));
                 ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("settings", true, SettingsOnClick));
                 ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("about", true, AboutOnClick));
             }
             else
             {
+                ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("sms balance", true, BalanceOnClick));
                 ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("profile", true, ProfileOnClick));
                 ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("settings", true, SettingsOnClick));
                 ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("about", true, AboutOnClick));
