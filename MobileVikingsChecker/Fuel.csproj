@@ -96,9 +96,11 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\AmountConverter.cs" />
+    <Compile Include="Common\BundlesConverter.cs" />
     <Compile Include="Common\ExtraInformationConverter.cs" />
     <Compile Include="Common\InformationConverter.cs" />
     <Compile Include="Common\MethodConverter.cs" />
+    <Compile Include="Common\PricesConverter.cs" />
     <Compile Include="Common\TimestampConverter.cs" />
     <Compile Include="Common\UsageColorConverter.cs" />
     <Compile Include="Common\UsageImageConverter.cs" />

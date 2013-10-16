@@ -33,6 +33,7 @@ namespace VikingApi.ApiTools
         private const string _sim = "msisdn_list.json";
         private const string _usage = "usage.json";
         private const string _top_up_history = "top_up_history.json";
+        private const string _price_plan = "price_plan_details.json";
         private static RequestToken _requestToken;
         private static OAuthAuthorizer _authorizer;
 
@@ -57,6 +58,11 @@ namespace VikingApi.ApiTools
         public string TopUp
         {
             get { return _top_up_history; }
+        }
+
+        public string PricePlan
+        {
+            get { return _price_plan; }
         }
 
         //event handling

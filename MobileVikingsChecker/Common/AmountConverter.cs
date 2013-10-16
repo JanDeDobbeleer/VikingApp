@@ -16,7 +16,7 @@ namespace Fuel.Common
             throw new NotImplementedException();
         }
 
-        private string ReturnInformation(string amount)
+        public static string ReturnInformation(string amount)
         {
             const string unit = "€";
             var firstAmount = int.Parse(amount.Split('.')[0]);

@@ -18,7 +18,20 @@
     <phone:PhoneApplicationPage.Resources>
         <c:AmountConverter x:Key="AmountConverter"/>
         <c:MethodConverter x:Key="MethodConverter"/>
+        <c:BundlesConverter x:Key="BundlesConverter"/>
+        <c:PricesConverter x:Key="PricesConverter"/>
         <c:TimestampConverter x:Key="TimestampConverter"/>
+        <Style TargetType="TextBlock" x:Key="LeftStyle">
+            <Setter Property="Margin" Value="25,0,0,0"/>
+            <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeLarge}"/>
+        </Style>
+        <Style TargetType="ListBox" x:Key="ListBoxStyle">
+            <Setter Property="Margin" Value="40,0,0,0"/>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="ListBoxItemStyle">
+            <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeSmall}"/>
+            <Setter Property="FontWeight" Value="Light"/>
+        </Style>
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -65,8 +78,43 @@
             </phone:PivotItem>
 
             <!--Pivot item two-->
-            <phone:PivotItem Header="price plan">
-                <Grid/>
+            <phone:PivotItem Header="plan">
+                <Grid x:Name="PricePlan" Visibility="Collapsed">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock x:Name="PlanTextBlock" Grid.Row="0" HorizontalAlignment="Left" FontSize="{StaticResource PhoneFontSizeExtraLarge}" Margin="13,0,0,0"/>
+                    <TextBlock Grid.Row="1" Text="Bundles" Style="{StaticResource LeftStyle}"/>
+                    <ListBox Grid.Row="2" x:Name="ListBoxBundles" Style="{StaticResource ListBoxStyle}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Converter={StaticResource BundlesConverter}}" Style="{StaticResource ListBoxItemStyle}"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="IsHitTestVisible" Value="False" />
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListBox>
+                    <TextBlock Grid.Row="3" Text="Prices" Style="{StaticResource LeftStyle}"/>
+                    <ListBox Grid.Row="4" x:Name="ListBoxPrices"  Style="{StaticResource ListBoxStyle}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Converter={StaticResource PricesConverter}}" Style="{StaticResource ListBoxItemStyle}"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="IsHitTestVisible" Value="False" />
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListBox>
+                </Grid>
             </phone:PivotItem>
         </phone:Pivot>
     </Grid>

@@ -17,6 +17,7 @@ namespace Fuel.Viewmodel
     {
         public string Msisdn;
         public IEnumerable<TopUp> Topup;
+        public PricePlan Plan;
         private int _page;
         private DateTime _date1;
         private DateTime _date2;
@@ -31,9 +32,19 @@ namespace Fuel.Viewmodel
                 GetInfoFinished(this, args);
             }
         }
+
+        public event GetInfoFinishedEventHandler GetPlanInfoFinished;
+
+        protected void OnGetPlanInfoFinished(GetInfoCompletedArgs args)
+        {
+            if (GetPlanInfoFinished != null)
+            {
+                GetPlanInfoFinished(this, args);
+            }
+        }
         #endregion
 
-        public async Task<bool> GetUsage(DateTime fromDate, DateTime untilDate, int page = 1)
+        public async Task<bool> GetTopUps(DateTime fromDate, DateTime untilDate, int page = 1)
         {
             if (page == 1)
             {
@@ -47,10 +58,10 @@ namespace Fuel.Viewmodel
                 new KeyValuePair{Content = fromDate.ToVikingApiTimeFormat(), Name = "from_date"},
                 new KeyValuePair{Content = untilDate.ToVikingApiTimeFormat(), Name = "until_date"},
                 new KeyValuePair{Content = "100", Name = "page_size"},
-                new KeyValuePair{Content = page, Name = "page"},
+                new KeyValuePair{Content = page, Name = "page"}
             };
             Tools.Tools.SetProgressIndicator(true);
-            SystemTray.ProgressIndicator.Text = "retrieving information";
+            SystemTray.ProgressIndicator.Text = "retrieving topups";
             using (var client = new VikingsApi())
             {
                 client.GetInfoFinished += client_GetInfoFinished;
@@ -79,13 +90,50 @@ namespace Fuel.Viewmodel
                     if (!string.Equals(args.Json, "[]"))
                     {
                         Topup = (_page == 1) ? JsonConvert.DeserializeObject<TopUp[]>(args.Json) : Topup.Concat(JsonConvert.DeserializeObject<TopUp[]>(args.Json));
-                        await GetUsage(_date1, _date2, ++_page);
+                        await GetTopUps(_date1, _date2, ++_page);
                         return;
                     }
-                    Tools.Tools.SetProgressIndicator(false);
                     break;
             }
             OnGetInfoFinished(args);
+        }
+
+        public async Task<bool> GetPlan()
+        {
+            Tools.Tools.SetProgressIndicator(true);
+            SystemTray.ProgressIndicator.Text = "getting price plan info";
+            using (var client = new VikingsApi())
+            {
+                client.GetInfoFinished += client_GetPlanInfoFinished;
+                OAuthUtility.ComputeHash = (key, buffer) =>
+                {
+                    using (var hmac = new HMACSHA1(key))
+                    {
+                        return hmac.ComputeHash(buffer);
+                    }
+                };
+                await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.PricePlan, new KeyValuePair { Content = Msisdn, Name = "msisdn" }, Cts);
+            }
+            return true;
+        }
+
+        private void client_GetPlanInfoFinished(object sender, GetInfoCompletedArgs args)
+        {
+            switch (args.Canceled)
+            {
+                case true:
+                    Tools.Tools.SetProgressIndicator(false);
+                    break;
+                case false:
+                    if (string.IsNullOrEmpty(args.Json))
+                        return;
+                    if (!string.Equals(args.Json, "[]"))
+                    {
+                        Plan = JsonConvert.DeserializeObject<PricePlan>(args.Json);
+                    }
+                    break;
+            }
+            OnGetPlanInfoFinished(args);
         }
     }
 }
