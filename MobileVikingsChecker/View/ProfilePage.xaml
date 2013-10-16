@@ -1,0 +1,94 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="Fuel.View.ProfilePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="clr-namespace:Fuel.Controls"
+    xmlns:common="clr-namespace:Fuel.Common"
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait"  Orientation="Portrait"
+    shell:SystemTray.IsVisible="True">
+
+    <phone:PhoneApplicationPage.Resources>
+        <common:TimestampConverter x:Key="TimestampConverter"/>
+        <common:NameConverter x:Key="NameConverter"/>
+        <Style TargetType="TextBlock" x:Key="LeftStyle">
+            <Setter Property="Margin" Value="13,0,0,0"/>
+            <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeLarge}"/>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="RightStyle">
+            <Setter Property="Margin" Value="13,0,20,0"/>
+            <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMedium}"/>
+            <Setter Property="FontWeight" Value="Light"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+        </Style>
+    </phone:PhoneApplicationPage.Resources>
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <!--Pivot Control-->
+        <phone:Pivot>
+            <phone:Pivot.Title>
+                <Grid Height="40" Width="{Binding ElementName=Pivot, Path=ActualWidth}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Assets/logo.png" />
+                        <TextBlock Text="Fuel" FontSize="{StaticResource PhoneFontSizeLarge}"/>
+                    </StackPanel>
+                </Grid>
+            </phone:Pivot.Title>
+            <!--Pivot item one-->
+            <phone:PivotItem Header="points">
+                <StackPanel x:Name="StatsPanel" Visibility="Collapsed">
+                    <TextBlock Style="{StaticResource LeftStyle}" Text="Remaining" FontSize="{StaticResource PhoneFontSizeExtraLarge}" Foreground="{StaticResource VikingColorBrush}"/>
+                    <TextBlock Style="{StaticResource RightStyle}" x:Name="Remaining"/>
+                    <TextBlock Style="{StaticResource LeftStyle}" Text="Used"/>
+                    <TextBlock Style="{StaticResource RightStyle}" x:Name="Used"/>
+                    <TextBlock Style="{StaticResource LeftStyle}" Text="Waiting"/>
+                    <TextBlock Style="{StaticResource RightStyle}" x:Name="Waiting"/>
+                    <TextBlock Style="{StaticResource LeftStyle}" Text="Topups used"/>
+                    <TextBlock Style="{StaticResource RightStyle}" x:Name="Topups"/>
+                    <TextBlock Style="{StaticResource LeftStyle}" Text="earned"/>
+                    <TextBlock Style="{StaticResource RightStyle}" x:Name="Earned"/>
+                </StackPanel>
+            </phone:PivotItem>
+
+            <!--Pivot item two-->
+            <phone:PivotItem Header="referrals">
+                <ListBox x:Name="ReferralViewer" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Visibility="Collapsed">
+                    <ListBox.ItemTemplate >
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" Margin="10,0,10,10" HorizontalAlignment="Center">
+                                <Grid Margin="0,7,10,0" VerticalAlignment="Center">
+                                    <controls:CircularProgressBar SegmentColor="{StaticResource VikingColorBrush}" Percentage="100" StrokeThickness="5" HorizontalAlignment="Center" VerticalAlignment="Center" Radius="43" />
+                                    <TextBlock Text="{Binding Amount}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="{StaticResource PhoneFontSizeLarge}" />
+                                </Grid>
+                                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Date, Mode=TwoWay, Converter={StaticResource TimestampConverter}}" FontSize="{StaticResource PhoneFontSizeMediumLarge}"/>
+                                    <TextBlock Text="{Binding Method, Mode=TwoWay}" FontSize="{StaticResource PhoneFontSizeMedium}" TextWrapping="Wrap"/>
+                                    <TextBlock Text="{Binding Name, Mode=TwoWay, Converter={StaticResource NameConverter}}" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="IsHitTestVisible" Value="False" />
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+            </phone:PivotItem>
+        </phone:Pivot>
+    </Grid>
+
+</phone:PhoneApplicationPage>

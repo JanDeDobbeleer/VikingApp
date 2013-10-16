@@ -75,11 +75,23 @@ namespace Fuel.View
             NavigationService.Navigate(new Uri("/Fuel.Settings;component/Settings.xaml", UriKind.Relative));
         }
 
+        private void ProfileOnClick(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(SimBox.Text))
+            {
+                Message.ShowToast("please wait until your sim information is loaded");
+                return;
+            }
+            App.Viewmodel.MainPivotViewmodel.CancelTask();
+            App.Viewmodel.ProfileViewmodel.Msisdn = SimBox.Text;
+            NavigationService.Navigate(new Uri("/View/ProfilePage.xaml", UriKind.Relative));
+        }
+
         private void UsageOnClick(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(SimBox.Text))
             {
-                Message.ShowToast("please wait till your sim information is loaded");
+                Message.ShowToast("please wait until your sim information is loaded");
                 return;
             }
             App.Viewmodel.MainPivotViewmodel.CancelTask();
@@ -95,11 +107,13 @@ namespace Fuel.View
             if ((bool)IsolatedStorageSettings.ApplicationSettings["topup"])
             {
                 ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("sms topup", true, ReloadOnClick));
+                ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("profile", true, ProfileOnClick));
                 ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("settings", true, SettingsOnClick));
                 ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("about", true, AboutOnClick));
             }
             else
             {
+                ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("profile", true, ProfileOnClick));
                 ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("settings", true, SettingsOnClick));
                 ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("about", true, AboutOnClick));
             }

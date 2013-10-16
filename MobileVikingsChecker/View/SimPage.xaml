@@ -21,16 +21,37 @@
         <c:BundlesConverter x:Key="BundlesConverter"/>
         <c:PricesConverter x:Key="PricesConverter"/>
         <c:TimestampConverter x:Key="TimestampConverter"/>
-        <Style TargetType="TextBlock" x:Key="LeftStyle">
-            <Setter Property="Margin" Value="25,0,0,0"/>
+        <c:CircleConverter x:Key="CircleConverter"/>
+        <Style TargetType="TextBlock" x:Key="IndentStyle">
+            <Setter Property="Margin" Value="40,4,0,0"/>
             <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeLarge}"/>
         </Style>
         <Style TargetType="ListBox" x:Key="ListBoxStyle">
-            <Setter Property="Margin" Value="40,0,0,0"/>
+            <!--<Setter Property="Margin" Value="150,0,0,0"/>-->
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Width" Value="160"/>
         </Style>
         <Style TargetType="TextBlock" x:Key="ListBoxItemStyle">
-            <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeSmall}"/>
+            <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMediumLarge}"/>
             <Setter Property="FontWeight" Value="Light"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="controls:CircularProgressBar" x:Key="CircleStyle">
+            <Setter Property="Margin" Value="0,3,6,0"/>
+            <Setter Property="Radius" Value="10"/>
+            <Setter Property="StrokeThickness" Value="4"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Percentage" Value="100"/>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="LeftStyle">
+            <Setter Property="Margin" Value="13,0,0,0"/>
+            <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeLarge}"/>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="RightStyle">
+            <Setter Property="Margin" Value="13,0,20,0"/>
+            <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMedium}"/>
+            <Setter Property="FontWeight" Value="Light"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
         </Style>
     </phone:PhoneApplicationPage.Resources>
 
@@ -57,14 +78,14 @@
                     <ListBox.ItemTemplate >
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" Margin="10,0,10,10" HorizontalAlignment="Center">
-                                <Grid Margin="0,15,10,0" VerticalAlignment="Center">
-                                    <controls:CircularProgressBar SegmentColor="{StaticResource VikingColorBrush}" Percentage="100" StrokeThickness="5" HorizontalAlignment="Center" VerticalAlignment="Center" Radius="43"/>
-                                    <TextBlock Text="{Binding Amount, Converter={StaticResource AmountConverter}}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="{StaticResource PhoneFontSizeLarge}"/>
+                                <Grid Margin="0,11,10,0" VerticalAlignment="Center">
+                                    <controls:CircularProgressBar SegmentColor="{StaticResource VikingColorBrush}" Percentage="100" StrokeThickness="5" HorizontalAlignment="Center" VerticalAlignment="Center" Radius="43" />
+                                    <TextBlock Text="{Binding Amount, Converter={StaticResource AmountConverter}}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="{StaticResource PhoneFontSizeLarge}" />
                                 </Grid>
                                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding ExecutedOn, Mode=TwoWay, Converter={StaticResource TimestampConverter}}" FontSize="{StaticResource PhoneFontSizeLarge}"/>
-                                    <TextBlock Text="{Binding Method, Mode=TwoWay, Converter={StaticResource MethodConverter}}" FontSize="{StaticResource PhoneFontSizeMediumLarge}"/>
-                                    <TextBlock Text="{Binding Status, Mode=TwoWay, Converter={StaticResource MethodConverter}}" FontSize="{StaticResource PhoneFontSizeMediumLarge}"/>
+                                    <TextBlock Text="{Binding ExecutedOn, Mode=TwoWay, Converter={StaticResource TimestampConverter}}" FontSize="{StaticResource PhoneFontSizeMediumLarge}"/>
+                                    <TextBlock Text="{Binding Method, Mode=TwoWay, Converter={StaticResource MethodConverter}}" FontSize="{StaticResource PhoneFontSizeMedium}"/>
+                                    <TextBlock Text="{Binding Status, Mode=TwoWay, Converter={StaticResource MethodConverter}}" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
                                 </StackPanel>
                             </StackPanel>
                         </DataTemplate>
@@ -87,12 +108,15 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <TextBlock x:Name="PlanTextBlock" Grid.Row="0" HorizontalAlignment="Left" FontSize="{StaticResource PhoneFontSizeExtraLarge}" Margin="13,0,0,0"/>
-                    <TextBlock Grid.Row="1" Text="Bundles" Style="{StaticResource LeftStyle}"/>
-                    <ListBox Grid.Row="2" x:Name="ListBoxBundles" Style="{StaticResource ListBoxStyle}">
+                    <TextBlock x:Name="PlanTextBlock" Grid.Row="0" HorizontalAlignment="Left" FontSize="{StaticResource PhoneFontSizeExtraLarge}" Margin="13,0,0,0" Foreground="{StaticResource VikingColorBrush}"/>
+                    <TextBlock Grid.Row="1" Text="Bundle" Style="{StaticResource IndentStyle}"/>
+                    <ListBox Grid.Row="2" x:Name="ListBoxBundles" Style="{StaticResource ListBoxStyle}" ScrollViewer.VerticalScrollBarVisibility="Disabled">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Converter={StaticResource BundlesConverter}}" Style="{StaticResource ListBoxItemStyle}"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <controls:CircularProgressBar SegmentColor="{Binding type_id, Converter={StaticResource CircleConverter}}" Style="{StaticResource CircleStyle}"/>
+                                    <TextBlock Text="{Binding Converter={StaticResource BundlesConverter}}" Style="{StaticResource ListBoxItemStyle}"/>
+                                </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                         <ListBox.ItemContainerStyle>
@@ -101,11 +125,14 @@
                             </Style>
                         </ListBox.ItemContainerStyle>
                     </ListBox>
-                    <TextBlock Grid.Row="3" Text="Prices" Style="{StaticResource LeftStyle}"/>
-                    <ListBox Grid.Row="4" x:Name="ListBoxPrices"  Style="{StaticResource ListBoxStyle}">
+                    <TextBlock Grid.Row="3" Text="Prices" Style="{StaticResource IndentStyle}"/>
+                    <ListBox Grid.Row="4" x:Name="ListBoxPrices"  Style="{StaticResource ListBoxStyle}" ScrollViewer.VerticalScrollBarVisibility="Disabled">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Converter={StaticResource PricesConverter}}" Style="{StaticResource ListBoxItemStyle}"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <controls:CircularProgressBar SegmentColor="{Binding type_id, Converter={StaticResource CircleConverter}}" Style="{StaticResource CircleStyle}"/>
+                                    <TextBlock Text="{Binding Converter={StaticResource PricesConverter}}" Style="{StaticResource ListBoxItemStyle}"/>
+                                </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                         <ListBox.ItemContainerStyle>
@@ -115,6 +142,22 @@
                         </ListBox.ItemContainerStyle>
                     </ListBox>
                 </Grid>
+            </phone:PivotItem>
+            <phone:PivotItem Header="info">
+                    <StackPanel x:Name="CardPanel" Visibility="Collapsed">
+                    <TextBlock Style="{StaticResource LeftStyle}" Text="Card number" FontSize="{StaticResource PhoneFontSizeExtraLarge}" Foreground="{StaticResource VikingColorBrush}"/>
+                    <TextBlock Style="{StaticResource RightStyle}" x:Name="CardNumber"/>
+                    <TextBlock Style="{StaticResource LeftStyle}" Text="Pin 1"/>
+                    <TextBlock Style="{StaticResource RightStyle}" x:Name="Pin1"/>
+                    <TextBlock Style="{StaticResource LeftStyle}" Text="Pin 2"/>
+                    <TextBlock Style="{StaticResource RightStyle}" x:Name="Pin2"/>
+                    <TextBlock Style="{StaticResource LeftStyle}" Text="Puk 1"/>
+                    <TextBlock Style="{StaticResource RightStyle}" x:Name="Puk1"/>
+                    <TextBlock Style="{StaticResource LeftStyle}" Text="Puk 2"/>
+                    <TextBlock Style="{StaticResource RightStyle}" x:Name="Puk2"/>
+                    <TextBlock Style="{StaticResource LeftStyle}" Text="Imsi"/>
+                    <TextBlock Style="{StaticResource RightStyle}" x:Name="IMSI"/>
+                </StackPanel>
             </phone:PivotItem>
         </phone:Pivot>
     </Grid>

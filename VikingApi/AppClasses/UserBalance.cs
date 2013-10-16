@@ -205,7 +205,7 @@ namespace VikingApi.AppClasses
             {
                 return string.Format("{0} minute{1}", difference.Minutes, (difference.Minutes == 1) ? "" : "s");
             }
-            return difference.Seconds > 0 ? string.Format("{0} second{1}", difference.Seconds, (difference.Seconds == 1) ? "" : "s") : "bundle expired";
+            return difference.Seconds > 0 ? string.Format("{0} second{1}", difference.Seconds, (difference.Seconds == 1) ? "" : "s") : "0 days";
         }
 
         private void CalculatePercentages()

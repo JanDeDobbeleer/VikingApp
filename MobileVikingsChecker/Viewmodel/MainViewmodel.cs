@@ -44,11 +44,25 @@ namespace Fuel.Viewmodel
             }
         }
 
+        private ProfileViewmodel _profileViewmodel;
+        public ProfileViewmodel ProfileViewmodel
+        {
+            get { return _profileViewmodel; }
+            set
+            {
+                if (value.Equals(_profileViewmodel))
+                    return;
+                _profileViewmodel = value;
+                OnPropertyChanged();
+            }
+        }
+
         public MainViewmodel()
         {
             DetailsViewmodel = new UsageViewmodel();
             MainPivotViewmodel = new MainPivotViewmodel();
             SimViewmodel = new SimDetailsViewmodel();
+            ProfileViewmodel = new ProfileViewmodel();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

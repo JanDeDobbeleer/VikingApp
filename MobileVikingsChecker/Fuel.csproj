@@ -97,9 +97,11 @@
     </Compile>
     <Compile Include="Common\AmountConverter.cs" />
     <Compile Include="Common\BundlesConverter.cs" />
+    <Compile Include="Common\CircleConverter.cs" />
     <Compile Include="Common\ExtraInformationConverter.cs" />
     <Compile Include="Common\InformationConverter.cs" />
     <Compile Include="Common\MethodConverter.cs" />
+    <Compile Include="Common\NameConverter.cs" />
     <Compile Include="Common\PricesConverter.cs" />
     <Compile Include="Common\TimestampConverter.cs" />
     <Compile Include="Common\UsageColorConverter.cs" />
@@ -120,6 +122,7 @@
     <Compile Include="Controls\CircularProgressBar.xaml.cs">
       <DependentUpon>CircularProgressBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Viewmodel\ProfileViewmodel.cs" />
     <Compile Include="Viewmodel\UsageViewmodel.cs" />
     <Compile Include="Viewmodel\MainPivotViewmodel.cs" />
     <Compile Include="Viewmodel\MainViewmodel.cs" />
@@ -129,6 +132,9 @@
     </Compile>
     <Compile Include="View\MainPivot.xaml.cs">
       <DependentUpon>MainPivot.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ProfilePage.xaml.cs">
+      <DependentUpon>ProfilePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\SimPage.xaml.cs">
       <DependentUpon>SimPage.xaml</DependentUpon>
@@ -163,6 +169,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\ProfilePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\SimPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -189,6 +199,7 @@
     <Content Include="Assets\helmetBlack.png" />
     <Content Include="Assets\helmetred.png" />
     <Content Include="Assets\helmetWhite.png" />
+    <Content Include="Assets\share.png" />
     <Content Include="Assets\sim.png" />
     <Content Include="Assets\ToastIcon.png" />
     <Content Include="Assets\AlignmentGrid.png" />

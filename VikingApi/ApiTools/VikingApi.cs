@@ -34,12 +34,16 @@ namespace VikingApi.ApiTools
         private const string _usage = "usage.json";
         private const string _top_up_history = "top_up_history.json";
         private const string _price_plan = "price_plan_details.json";
+        private const string _sim_info = "sim_info.json";
+        private const string _stats = "points/stats.json";
+        private const string _links = "points/links.json";
+        private const string _referrals = "points/referrals.json";
         private static RequestToken _requestToken;
         private static OAuthAuthorizer _authorizer;
 
         private IntPtr _nativeResource = Marshal.AllocHGlobal(100);
 
-        //public properties
+        #region Uri
         public string Balance
         {
             get { return _balance; }
@@ -65,8 +69,28 @@ namespace VikingApi.ApiTools
             get { return _price_plan; }
         }
 
-        //event handling
+        public string Card
+        {
+            get { return _sim_info; }
+        }
 
+        public string Stats
+        {
+            get { return _stats; }
+        }
+
+        public string Links
+        {
+            get { return _links; }
+        }
+
+        public string Referrals
+        {
+            get { return _referrals; }
+        }
+        #endregion
+
+        #region event handling
         public event GetInfoFinishedEventHandler GetInfoFinished;
 
         protected void OnGetInfoFinished(GetInfoCompletedArgs args)
@@ -76,6 +100,7 @@ namespace VikingApi.ApiTools
                 GetInfoFinished(this, args);
             }
         }
+        #endregion
 
         public async Task<string> GetPinUrl()
         {
@@ -100,7 +125,6 @@ namespace VikingApi.ApiTools
             }
             catch (Exception e)
             {
-                Message.SendErrorEmail(e.Message + Environment.NewLine + e.InnerException, "Viking api at pin url request");
                 return null;
             }
         }
@@ -124,7 +148,6 @@ namespace VikingApi.ApiTools
             }
             catch (Exception e)
             {
-                Message.SendErrorEmail(e.Message + Environment.NewLine + e.InnerException, "Viking api at request token");
                 return null;
             }
         }
@@ -148,16 +171,21 @@ namespace VikingApi.ApiTools
                             try
                             {
                                 args.Json = await client.GetStringAsync(BaseUrl + path);
+                                args.Canceled = false;
                             }
                             catch (Exception e)
                             {
+#if(DEBUG)
                                 Debug.WriteLine(e);
+#endif
+                                args.Canceled = true;
                             }
-                            args.Canceled = false;
+                            
                         }
                     }
                 }
                 OnGetInfoFinished(args);
+                return true;
             }
             catch (HttpRequestException e)
             {
@@ -174,7 +202,6 @@ namespace VikingApi.ApiTools
             {
                 args.Canceled = true;
                 OnGetInfoFinished(args);
-                Message.SendErrorEmail(e.Message + Environment.NewLine + e.InnerException, "Viking api at " + path);
             }
             return true;
         }

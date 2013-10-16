@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Coding4Fun.Toolkit.Controls;
-using Microsoft.Phone.Info;
-using Microsoft.Phone.Tasks;
 
 namespace Tools
 {
@@ -24,12 +21,12 @@ namespace Tools
                 TextOrientation = Orientation.Vertical, 
                 TextWrapping = TextWrapping.Wrap,
                 Background = (SolidColorBrush)Application.Current.Resources["VikingColorBrush"],
-                Margin = new Thickness(0,-20,0,-20)
+                Margin = new Thickness(0,-20,0,-25)
             };
             toast.Show();
         }
 
-        public static void SendErrorEmail(string error, string location)
+        /*public static void SendErrorEmail(string error, string location)
         {
             if (MessageBox.Show("This is not supposed to happen, would you like to send a report?", "Oops", MessageBoxButton.OKCancel) == MessageBoxResult.Cancel)
                 return;
@@ -40,9 +37,9 @@ namespace Tools
                     Body = BuildErrorBody(error, location)
                 };
             task.Show();
-        }
+        }*/
 
-        private static string BuildErrorBody(string error, string location)
+        /*private static string BuildErrorBody(string error, string location)
         {
             var builder = new StringBuilder();
             builder.Append(string.Format("Error at {0}" + Environment.NewLine,location));
@@ -62,6 +59,6 @@ namespace Tools
             builder.Append(string.Format("Current memory usage: {0}" + Environment.NewLine, DeviceExtendedProperties.GetValue("DeviceCurrentMemoryUsage")));
             builder.Append(string.Format("Peak memory usage: {0}" + Environment.NewLine, DeviceExtendedProperties.GetValue("ApplicationPeakMemoryUsage")));
             return builder.ToString();
-        }
+        }*/
     }
 }

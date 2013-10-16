@@ -86,7 +86,6 @@ namespace Fuel.LoginControl
                         BrowserOnNavigated(sender, navigationEventArgs);
                         if(_count != 5)
                             return;
-                        Message.SendErrorEmail(e.Message + Environment.NewLine + e.InnerException, "Fuel at login screen, request token script");
                         Tools.Tools.SetProgressIndicator(false);
                         LoginBrowser.Visibility = Visibility.Visible;
                         LoginBrowser.GoBack();

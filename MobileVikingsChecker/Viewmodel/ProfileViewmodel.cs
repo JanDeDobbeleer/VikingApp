@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Security.Cryptography;
@@ -13,69 +12,62 @@ using VikingApi.Json;
 
 namespace Fuel.Viewmodel
 {
-    public class SimDetailsViewmodel : CancelAsyncTask
+    public class ProfileViewmodel:CancelAsyncTask
     {
         public string Msisdn;
-        public IEnumerable<TopUp> Topup;
-        public PricePlan Plan;
-        public SimCard Card;
+        public IEnumerable<Referral> Referral;
+        public IEnumerable<Links> Links; 
+        public Stats Stats;
         private int _page;
-        private DateTime _date1;
-        private DateTime _date2;
 
         #region event handling
-        public event GetInfoFinishedEventHandler GetInfoFinished;
+        public event GetInfoFinishedEventHandler GetStatsFinished;
 
-        protected void OnGetInfoFinished(GetInfoCompletedArgs args)
+        protected void OnGetStatsFinished(GetInfoCompletedArgs args)
         {
-            if (GetInfoFinished != null)
+            if (GetStatsFinished != null)
             {
-                GetInfoFinished(this, args);
+                GetStatsFinished(this, args);
             }
         }
 
-        public event GetInfoFinishedEventHandler GetPlanInfoFinished;
+        public event GetInfoFinishedEventHandler GetLinkFinished;
 
-        protected void OnGetPlanInfoFinished(GetInfoCompletedArgs args)
+        protected void OnGetLinksFinished(GetInfoCompletedArgs args)
         {
-            if (GetPlanInfoFinished != null)
+            if (GetLinkFinished != null)
             {
-                GetPlanInfoFinished(this, args);
+                GetLinkFinished(this, args);
             }
         }
 
-        public event GetInfoFinishedEventHandler GetSimInfoFinished;
+        public event GetInfoFinishedEventHandler GetReferralFinished;
 
-        protected void OnGetSimInfoFinished(GetInfoCompletedArgs args)
+        protected void OnGetReferralFinished(GetInfoCompletedArgs args)
         {
-            if (GetSimInfoFinished != null)
+            if (GetReferralFinished != null)
             {
-                GetSimInfoFinished(this, args);
+                GetReferralFinished(this, args);
             }
         }
         #endregion
 
-        public async Task<bool> GetTopUps(DateTime fromDate, DateTime untilDate, int page = 1)
+        public async Task<bool> GetReferrals(int page = 1)
         {
             if (page == 1)
             {
                 _page = page;
-                _date1 = fromDate;
-                _date2 = untilDate;
             }
             var pair = new[]
             {
-                new KeyValuePair{Content = Msisdn, Name = "msisdn"},
-                new KeyValuePair{Content = fromDate.ToVikingApiTimeFormat(), Name = "from_date"},
-                new KeyValuePair{Content = untilDate.ToVikingApiTimeFormat(), Name = "until_date"},
                 new KeyValuePair{Content = "100", Name = "page_size"},
                 new KeyValuePair{Content = page, Name = "page"}
             };
             Tools.Tools.SetProgressIndicator(true);
-            SystemTray.ProgressIndicator.Text = "retrieving topups";
+            SystemTray.ProgressIndicator.Text = "retrieving referrals";
             using (var client = new VikingsApi())
             {
-                client.GetInfoFinished += client_GetInfoFinished;
+                client.GetInfoFinished += client_GetReferralFinished;
                 OAuthUtility.ComputeHash = (key, buffer) =>
                 {
                     using (var hmac = new HMACSHA1(key))
@@ -83,12 +75,12 @@ namespace Fuel.Viewmodel
                         return hmac.ComputeHash(buffer);
                     }
                 };
-                await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.TopUp, pair, Cts);
+                await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Referrals, pair, Cts);
             }
             return true;
         }
 
-        private async void client_GetInfoFinished(object sender, GetInfoCompletedArgs args)
+        private async void client_GetReferralFinished(object sender, GetInfoCompletedArgs args)
         {
             switch (args.Canceled)
             {
@@ -100,22 +92,22 @@ namespace Fuel.Viewmodel
                         return;
                     if (!string.Equals(args.Json, "[]"))
                     {
-                        Topup = (_page == 1) ? JsonConvert.DeserializeObject<TopUp[]>(args.Json) : Topup.Concat(JsonConvert.DeserializeObject<TopUp[]>(args.Json));
-                        await GetTopUps(_date1, _date2, ++_page);
+                        Referral = (_page == 1) ? JsonConvert.DeserializeObject<Referral[]>(args.Json) : Referral.Concat(JsonConvert.DeserializeObject<Referral[]>(args.Json));
+                        await GetReferrals(++_page);
                         return;
                     }
                     break;
             }
-            OnGetInfoFinished(args);
+            OnGetReferralFinished(args);
         }
 
-        public async Task<bool> GetPlan()
+        public async Task<bool> GetStats()
         {
             Tools.Tools.SetProgressIndicator(true);
-            SystemTray.ProgressIndicator.Text = "getting price plan info";
+            SystemTray.ProgressIndicator.Text = "getting statistics";
             using (var client = new VikingsApi())
             {
-                client.GetInfoFinished += client_GetPlanInfoFinished;
+                client.GetInfoFinished += client_GetStatsFinished;
                 OAuthUtility.ComputeHash = (key, buffer) =>
                 {
                     using (var hmac = new HMACSHA1(key))
@@ -123,12 +115,12 @@ namespace Fuel.Viewmodel
                         return hmac.ComputeHash(buffer);
                     }
                 };
-                await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.PricePlan, new KeyValuePair { Content = Msisdn, Name = "msisdn" }, Cts);
+                await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Stats, Cts);
             }
             return true;
         }
 
-        private void client_GetPlanInfoFinished(object sender, GetInfoCompletedArgs args)
+        private void client_GetStatsFinished(object sender, GetInfoCompletedArgs args)
         {
             switch (args.Canceled)
             {
@@ -140,20 +132,20 @@ namespace Fuel.Viewmodel
                         return;
                     if (!string.Equals(args.Json, "[]"))
                     {
-                        Plan = JsonConvert.DeserializeObject<PricePlan>(args.Json);
+                        Stats = JsonConvert.DeserializeObject<Stats>(args.Json);
                     }
                     break;
             }
-            OnGetPlanInfoFinished(args);
+            OnGetStatsFinished(args);
         }
 
-        public async Task<bool> GetSimInfo()
+        public async Task<bool> GetLinks()
         {
             Tools.Tools.SetProgressIndicator(true);
-            SystemTray.ProgressIndicator.Text = "getting card info";
+            SystemTray.ProgressIndicator.Text = "fetching links";
             using (var client = new VikingsApi())
             {
-                client.GetInfoFinished += client_GetSimInfoFinished;
+                client.GetInfoFinished += client_GetLinksFinished;
                 OAuthUtility.ComputeHash = (key, buffer) =>
                 {
                     using (var hmac = new HMACSHA1(key))
@@ -161,12 +153,12 @@ namespace Fuel.Viewmodel
                         return hmac.ComputeHash(buffer);
                     }
                 };
-                await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Card, new KeyValuePair { Content = Msisdn, Name = "msisdn" }, Cts);
+                await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Links, Cts);
             }
             return true;
         }
 
-        private void client_GetSimInfoFinished(object sender, GetInfoCompletedArgs args)
+        private void client_GetLinksFinished(object sender, GetInfoCompletedArgs args)
         {
             switch (args.Canceled)
             {
@@ -178,11 +170,11 @@ namespace Fuel.Viewmodel
                         return;
                     if (!string.Equals(args.Json, "[]"))
                     {
-                        Card = JsonConvert.DeserializeObject<SimCard>(args.Json);
+                        Links = JsonConvert.DeserializeObject<Links[]>(args.Json);
                     }
                     break;
             }
-            OnGetSimInfoFinished(args);
+            OnGetLinksFinished(args);
         }
     }
 }
