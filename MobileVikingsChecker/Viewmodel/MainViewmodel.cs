@@ -18,8 +18,8 @@ namespace Fuel.Viewmodel
                 OnPropertyChanged();
             }
         }
-        private DetailsViewmodel _detailsViewmodel;
-        public DetailsViewmodel DetailsViewmodel
+        private UsageViewmodel _detailsViewmodel;
+        public UsageViewmodel DetailsViewmodel
         {
             get { return _detailsViewmodel; }
             set
@@ -31,10 +31,24 @@ namespace Fuel.Viewmodel
             }
         }
 
+        private SimDetailsViewmodel _simViewmodel;
+        public SimDetailsViewmodel SimViewmodel
+        {
+            get { return _simViewmodel; }
+            set
+            {
+                if (value.Equals(_simViewmodel))
+                    return;
+                _simViewmodel = value;
+                OnPropertyChanged();
+            }
+        }
+
         public MainViewmodel()
         {
-            DetailsViewmodel = new DetailsViewmodel();
+            DetailsViewmodel = new UsageViewmodel();
             MainPivotViewmodel = new MainPivotViewmodel();
+            SimViewmodel = new SimDetailsViewmodel();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

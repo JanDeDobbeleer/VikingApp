@@ -32,6 +32,7 @@ namespace VikingApi.ApiTools
         private const string _balance = "sim_balance.json";
         private const string _sim = "msisdn_list.json";
         private const string _usage = "usage.json";
+        private const string _top_up_history = "top_up_history.json";
         private static RequestToken _requestToken;
         private static OAuthAuthorizer _authorizer;
 
@@ -51,6 +52,11 @@ namespace VikingApi.ApiTools
         public string Usage
         {
             get { return _usage; }
+        }
+
+        public string TopUp
+        {
+            get { return _top_up_history; }
         }
 
         //event handling
@@ -82,7 +88,7 @@ namespace VikingApi.ApiTools
                 //Get and return Pin URL
                 return _authorizer.BuildAuthorizeUrl(AuthorizeTokenUrl, _requestToken);
             }
-            catch (HttpRequestException e)
+            catch (HttpRequestException)
             {
                 return null;
             }
@@ -106,7 +112,7 @@ namespace VikingApi.ApiTools
                 var accessToken = accessTokenResponse.Token;
                 return accessToken;
             }
-            catch (HttpRequestException e)
+            catch (HttpRequestException)
             {
                 return null;
             }

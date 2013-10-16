@@ -34,6 +34,7 @@ namespace Fuel.View
             ApplicationBar = new ApplicationBar { Mode = ApplicationBarMode.Default, Opacity = 1, IsVisible = true };
             ApplicationBar.Buttons.Add(Tools.Tools.CreateButton("/Assets/refresh.png", "refresh", true, RefreshOnClick));
             ApplicationBar.Buttons.Add(Tools.Tools.CreateButton("/Assets/feature.calendar.png", "usage", true, UsageOnClick));
+            ApplicationBar.Buttons.Add(Tools.Tools.CreateButton("/Assets/sim.png", "sim", true, SimOnClick));
         }
 
         private async void RefreshOnClick(object sender, EventArgs e)
@@ -45,6 +46,23 @@ namespace Fuel.View
         {
             var task = new SmsComposeTask { To = "8989", Body = string.Format("sim topup {0}", IsolatedStorageSettings.ApplicationSettings["defaulttopupvalue"]) };
             task.Show();
+        }
+
+        private void SimOnClick(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(SimBox.Text))
+            {
+                Message.ShowToast("please wait till your sim information is loaded");
+                return;
+            }
+            App.Viewmodel.MainPivotViewmodel.CancelTask();
+            App.Viewmodel.SimViewmodel.Msisdn = SimBox.Text;
+            NavigationService.Navigate(new Uri("/View/SimPage.xaml", UriKind.Relative));
+        }
+
+        private void AboutOnClick(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Fuel.About;component/About.xaml", UriKind.Relative));
         }
 
         private void SettingsOnClick(object sender, EventArgs e)
@@ -78,10 +96,12 @@ namespace Fuel.View
             {
                 ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("sms topup", true, ReloadOnClick));
                 ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("settings", true, SettingsOnClick));
+                ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("about", true, AboutOnClick));
             }
             else
             {
                 ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("settings", true, SettingsOnClick));
+                ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("about", true, AboutOnClick));
             }
             SystemTray.ProgressIndicator = new ProgressIndicator();
             Bundle.Visibility = Visibility.Collapsed;

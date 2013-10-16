@@ -25,6 +25,7 @@ namespace Fuel.Settings
         //private readonly List<string> _tileValues = new List<string> { "phone theme", "viking red" };
         private CancellationTokenSource _cts = new CancellationTokenSource();
         private bool _starting;
+        private bool _isPressed;
 
         public Settings()
         {
@@ -180,12 +181,17 @@ namespace Fuel.Settings
 
         private void Logout_OnClick(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Are you sure?", "Logout", MessageBoxButton.OKCancel) == MessageBoxResult.Cancel)
+            if (_isPressed)
                 return;
+            _isPressed = true;
+            if (MessageBox.Show("Are you sure?", "Logout", MessageBoxButton.OKCancel) == MessageBoxResult.Cancel)
+            {
+                _isPressed = false;
+                return;
+            }
             IsolatedStorageSettings.ApplicationSettings["login"] = true;
             Tools.Tools.DefaultAllSettings();
             NavigationService.GoBack();
-            //NavigationService.Navigate(new Uri("/Fuel;component/View/MainPivot.xaml", UriKind.Relative));
         }
     }
 }

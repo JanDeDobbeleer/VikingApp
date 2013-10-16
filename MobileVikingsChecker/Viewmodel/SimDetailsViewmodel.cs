@@ -4,9 +4,7 @@ using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
-using System.Windows;
 using AsyncOAuth;
-using Microsoft.Phone.Scheduler;
 using Microsoft.Phone.Shell;
 using Newtonsoft.Json;
 using Tools;
@@ -15,14 +13,13 @@ using VikingApi.Json;
 
 namespace Fuel.Viewmodel
 {
-    public class DetailsViewmodel : CancelAsyncTask
+    public class SimDetailsViewmodel : CancelAsyncTask
     {
         public string Msisdn;
-        public IEnumerable<Usage> Usage;
+        public IEnumerable<TopUp> Topup;
         private int _page;
         private DateTime _date1;
         private DateTime _date2;
-
 
         #region event handling
         public event GetInfoFinishedEventHandler GetInfoFinished;
@@ -46,24 +43,26 @@ namespace Fuel.Viewmodel
             }
             var pair = new[]
             {
-                new KeyValuePair{Content = Msisdn, Name = VikingApi.Json.Usage.Msisdn},
-                new KeyValuePair{Content = fromDate.ToVikingApiTimeFormat(), Name = VikingApi.Json.Usage.FromDate},
-                new KeyValuePair{Content = untilDate.ToVikingApiTimeFormat(), Name = VikingApi.Json.Usage.UntilDate},
-                new KeyValuePair{Content = "100", Name = VikingApi.Json.Usage.PageSize},
-                new KeyValuePair{Content = page, Name = VikingApi.Json.Usage.Page},
+                new KeyValuePair{Content = Msisdn, Name = "msisdn"},
+                new KeyValuePair{Content = fromDate.ToVikingApiTimeFormat(), Name = "from_date"},
+                new KeyValuePair{Content = untilDate.ToVikingApiTimeFormat(), Name = "until_date"},
+                new KeyValuePair{Content = "100", Name = "page_size"},
+                new KeyValuePair{Content = page, Name = "page"},
             };
             Tools.Tools.SetProgressIndicator(true);
             SystemTray.ProgressIndicator.Text = "retrieving information";
-            var client = new VikingsApi();
-            client.GetInfoFinished += client_GetInfoFinished;
-            OAuthUtility.ComputeHash = (key, buffer) =>
+            using (var client = new VikingsApi())
             {
-                using (var hmac = new HMACSHA1(key))
+                client.GetInfoFinished += client_GetInfoFinished;
+                OAuthUtility.ComputeHash = (key, buffer) =>
                 {
-                    return hmac.ComputeHash(buffer);
-                }
-            };
-            await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Usage, pair, Cts);
+                    using (var hmac = new HMACSHA1(key))
+                    {
+                        return hmac.ComputeHash(buffer);
+                    }
+                };
+                await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.TopUp, pair, Cts);
+            }
             return true;
         }
 
@@ -79,7 +78,7 @@ namespace Fuel.Viewmodel
                         return;
                     if (!string.Equals(args.Json, "[]"))
                     {
-                        Usage = (_page == 1) ? JsonConvert.DeserializeObject<Usage[]>(args.Json) : Usage.Concat(JsonConvert.DeserializeObject<Usage[]>(args.Json));
+                        Topup = (_page == 1) ? JsonConvert.DeserializeObject<TopUp[]>(args.Json) : Topup.Concat(JsonConvert.DeserializeObject<TopUp[]>(args.Json));
                         await GetUsage(_date1, _date2, ++_page);
                         return;
                     }

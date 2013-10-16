@@ -95,8 +95,10 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\AmountConverter.cs" />
     <Compile Include="Common\ExtraInformationConverter.cs" />
     <Compile Include="Common\InformationConverter.cs" />
+    <Compile Include="Common\MethodConverter.cs" />
     <Compile Include="Common\TimestampConverter.cs" />
     <Compile Include="Common\UsageColorConverter.cs" />
     <Compile Include="Common\UsageImageConverter.cs" />
@@ -116,14 +118,18 @@
     <Compile Include="Controls\CircularProgressBar.xaml.cs">
       <DependentUpon>CircularProgressBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Viewmodel\DetailsViewmodel.cs" />
+    <Compile Include="Viewmodel\UsageViewmodel.cs" />
     <Compile Include="Viewmodel\MainPivotViewmodel.cs" />
     <Compile Include="Viewmodel\MainViewmodel.cs" />
+    <Compile Include="Viewmodel\SimDetailsViewmodel.cs" />
     <Compile Include="View\DetailsPage.xaml.cs">
       <DependentUpon>DetailsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MainPivot.xaml.cs">
       <DependentUpon>MainPivot.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SimPage.xaml.cs">
+      <DependentUpon>SimPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -155,6 +161,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\SimPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -177,6 +187,7 @@
     <Content Include="Assets\helmetBlack.png" />
     <Content Include="Assets\helmetred.png" />
     <Content Include="Assets\helmetWhite.png" />
+    <Content Include="Assets\sim.png" />
     <Content Include="Assets\ToastIcon.png" />
     <Content Include="Assets\AlignmentGrid.png" />
     <Content Include="Assets\ApplicationIcon.png">
@@ -204,6 +215,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\downloaddark.png" />
+    <Content Include="OVER.txt" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\AppResources.resx">
@@ -251,6 +263,10 @@
     <Reference Include="System.Windows.Interactivity, Version=3.9.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Fuel.About\Fuel.About.csproj">
+      <Project>{450EA373-90FB-493F-96AB-EAF9F77BF8A2}</Project>
+      <Name>Fuel.About</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fuel.LoginControl\Fuel.LoginControl.csproj">
       <Project>{9CD9F551-E510-41E5-A1D9-B06B6340117E}</Project>
       <Name>Fuel.LoginControl</Name>
