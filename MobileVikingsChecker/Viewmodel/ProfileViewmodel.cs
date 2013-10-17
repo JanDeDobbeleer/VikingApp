@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Security.Cryptography;
@@ -15,9 +16,9 @@ namespace Fuel.Viewmodel
     public class ProfileViewmodel:CancelAsyncTask
     {
         public string Msisdn;
-        public IEnumerable<Referral> Referral;
-        public IEnumerable<Links> Links; 
-        public Stats Stats;
+        public IEnumerable<Referral> Referral { get; private set; }
+        public IEnumerable<Links> Links { get; private set; } 
+        public Stats Stats { get; private set; }
         private int _page;
 
         #region event handling
@@ -92,7 +93,15 @@ namespace Fuel.Viewmodel
                         return;
                     if (!string.Equals(args.Json, "[]"))
                     {
-                        Referral = (_page == 1) ? JsonConvert.DeserializeObject<Referral[]>(args.Json) : Referral.Concat(JsonConvert.DeserializeObject<Referral[]>(args.Json));
+                        try
+                        {
+                            Referral = (_page == 1) ? JsonConvert.DeserializeObject<Referral[]>(args.Json) : Referral.Concat(JsonConvert.DeserializeObject<Referral[]>(args.Json));
+                        }
+                        catch (Exception)
+                        {
+                            Tools.Tools.SetProgressIndicator(false);
+                            return;
+                        }
                         await GetReferrals(++_page);
                         return;
                     }
@@ -132,7 +141,15 @@ namespace Fuel.Viewmodel
                         return;
                     if (!string.Equals(args.Json, "[]"))
                     {
-                        Stats = JsonConvert.DeserializeObject<Stats>(args.Json);
+                        try
+                        {
+                            Stats = JsonConvert.DeserializeObject<Stats>(args.Json);
+                        }
+                        catch (Exception)
+                        {
+                            Tools.Tools.SetProgressIndicator(false);
+                            return;
+                        }
                     }
                     break;
             }
@@ -170,7 +187,15 @@ namespace Fuel.Viewmodel
                         return;
                     if (!string.Equals(args.Json, "[]"))
                     {
-                        Links = JsonConvert.DeserializeObject<Links[]>(args.Json);
+                        try
+                        {
+                            Links = JsonConvert.DeserializeObject<Links[]>(args.Json);
+                        }
+                        catch (Exception)
+                        {
+                            Tools.Tools.SetProgressIndicator(false);
+                            return;
+                        }
                     }
                     break;
             }

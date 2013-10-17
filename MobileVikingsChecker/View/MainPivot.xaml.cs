@@ -101,7 +101,7 @@ namespace Fuel.View
                 return;
             }
             App.Viewmodel.MainPivotViewmodel.CancelTask();
-            App.Viewmodel.DetailsViewmodel.Msisdn = SimBox.Text;
+            App.Viewmodel.UsageViewmodel.Msisdn = SimBox.Text;
             NavigationService.Navigate(new Uri("/View/DetailsPage.xaml", UriKind.Relative));
         }
         #endregion

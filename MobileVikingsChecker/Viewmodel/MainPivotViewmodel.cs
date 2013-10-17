@@ -22,6 +22,7 @@ namespace Fuel.Viewmodel
         #region properties
         private const string PeriodicTaskName = "UpdateTile";
         private PeriodicTask _periodicTask;
+
         private IEnumerable<Sim> _sims;
         public IEnumerable<Sim> Sims
         {
@@ -34,6 +35,7 @@ namespace Fuel.Viewmodel
                 OnPropertyChanged();
             }
         }
+
         private UserBalance _balance;
         public UserBalance Balance
         {
@@ -104,7 +106,15 @@ namespace Fuel.Viewmodel
                 case false:
                     if (string.IsNullOrEmpty(args.Json) || string.Equals(args.Json, "[]"))
                         return;
-                    Balance.Load(args.Json);
+                    try
+                    {
+                        Balance.Load(args.Json);
+                    }
+                    catch (Exception)
+                    {
+                        Tools.Tools.SetProgressIndicator(false);
+                        return;
+                    }
                     Tools.Tools.SetProgressIndicator(false);
                     break;
             }
@@ -139,7 +149,15 @@ namespace Fuel.Viewmodel
                 case false:
                     if (string.IsNullOrEmpty(args.Json) || string.Equals(args.Json, "[]"))
                         return;
-                    Sims = JsonConvert.DeserializeObject<Sim[]>(args.Json);
+                    try
+                    {
+                        Sims = JsonConvert.DeserializeObject<Sim[]>(args.Json);
+                    }
+                    catch (Exception)
+                    {
+                        Tools.Tools.SetProgressIndicator(false);
+                        return;
+                    }
                     Tools.Tools.SetProgressIndicator(false);
                     break;
             }

@@ -22,7 +22,7 @@ namespace Fuel.View
         {
             InitializeComponent();
             BuildApplicationBar();
-            App.Viewmodel.DetailsViewmodel.GetInfoFinished += DetailsViewmodel_GetInfoFinished;
+            App.Viewmodel.UsageViewmodel.GetInfoFinished += DetailsViewmodel_GetInfoFinished;
         }
 
         private void BuildApplicationBar()
@@ -47,19 +47,19 @@ namespace Fuel.View
                 return;
             Viewer.IsEnabled = false;
             Tools.Tools.SetProgressIndicator(false);
-            App.Viewmodel.DetailsViewmodel.CancelTask();
+            App.Viewmodel.UsageViewmodel.CancelTask();
             Viewer.Visibility = Visibility.Collapsed;
-            App.Viewmodel.DetailsViewmodel.RenewToken();
+            App.Viewmodel.UsageViewmodel.RenewToken();
             switch ((sender as ApplicationBarMenuItem).Text)
             {
                 case "last day":
-                    await App.Viewmodel.DetailsViewmodel.GetUsage(DateTime.Today.AddDays(-1), DateTime.Now);
+                    await App.Viewmodel.UsageViewmodel.GetUsage(DateTime.Today.AddDays(-1), DateTime.Now);
                     break;
                 case "last week":
-                    await App.Viewmodel.DetailsViewmodel.GetUsage(DateTime.Today.AddDays(-7), DateTime.Now);
+                    await App.Viewmodel.UsageViewmodel.GetUsage(DateTime.Today.AddDays(-7), DateTime.Now);
                     break;
                 case "last month":
-                    await App.Viewmodel.DetailsViewmodel.GetUsage(DateTime.Today.AddDays(-30), DateTime.Now);
+                    await App.Viewmodel.UsageViewmodel.GetUsage(DateTime.Today.AddDays(-30), DateTime.Now);
                     break;
             }
         }
@@ -76,11 +76,11 @@ namespace Fuel.View
 
         private void CalendarCancelOnClick(object sender, EventArgs e)
         {
-            App.Viewmodel.DetailsViewmodel.CancelTask();
+            App.Viewmodel.UsageViewmodel.CancelTask();
             Tools.Tools.SetProgressIndicator(false);
             Viewer.IsEnabled = true;
-            if (App.Viewmodel.DetailsViewmodel.Usage != null)
-                Viewer.ScrollIntoView(App.Viewmodel.DetailsViewmodel.Usage.ElementAt(0));
+            if (App.Viewmodel.UsageViewmodel.Usage != null)
+                Viewer.ScrollIntoView(App.Viewmodel.UsageViewmodel.Usage.ElementAt(0));
             ResetAppbar();
         }
 
@@ -95,9 +95,9 @@ namespace Fuel.View
                 _calendar = true;
                 Viewer.IsEnabled = false;
                 DatePicker.IsEnabled = false;
-                App.Viewmodel.DetailsViewmodel.RenewToken();
+                App.Viewmodel.UsageViewmodel.RenewToken();
                 _isSecondDate = false;
-                await App.Viewmodel.DetailsViewmodel.GetUsage(_firstDate, _secondDate);
+                await App.Viewmodel.UsageViewmodel.GetUsage(_firstDate, _secondDate);
             }
             else
             {
@@ -151,7 +151,7 @@ namespace Fuel.View
         private void CalendarOnClick(object sender, EventArgs e)
         {
             Tools.Tools.SetProgressIndicator(false);
-            App.Viewmodel.DetailsViewmodel.CancelTask();
+            App.Viewmodel.UsageViewmodel.CancelTask();
             DatePicker.IsEnabled = true;
             BuildCalendarAppbar();
             Viewer.Visibility = Visibility.Collapsed;
@@ -160,10 +160,10 @@ namespace Fuel.View
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(App.Viewmodel.DetailsViewmodel.Msisdn))
+            if (string.IsNullOrWhiteSpace(App.Viewmodel.UsageViewmodel.Msisdn))
                 return;
             SystemTray.ProgressIndicator = new ProgressIndicator();
-            await App.Viewmodel.DetailsViewmodel.GetUsage(DateTime.Now.AddDays(-1), DateTime.Now);
+            await App.Viewmodel.UsageViewmodel.GetUsage(DateTime.Now.AddDays(-1), DateTime.Now);
         }
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
@@ -173,8 +173,8 @@ namespace Fuel.View
                 ResetAppbar();
                 e.Cancel = true;
                 base.OnBackKeyPress(e);
-                if (App.Viewmodel.DetailsViewmodel.Usage != null)
-                    Viewer.ScrollIntoView(App.Viewmodel.DetailsViewmodel.Usage.ElementAt(0));
+                if (App.Viewmodel.UsageViewmodel.Usage != null)
+                    Viewer.ScrollIntoView(App.Viewmodel.UsageViewmodel.Usage.ElementAt(0));
             }
             else if (_isSecondDate)
             {
@@ -187,7 +187,7 @@ namespace Fuel.View
             }
             else
             {
-                App.Viewmodel.DetailsViewmodel.CancelTask();
+                App.Viewmodel.UsageViewmodel.CancelTask();
             }
         }
 
@@ -203,18 +203,18 @@ namespace Fuel.View
             RefreshListBox();
             Viewer.IsEnabled = true;
             Viewer.Visibility = Visibility.Visible;
-            if (App.Viewmodel.DetailsViewmodel.Usage == null)
+            if (App.Viewmodel.UsageViewmodel.Usage == null)
             {
                 Message.ShowToast("There is no data for this period");
                 return;
             }
-            Viewer.ScrollIntoView(App.Viewmodel.DetailsViewmodel.Usage.ElementAt(0));
+            Viewer.ScrollIntoView(App.Viewmodel.UsageViewmodel.Usage.ElementAt(0));
         }
 
         private void RefreshListBox()
         {
             Viewer.ItemsSource = null;
-            Viewer.ItemsSource = App.Viewmodel.DetailsViewmodel.Usage;
+            Viewer.ItemsSource = App.Viewmodel.UsageViewmodel.Usage;
         }
     }
 }

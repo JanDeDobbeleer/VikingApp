@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using AsyncOAuth;
 using Microsoft.Phone.Shell;
+using Microsoft.Phone.UserData;
 using Newtonsoft.Json;
 using Tools;
 using VikingApi.ApiTools;
@@ -15,8 +16,9 @@ namespace Fuel.Viewmodel
 {
     public class UsageViewmodel : CancelAsyncTask
     {
-        public string Msisdn;
-        public IEnumerable<Usage> Usage;
+        public string Msisdn { get; set; }
+        public IEnumerable<Usage> Usage { get; private set; }
+        public IEnumerable<Contact> Contacts { get; private set; }
         private int _page;
         private DateTime _date1;
         private DateTime _date2;
@@ -33,6 +35,18 @@ namespace Fuel.Viewmodel
             }
         }
         #endregion
+
+        public UsageViewmodel()
+        {
+            var contacts = new Contacts();
+            contacts.SearchCompleted += contacts_SearchCompleted;
+            contacts.SearchAsync(string.Empty, FilterKind.None, "Contact test");
+        }
+
+        void contacts_SearchCompleted(object sender, ContactsSearchEventArgs e)
+        {
+            Contacts = e.Results;
+        }
 
         public async Task<bool> GetUsage(DateTime fromDate, DateTime untilDate, int page = 1)
         {
@@ -78,8 +92,16 @@ namespace Fuel.Viewmodel
                         return;
                     if (!string.Equals(args.Json, "[]"))
                     {
-                        Usage = (_page == 1) ? JsonConvert.DeserializeObject<Usage[]>(args.Json) : Usage.Concat(JsonConvert.DeserializeObject<Usage[]>(args.Json));
-                        await GetUsage(_date1, _date2, ++_page);
+                        try
+                        {
+                            Usage = (_page == 1) ? JsonConvert.DeserializeObject<Usage[]>(args.Json) : Usage.Concat(JsonConvert.DeserializeObject<Usage[]>(args.Json));
+                            await GetUsage(_date1, _date2, ++_page);
+                        }
+                        catch (Exception)
+                        {
+                            Tools.Tools.SetProgressIndicator(false);
+                            return;
+                        }
                         return;
                     }
                     Tools.Tools.SetProgressIndicator(false);

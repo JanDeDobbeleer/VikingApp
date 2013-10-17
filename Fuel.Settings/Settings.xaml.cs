@@ -21,8 +21,6 @@ namespace Fuel.Settings
     public partial class Settings : PhoneApplicationPage
     {
         private IEnumerable<Sim> _sims;
-        //private readonly List<String> _topupValues = new List<string> { "10", "15", "25", "40", "60" };
-        //private readonly List<string> _tileValues = new List<string> { "phone theme", "viking red" };
         private CancellationTokenSource _cts = new CancellationTokenSource();
         private bool _starting;
         private bool _isPressed;
@@ -36,7 +34,6 @@ namespace Fuel.Settings
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             _starting = true;
-            //TileColorPicker.ItemsSource = _tileValues.ToList();
             TileColorPicker.SelectedIndex = (bool)IsolatedStorageSettings.ApplicationSettings["tileAccentColor"] ? 0 : 1;
             SystemTray.ProgressIndicator = new ProgressIndicator();
             ShowHideSimTopup((bool)IsolatedStorageSettings.ApplicationSettings["topup"]);
@@ -79,7 +76,15 @@ namespace Fuel.Settings
                 case false:
                     if (string.IsNullOrEmpty(args.Json) || string.Equals(args.Json, "[]"))
                         return;
-                    _sims = JsonConvert.DeserializeObject<Sim[]>(args.Json);
+                    try
+                    {
+                        _sims = JsonConvert.DeserializeObject<Sim[]>(args.Json);
+                    }
+                    catch (Exception)
+                    {
+                        Tools.Tools.SetProgressIndicator(false);
+                        return;
+                    }
                     Tools.Tools.SetProgressIndicator(false);
                     break;
             }
@@ -120,7 +125,6 @@ namespace Fuel.Settings
             {
                 SimPicker.Items.Add(item);
             }
-            //SimPicker.ItemsSource = _sims.Select(x => x.msisdn);
             var visible = (on) ? Visibility.Visible : Visibility.Collapsed;
             SimText.Visibility = visible;
             SimPicker.Visibility = visible;

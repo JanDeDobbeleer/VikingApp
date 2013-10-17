@@ -15,10 +15,10 @@ namespace Fuel.Viewmodel
 {
     public class SimDetailsViewmodel : CancelAsyncTask
     {
-        public string Msisdn;
-        public IEnumerable<TopUp> Topup;
-        public PricePlan Plan;
-        public SimCard Card;
+        public string Msisdn { get; set; }
+        public IEnumerable<TopUp> Topup { get; private set; }
+        public PricePlan Plan { get; private set; }
+        public SimCard Card { get; private set; }
         private int _page;
         private DateTime _date1;
         private DateTime _date2;
@@ -100,8 +100,16 @@ namespace Fuel.Viewmodel
                         return;
                     if (!string.Equals(args.Json, "[]"))
                     {
-                        Topup = (_page == 1) ? JsonConvert.DeserializeObject<TopUp[]>(args.Json) : Topup.Concat(JsonConvert.DeserializeObject<TopUp[]>(args.Json));
-                        await GetTopUps(_date1, _date2, ++_page);
+                        try
+                        {
+                            Topup = (_page == 1) ? JsonConvert.DeserializeObject<TopUp[]>(args.Json) : Topup.Concat(JsonConvert.DeserializeObject<TopUp[]>(args.Json));
+                            await GetTopUps(_date1, _date2, ++_page);
+                        }
+                        catch (Exception)
+                        {
+                            Tools.Tools.SetProgressIndicator(false);
+                            return;
+                        }
                         return;
                     }
                     break;
@@ -140,7 +148,15 @@ namespace Fuel.Viewmodel
                         return;
                     if (!string.Equals(args.Json, "[]"))
                     {
-                        Plan = JsonConvert.DeserializeObject<PricePlan>(args.Json);
+                        try
+                        {
+                            Plan = JsonConvert.DeserializeObject<PricePlan>(args.Json);
+                        }
+                        catch (Exception)
+                        {
+                            Tools.Tools.SetProgressIndicator(false);
+                            return;
+                        }
                     }
                     break;
             }
@@ -178,7 +194,15 @@ namespace Fuel.Viewmodel
                         return;
                     if (!string.Equals(args.Json, "[]"))
                     {
-                        Card = JsonConvert.DeserializeObject<SimCard>(args.Json);
+                        try
+                        {
+                            Card = JsonConvert.DeserializeObject<SimCard>(args.Json);
+                        }
+                        catch (Exception)
+                        {
+                            Tools.Tools.SetProgressIndicator(false);
+                            return;
+                        }
                     }
                     break;
             }

@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Windows.Data;
+using Microsoft.Phone.Tasks;
+using Microsoft.Phone.UserData;
 using VikingApi.Json;
 
 namespace Fuel.Common
@@ -23,7 +27,7 @@ namespace Fuel.Common
             if (usage.IsMms || usage.IsSms || usage.IsVoice)
             {
                 var to = (usage.IsIncoming) ? "from":"to";
-                information = string.Format("{0} {1} {2} ", GetType(usage), to, usage.To);
+                information = string.Format("{0} {1} {2} ", GetType(usage), to, FetchContactName(usage.To));
             }
             else
             {
@@ -42,5 +46,21 @@ namespace Fuel.Common
                 return "call";
             return usage.IsData ? "data" : string.Empty;
         }
+
+         private string FetchContactName(string numberStr)
+         {
+             if (App.Viewmodel.UsageViewmodel.Contacts == null)
+                 return numberStr;
+             var result = from Contact con in App.Viewmodel.UsageViewmodel.Contacts
+                          from ContactPhoneNumber a in con.PhoneNumbers
+                          where a.PhoneNumber.Contains((numberStr.StartsWith("0"))?numberStr.Remove(0,1):numberStr)
+                          select con;
+             var enumerable = result as IList<Contact> ?? result.ToList();
+             if (!enumerable.Any()) 
+                 return numberStr;
+             var firstOrDefault = enumerable.FirstOrDefault();
+             if (firstOrDefault != null) return firstOrDefault.DisplayName ?? numberStr;
+             return numberStr;
+         }
     }
 }

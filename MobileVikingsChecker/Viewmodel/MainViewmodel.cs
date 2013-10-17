@@ -18,15 +18,15 @@ namespace Fuel.Viewmodel
                 OnPropertyChanged();
             }
         }
-        private UsageViewmodel _detailsViewmodel;
-        public UsageViewmodel DetailsViewmodel
+        private UsageViewmodel _usageViewmodel;
+        public UsageViewmodel UsageViewmodel
         {
-            get { return _detailsViewmodel; }
+            get { return _usageViewmodel; }
             set
             {
-                if (value.Equals(_detailsViewmodel))
+                if (value.Equals(_usageViewmodel))
                     return;
-                _detailsViewmodel = value;
+                _usageViewmodel = value;
                 OnPropertyChanged();
             }
         }
@@ -59,7 +59,7 @@ namespace Fuel.Viewmodel
 
         public MainViewmodel()
         {
-            DetailsViewmodel = new UsageViewmodel();
+            UsageViewmodel = new UsageViewmodel();
             MainPivotViewmodel = new MainPivotViewmodel();
             SimViewmodel = new SimDetailsViewmodel();
             ProfileViewmodel = new ProfileViewmodel();
