@@ -41,6 +41,7 @@ namespace Fuel.Viewmodel
                 _page = page;
                 _date1 = fromDate;
                 _date2 = untilDate;
+                Usage = null;
             }
             var pair = new[]
             {

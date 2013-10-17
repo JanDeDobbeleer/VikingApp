@@ -35,13 +35,40 @@ namespace Fuel.View
         {
             ApplicationBar.Buttons.Clear();
             ApplicationBar.Buttons.Add(Tools.Tools.CreateButton("/Assets/feature.calendar.png", "calendar", true, CalendarOnClick));
+            ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("last day", true, LastOnClick));
+            ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("last week", true, LastOnClick));
+            ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("last month", true, LastOnClick));
             SubTitleBlock.Text = "usage";
+        }
+
+        private async void LastOnClick(object sender, EventArgs e)
+        {
+            if ((sender as ApplicationBarMenuItem) == null)
+                return;
+            Viewer.IsEnabled = false;
+            Tools.Tools.SetProgressIndicator(false);
+            App.Viewmodel.DetailsViewmodel.CancelTask();
+            Viewer.Visibility = Visibility.Collapsed;
+            App.Viewmodel.DetailsViewmodel.RenewToken();
+            switch ((sender as ApplicationBarMenuItem).Text)
+            {
+                case "last day":
+                    await App.Viewmodel.DetailsViewmodel.GetUsage(DateTime.Today.AddDays(-1), DateTime.Now);
+                    break;
+                case "last week":
+                    await App.Viewmodel.DetailsViewmodel.GetUsage(DateTime.Today.AddDays(-7), DateTime.Now);
+                    break;
+                case "last month":
+                    await App.Viewmodel.DetailsViewmodel.GetUsage(DateTime.Today.AddDays(-30), DateTime.Now);
+                    break;
+            }
         }
 
         private void BuildCalendarAppbar()
         {
             _datepicker = true;
             ApplicationBar.Buttons.Clear();
+            ApplicationBar.MenuItems.Clear();
             ApplicationBar.Buttons.Add(Tools.Tools.CreateButton("/Assets/arrow.png", "next", true, CalendarCheckOnClick));
             ApplicationBar.Buttons.Add(Tools.Tools.CreateButton("/Assets/cancel.png", "cancel", true, CalendarCancelOnClick));
             SubTitleBlock.Text = "from";
