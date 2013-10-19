@@ -63,7 +63,7 @@ namespace UpdateLiveTile
         {
             if (args.Canceled)
             {
-                SetDefaultTile();
+                SetDefaultTile("unavailable");
                 return;
             }
             if (string.IsNullOrEmpty(args.Json) || string.Equals(args.Json, "[]"))
@@ -75,19 +75,19 @@ namespace UpdateLiveTile
             }
             catch (Exception)
             {
-                SetDefaultTile();
+                SetDefaultTile("error");
             }
 #if(DEBUG)
             Debug.WriteLine("Live tile: Tile has been updated");
 #endif
         }
 
-        private void SetDefaultTile()
+        private void SetDefaultTile(string backContent)
         {
             var newTile = new FlipTileData
             {
                 Count = 0,
-                BackContent = "unavailable",
+                BackContent = backContent,
                 BackBackgroundImage = (bool)IsolatedStorageSettings.ApplicationSettings["tileAccentColor"] ? new Uri("/Assets/336x336empty.png", UriKind.Relative) : new Uri("/Assets/336x336redempty.png", UriKind.Relative)
             };
             var firstOrDefault = ShellTile.ActiveTiles.FirstOrDefault();
