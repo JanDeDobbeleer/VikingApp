@@ -76,7 +76,6 @@ namespace Tools
             IsolatedStorageSettings.ApplicationSettings["defaulttopupvalue"] = 10;
             IsolatedStorageSettings.ApplicationSettings["lastusedsim"] = false;
             IsolatedStorageSettings.ApplicationSettings["sim"] = string.Empty;
-            IsolatedStorageSettings.ApplicationSettings["boot"] = false;
             IsolatedStorageSettings.ApplicationSettings["tileAccentColor"] = true;
             var newTile = new FlipTileData
             {

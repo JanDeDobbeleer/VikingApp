@@ -27,7 +27,7 @@ namespace Fuel.Controls
 
         private void LoadLists()
         {
-            _dayList = new ListLoopingDataSource<int> { Items = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 }, SelectedItem = DateTime.Now.Day, Tag = "day"};
+            _dayList = new ListLoopingDataSource<int> { Items = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 }, SelectedItem = DateTime.Now.Day, Tag = "day"};
             _monthList = new ListLoopingDataSource<int> { Items = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }, SelectedItem = DateTime.Now.Month, Tag = "month"};
             var years = new List<int>();
             for (var i = 2009; i <= DateTime.Now.Year; i++)

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
-using Microsoft.Phone.Tasks;
 using Microsoft.Phone.UserData;
 using VikingApi.Json;
 
@@ -49,18 +48,34 @@ namespace Fuel.Common
 
          private string FetchContactName(string numberStr)
          {
-             if (App.Viewmodel.UsageViewmodel.Contacts == null)
+             try
+             {
+                 if (App.Viewmodel.UsageViewmodel.Contacts == null)
+                     return numberStr;
+                 var result = from Contact con in App.Viewmodel.UsageViewmodel.Contacts
+                              from ContactPhoneNumber a in con.PhoneNumbers
+                              where NoSpaces(a.PhoneNumber).Contains((numberStr.Length == 4) ? numberStr : (numberStr.StartsWith("0")) ? numberStr.Remove(0, 1) : numberStr)
+                              select con;
+                 var enumerable = result as IList<Contact> ?? result.ToList();
+                 if (!enumerable.Any())
+                     return numberStr;
+                 if (enumerable.Count() > 1)
+                 {
+                     var contact = enumerable.OrderBy(x => x.PhoneNumbers).FirstOrDefault();
+                     return contact.DisplayName;
+                 }
+                 return enumerable.Single().DisplayName;
+             }
+             catch
+             {
                  return numberStr;
-             var result = from Contact con in App.Viewmodel.UsageViewmodel.Contacts
-                          from ContactPhoneNumber a in con.PhoneNumbers
-                          where a.PhoneNumber.Contains((numberStr.StartsWith("0"))?numberStr.Remove(0,1):numberStr)
-                          select con;
-             var enumerable = result as IList<Contact> ?? result.ToList();
-             if (!enumerable.Any()) 
-                 return numberStr;
-             var firstOrDefault = enumerable.FirstOrDefault();
-             if (firstOrDefault != null) return firstOrDefault.DisplayName ?? numberStr;
-             return numberStr;
+             }
+             
+         }
+
+         private string NoSpaces(string input)
+         {
+             return input.Replace(" ",string.Empty);
          }
     }
 }

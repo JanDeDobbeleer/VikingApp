@@ -67,10 +67,6 @@ namespace Fuel
         // This code will not execute when the application is reactivated
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
-            if (!IsolatedStorageSettings.ApplicationSettings.Contains("boot"))
-            {
-                Tools.Tools.DefaultAllSettings();
-            }
             if (!IsolatedStorageSettings.ApplicationSettings.Contains("login"))
             {
                 IsolatedStorageSettings.ApplicationSettings["login"] = true;

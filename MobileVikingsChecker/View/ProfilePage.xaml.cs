@@ -5,6 +5,7 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
+using Tools;
 using VikingApi.ApiTools;
 
 namespace Fuel.View
@@ -47,6 +48,11 @@ namespace Fuel.View
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            if (!Tools.Tools.HasInternetConnection())
+            {
+                Message.ShowToast("Bummer, it looks like we're all out of internet.");
+                return;
+            }
             SystemTray.ProgressIndicator = new ProgressIndicator();
             App.Viewmodel.ProfileViewmodel.RenewToken();
             await App.Viewmodel.ProfileViewmodel.GetStats();

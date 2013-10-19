@@ -63,24 +63,36 @@ namespace UpdateLiveTile
         {
             if (args.Canceled)
             {
-                var newTile = new FlipTileData
-                {
-                    Count = 0,
-                    BackContent = "unavailable",
-                    BackBackgroundImage = (bool)IsolatedStorageSettings.ApplicationSettings["tileAccentColor"] ? new Uri("/Assets/336x336empty.png", UriKind.Relative) : new Uri("/Assets/336x336redempty.png", UriKind.Relative)
-                };
-                var firstOrDefault = ShellTile.ActiveTiles.FirstOrDefault();
-                if (firstOrDefault != null)
-                    firstOrDefault.Update(newTile);
+                SetDefaultTile();
                 return;
             }
             if (string.IsNullOrEmpty(args.Json) || string.Equals(args.Json, "[]"))
                 return;
-            _balance.Load(args.Json);
-            SetTile();
+            try
+            {
+                _balance.Load(args.Json);
+                SetTile();
+            }
+            catch (Exception)
+            {
+                SetDefaultTile();
+            }
 #if(DEBUG)
             Debug.WriteLine("Live tile: Tile has been updated");
 #endif
+        }
+
+        private void SetDefaultTile()
+        {
+            var newTile = new FlipTileData
+            {
+                Count = 0,
+                BackContent = "unavailable",
+                BackBackgroundImage = (bool)IsolatedStorageSettings.ApplicationSettings["tileAccentColor"] ? new Uri("/Assets/336x336empty.png", UriKind.Relative) : new Uri("/Assets/336x336redempty.png", UriKind.Relative)
+            };
+            var firstOrDefault = ShellTile.ActiveTiles.FirstOrDefault();
+            if (firstOrDefault != null)
+                firstOrDefault.Update(newTile);
         }
 
         private void SetTile()
@@ -96,19 +108,6 @@ namespace UpdateLiveTile
             if (firstOrDefault != null)
                 firstOrDefault.Update(newTile);
         }
-
-        /*private string BuildInfoString()
-        {
-            var info = _balance.Credit + Environment.NewLine;
-            var data = _balance.Data ?? "0";
-            info += data + " MB" + Environment.NewLine;
-            var sms = _balance.Sms ?? "0"; 
-            info += sms + " SMS" + Environment.NewLine;
-#if(DEBUG)
-            Debug.WriteLine("Live tile: Back content = " + info);
-#endif
-            return info;
-        }*/
 
         public void SaveImage()
         {

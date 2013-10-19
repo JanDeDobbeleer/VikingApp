@@ -56,7 +56,7 @@ namespace Fuel.View
 
         private void SimOnClick(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(SimBox.Text))
+            if (string.IsNullOrWhiteSpace(SimBox.Text) && string.IsNullOrWhiteSpace((string)IsolatedStorageSettings.ApplicationSettings["sim"]))
             {
                 Message.ShowToast("please wait till your sim information is loaded");
                 return;
@@ -73,35 +73,30 @@ namespace Fuel.View
 
         private void SettingsOnClick(object sender, EventArgs e)
         {
-            if (!Tools.Tools.HasInternetConnection())
-            {
-                Message.ShowToast("I'm sorry Dave, I'm afraid I can't do that without an internet connection");
-                return;
-            }
             NavigationService.Navigate(new Uri("/Fuel.Settings;component/Settings.xaml", UriKind.Relative));
         }
 
         private void ProfileOnClick(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(SimBox.Text))
+            if (string.IsNullOrWhiteSpace(SimBox.Text) && string.IsNullOrWhiteSpace((string)IsolatedStorageSettings.ApplicationSettings["sim"]))
             {
                 Message.ShowToast("please wait until your sim information is loaded");
                 return;
             }
             App.Viewmodel.MainPivotViewmodel.CancelTask();
-            App.Viewmodel.ProfileViewmodel.Msisdn = SimBox.Text;
+            App.Viewmodel.ProfileViewmodel.Msisdn = string.IsNullOrWhiteSpace(SimBox.Text) ? (string)IsolatedStorageSettings.ApplicationSettings["sim"] : SimBox.Text;
             NavigationService.Navigate(new Uri("/View/ProfilePage.xaml", UriKind.Relative));
         }
 
         private void UsageOnClick(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(SimBox.Text))
+            if (string.IsNullOrWhiteSpace(SimBox.Text) && string.IsNullOrWhiteSpace((string)IsolatedStorageSettings.ApplicationSettings["sim"]))
             {
                 Message.ShowToast("please wait until your sim information is loaded");
                 return;
             }
             App.Viewmodel.MainPivotViewmodel.CancelTask();
-            App.Viewmodel.UsageViewmodel.Msisdn = SimBox.Text;
+            App.Viewmodel.UsageViewmodel.Msisdn = string.IsNullOrWhiteSpace(SimBox.Text) ? (string)IsolatedStorageSettings.ApplicationSettings["sim"] : SimBox.Text;
             NavigationService.Navigate(new Uri("/View/DetailsPage.xaml", UriKind.Relative));
         }
         #endregion
@@ -133,6 +128,12 @@ namespace Fuel.View
                 if (!_isLoginControlEnabled)
                     ShowLogin();
             }
+            else if (!Tools.Tools.HasInternetConnection())
+            {
+                ApplicationBar.IsVisible = true;
+                Pivot.Visibility = Visibility.Visible;
+                Message.ShowToast("Bummer, it looks like we're all out of internet.");
+            }
             else
             {
                 ApplicationBar.IsVisible = true;
@@ -155,6 +156,7 @@ namespace Fuel.View
                 if (string.IsNullOrEmpty((string)IsolatedStorageSettings.ApplicationSettings["sim"]))
                     IsolatedStorageSettings.ApplicationSettings["sim"] = SimBox.Text;
                 App.Viewmodel.MainPivotViewmodel.StartPeriodicAgent();
+                App.Viewmodel.MainPivotViewmodel.RenewToken();
                 await App.Viewmodel.MainPivotViewmodel.GetData(SimBox.Text);
             }
             else

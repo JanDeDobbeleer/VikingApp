@@ -162,6 +162,11 @@ namespace Fuel.View
         {
             if (string.IsNullOrWhiteSpace(App.Viewmodel.UsageViewmodel.Msisdn))
                 return;
+            if (!Tools.Tools.HasInternetConnection())
+            {
+                Message.ShowToast("Bummer, it looks like we're all out of internet.");
+                return;
+            }
             SystemTray.ProgressIndicator = new ProgressIndicator();
             await App.Viewmodel.UsageViewmodel.GetUsage(DateTime.Now.AddDays(-1), DateTime.Now);
         }

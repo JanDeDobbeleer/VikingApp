@@ -157,7 +157,7 @@ namespace VikingApi.ApiTools
             var args = new GetInfoCompletedArgs();
             if (!ApiTools.HasInternetConnection())
             {
-                Message.ShowToast("Please connect to the internet and try again.");
+                Message.ShowToast("Bummer, it looks like we're all out of internet.");
                 return false;
             }
             try
@@ -168,19 +168,8 @@ namespace VikingApi.ApiTools
                     {
                         using (cts.Token.Register(() => client.CancelPendingRequests()))
                         {
-                            try
-                            {
                                 args.Json = await client.GetStringAsync(BaseUrl + path);
                                 args.Canceled = false;
-                            }
-                            catch (Exception e)
-                            {
-#if(DEBUG)
-                                Debug.WriteLine(e);
-#endif
-                                args.Canceled = true;
-                            }
-                            
                         }
                     }
                 }
