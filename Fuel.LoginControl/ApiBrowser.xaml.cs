@@ -80,7 +80,7 @@ namespace Fuel.LoginControl
                     {
                         pin = (string) Browser.InvokeScript("newfunc_getmyvalue");
                     }
-                    catch (SystemException e)
+                    catch (SystemException)
                     {
                         _count++;
                         BrowserOnNavigated(sender, navigationEventArgs);

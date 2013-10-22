@@ -39,11 +39,12 @@ namespace Fuel.View
         {
             if (App.Viewmodel.ProfileViewmodel.Links == null || string.IsNullOrWhiteSpace(App.Viewmodel.ProfileViewmodel.Msisdn))
                 return;
-            var task = new ShareStatusTask
+            var shareLinkTask = new ShareLinkTask
                 {
-                    Status = string.Format("Join the revolution, become a viking! #fuel {0}", App.Viewmodel.ProfileViewmodel.Links.Select(x=>x.Link).FirstOrDefault())
+                    LinkUri = new Uri(App.Viewmodel.ProfileViewmodel.Links.Select(x => x.Link).First(), UriKind.Absolute),
+                    Message = "Join the revolution, become a viking! #fuel"
                 };
-            task.Show();
+            shareLinkTask.Show();
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)

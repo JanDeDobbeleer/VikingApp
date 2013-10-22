@@ -123,7 +123,7 @@ namespace VikingApi.ApiTools
             {
                 return null;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }
@@ -146,7 +146,7 @@ namespace VikingApi.ApiTools
             {
                 return null;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }
@@ -187,7 +187,7 @@ namespace VikingApi.ApiTools
                 args.Canceled = true;
                 OnGetInfoFinished(args);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 args.Canceled = true;
                 OnGetInfoFinished(args);

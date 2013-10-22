@@ -126,13 +126,21 @@ namespace Fuel.About
         }
 
 
-        private void GetVikingNumbers()
+        private bool GetVikingNumbers()
         {
-            if (NetworkInterface.NetworkInterfaceType == NetworkInterfaceType.None)
-                return;
-            var client = new WebClient();
-            client.DownloadStringCompleted += ClientOnDownloadStringCompleted;
-            client.DownloadStringAsync(new Uri("https://mobilevikings.com/api/active_users", uriKind: UriKind.RelativeOrAbsolute));
+            try
+            {
+                if (NetworkInterface.NetworkInterfaceType == NetworkInterfaceType.None)
+                    return false;
+                var client = new WebClient();
+                client.DownloadStringCompleted += ClientOnDownloadStringCompleted;
+                client.DownloadStringAsync(new Uri("https://mobilevikings.com/api/active_users", uriKind: UriKind.RelativeOrAbsolute));
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
         }
 
         private void ClientOnDownloadStringCompleted(object sender, DownloadStringCompletedEventArgs downloadStringCompletedEventArgs)
