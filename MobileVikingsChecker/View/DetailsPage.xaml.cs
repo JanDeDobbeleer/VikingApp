@@ -160,15 +160,17 @@ namespace Fuel.View
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            SystemTray.ProgressIndicator = new ProgressIndicator();
             if (string.IsNullOrWhiteSpace(App.Viewmodel.UsageViewmodel.Msisdn))
                 return;
             if (!Tools.Tools.HasInternetConnection())
             {
                 Message.ShowToast("Bummer, it looks like we're all out of internet.");
-                return;
             }
-            SystemTray.ProgressIndicator = new ProgressIndicator();
-            await App.Viewmodel.UsageViewmodel.GetUsage(DateTime.Now.AddDays(-1), DateTime.Now);
+            else
+            {
+                await App.Viewmodel.UsageViewmodel.GetUsage(DateTime.Now.AddDays(-1), DateTime.Now);
+            }
         }
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)

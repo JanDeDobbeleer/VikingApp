@@ -193,8 +193,11 @@ namespace Fuel.View
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             App.Viewmodel.MainPivotViewmodel.CancelTask();
-            if ((bool)IsolatedStorageSettings.ApplicationSettings["lastusedsim"] || (App.Viewmodel.MainPivotViewmodel.Sims !=null && App.Viewmodel.MainPivotViewmodel.Sims.Count() == 1))
-                Tools.Tools.SaveSetting(new KeyValuePair { Name = "sim", Content = SimBox.Text ?? string.Empty });
+            if ((bool) IsolatedStorageSettings.ApplicationSettings["lastusedsim"] || (App.Viewmodel.MainPivotViewmodel.Sims != null && App.Viewmodel.MainPivotViewmodel.Sims.Count() == 1))
+            {
+                if (!string.IsNullOrWhiteSpace(SimBox.Text))
+                    Tools.Tools.SaveSetting(new KeyValuePair { Name = "sim", Content = SimBox.Text});
+            }
             SimBox.Text = string.Empty;
         }
 

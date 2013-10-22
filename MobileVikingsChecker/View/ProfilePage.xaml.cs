@@ -42,21 +42,24 @@ namespace Fuel.View
             var shareLinkTask = new ShareLinkTask
                 {
                     LinkUri = new Uri(App.Viewmodel.ProfileViewmodel.Links.Select(x => x.Link).First(), UriKind.Absolute),
-                    Message = "Join the revolution, become a viking! #fuel"
+                    Message = "Join the revolution, become a viking! #fuel",
+                    Title = "Become a viking!"
                 };
             shareLinkTask.Show();
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            SystemTray.ProgressIndicator = new ProgressIndicator();
             if (!Tools.Tools.HasInternetConnection())
             {
                 Message.ShowToast("Bummer, it looks like we're all out of internet.");
-                return;
             }
-            SystemTray.ProgressIndicator = new ProgressIndicator();
-            App.Viewmodel.ProfileViewmodel.RenewToken();
-            await App.Viewmodel.ProfileViewmodel.GetStats();
+            else
+            {
+                App.Viewmodel.ProfileViewmodel.RenewToken();
+                await App.Viewmodel.ProfileViewmodel.GetStats();
+            }
         }
 
         #region eventhandling
