@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -43,42 +44,48 @@ namespace UpdateLiveTile.Classes
             }
         }
 
-        public async Task<bool> GetInfo(AccessToken token, string path)
+        public async Task<bool> GetInfo(AccessToken token, string path, bool fromForeground)
         {
             var args = new GetInfoCompletedArgs();
-            if (NetworkInterface.NetworkInterfaceType != NetworkInterfaceType.None)
+            if (NetworkInterface.NetworkInterfaceType == NetworkInterfaceType.None) 
+                return false;
+            try
             {
-
-                try
+                using (var client = OAuthUtility.CreateOAuthClient(ConsumerKey, ConsumerSecret, token))
                 {
-                    using (var client = OAuthUtility.CreateOAuthClient(ConsumerKey, ConsumerSecret, token))
+                    if (!Cts.Token.IsCancellationRequested)
                     {
-                        if (!Cts.Token.IsCancellationRequested)
+                        using (Cts.Token.Register(() => client.CancelPendingRequests()))
                         {
-                            using (Cts.Token.Register(() => client.CancelPendingRequests()))
+                            if (fromForeground)
                             {
                                 args.Json = await client.GetStringAsync(BaseUrl + path);
-                                args.Canceled = false;
                             }
-                            OnGetInfoFinished(args);
+                            else
+                            {
+                                var info = client.GetStreamAsync(BaseUrl + path);
+                                var reader = new StreamReader(info.Result);
+                                args.Json = reader.ReadToEnd();
+                            }
+                            args.Canceled = false;
                         }
+                        OnGetInfoFinished(args);
                     }
                 }
-                catch (Exception)
-                {
-                    CancelTask();
-                    args.Canceled = true;
-                    OnGetInfoFinished(args);
-                }
-                return true;
             }
-            return false;
+            catch (Exception)
+            {
+                CancelTask();
+                args.Canceled = true;
+                OnGetInfoFinished(args);
+            }
+            return true;
         }
 
-        public async Task<bool> GetInfo(AccessToken token, KeyValuePair valuePair)
+        public async Task<bool> GetInfo(AccessToken token, KeyValuePair valuePair, bool fromForeground)
         {
             if (valuePair.content != null && valuePair.name != null)
-                return await GetInfo(token, "sim_balance.json" + "?" + string.Format(Parameter, valuePair.name, HttpUtility.UrlEncode((string)valuePair.content)));
+                return await GetInfo(token, "sim_balance.json" + "?" + string.Format(Parameter, valuePair.name, HttpUtility.UrlEncode((string)valuePair.content)), fromForeground);
             return false;
         }
     }

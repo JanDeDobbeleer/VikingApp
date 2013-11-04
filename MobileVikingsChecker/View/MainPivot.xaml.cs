@@ -18,6 +18,7 @@ namespace Fuel.View
     public partial class MainPivot : PhoneApplicationPage
     {
         private bool _isLoginControlEnabled;
+        private bool _loading;
 
         public MainPivot()
         {
@@ -39,6 +40,7 @@ namespace Fuel.View
 
         private async void RefreshOnClick(object sender, EventArgs e)
         {
+            _loading = true;
             await App.Viewmodel.MainPivotViewmodel.GetData(string.IsNullOrWhiteSpace(SimBox.Text) ? (string)IsolatedStorageSettings.ApplicationSettings["sim"] : SimBox.Text);
         }
 
@@ -68,11 +70,20 @@ namespace Fuel.View
 
         private void AboutOnClick(object sender, EventArgs e)
         {
-            NavigationService.Navigate(new Uri("/Fuel.About;component/About.xaml", UriKind.Relative));
+            if(!_loading)
+            {
+                App.Viewmodel.MainPivotViewmodel.CancelTask();
+                NavigationService.Navigate(new Uri("/Fuel.About;component/About.xaml", UriKind.Relative));
+            }
+            else
+            {
+                Message.ShowToast("Hold your horses, we still need to load some information here.");
+            }
         }
 
         private void SettingsOnClick(object sender, EventArgs e)
         {
+            App.Viewmodel.MainPivotViewmodel.CancelTask();
             NavigationService.Navigate(new Uri("/Fuel.Settings;component/Settings.xaml", UriKind.Relative));
         }
 
@@ -139,6 +150,7 @@ namespace Fuel.View
                 ApplicationBar.IsVisible = true;
                 Pivot.Visibility = Visibility.Visible;
                 App.Viewmodel.MainPivotViewmodel.RenewToken();
+                _loading = true;
                 await App.Viewmodel.MainPivotViewmodel.GetSimInfo();
             }
         }
@@ -159,10 +171,11 @@ namespace Fuel.View
                 App.Viewmodel.MainPivotViewmodel.RenewToken();
                 await App.Viewmodel.MainPivotViewmodel.GetData(SimBox.Text);
             }
-            else
+            else if (!args.Canceled)
             {
                 Message.ShowToast("there is no sim linked to this account");
             }
+            _loading = false;
         }
 
         void MainPivotViewmodel_GetBalanceInfoFinished(object sender, VikingApi.ApiTools.GetInfoCompletedArgs args)
@@ -175,7 +188,7 @@ namespace Fuel.View
             }
             if ((bool)IsolatedStorageSettings.ApplicationSettings["login"])
                 IsolatedStorageSettings.ApplicationSettings["login"] = false;
-
+            _loading = false;
         }
 
         private async void OauthLoginFinished(object sender, ApiBrowserEventArgs args)
@@ -199,6 +212,7 @@ namespace Fuel.View
                     Tools.Tools.SaveSetting(new KeyValuePair { Name = "sim", Content = SimBox.Text});
             }
             SimBox.Text = string.Empty;
+            _loading = false;
         }
 
         private void ShowLogin()

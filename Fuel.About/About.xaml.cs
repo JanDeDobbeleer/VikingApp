@@ -143,12 +143,18 @@ namespace Fuel.About
 
         private void ClientOnDownloadStringCompleted(object sender, DownloadStringCompletedEventArgs downloadStringCompletedEventArgs)
         {
-            var textblock = new TextBlock
+            try
+            {
+                var textblock = new TextBlock
                 {
                     Text = "There are currently " + downloadStringCompletedEventArgs.Result + " vikings.",
                     HorizontalAlignment = HorizontalAlignment.Center
                 };
-            _licenses.Children.Insert(8, textblock);
+                _licenses.Children.Insert(8, textblock);
+            }
+            catch (Exception)
+            {
+            }
         }
 
         #endregion

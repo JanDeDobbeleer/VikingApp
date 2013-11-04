@@ -40,13 +40,14 @@ namespace UpdateTile
         protected override void OnInvoke(ScheduledTask task)
         {
             var update = new UpdateLiveTile.UpdateLiveTile();
-            update.Start();
+#if(DEBUG)
+            Debug.WriteLine("Periodic task is starting");
+#endif
+            update.Start(false);
 #if(DEBUG)
             Debug.WriteLine("Periodic task has finished updating");
 #endif
             NotifyComplete();
         }
-
-        
     }
 }

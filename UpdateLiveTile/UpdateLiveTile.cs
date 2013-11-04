@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
@@ -20,28 +19,19 @@ namespace UpdateLiveTile
         private readonly UserBalance _balance = new UserBalance();
         private readonly Api _client = new Api();
         const string Filename = "/Shared/ShellContent/CustomTile.jpg";
+        private bool _fromForeground;
 
-        protected CancellationTokenSource Cts = new CancellationTokenSource();
-
-        public void CancelTask()
+        public async void Start(bool fromForeground)
         {
-            Cts.Cancel();
-        }
-
-        public void RenewToken()
-        {
-            Cts = new CancellationTokenSource();
-        }
-
-        public async void Start()
-        {
+            _fromForeground = fromForeground;
+            /*if (!IsolatedStorageSettings.ApplicationSettings.Contains("sim")) 
+                return;*/
             if (string.IsNullOrEmpty((string)IsolatedStorageSettings.ApplicationSettings["sim"]))
                 return;
-            await GetData((string)IsolatedStorageSettings.ApplicationSettings["sim"]);
 #if(DEBUG)
             Debug.WriteLine("Live tile: Start updating Live tile for number " + (string)IsolatedStorageSettings.ApplicationSettings["sim"]);
 #endif
-
+            await GetData((string)IsolatedStorageSettings.ApplicationSettings["sim"]);
         }
 
         private async Task<bool> GetData(string msisdn)
@@ -55,15 +45,18 @@ namespace UpdateLiveTile
                     return hmac.ComputeHash(buffer);
                 }
             };
-            await _client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), new KeyValuePair { name = "msisdn", content = msisdn });
-            return true;
+            return await _client.GetInfo(
+                        new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"],
+                            (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]),
+                        new KeyValuePair { name = "msisdn", content = msisdn }, _fromForeground);
+
         }
 
         void client_GetDataFinished(object sender, GetInfoCompletedArgs args)
         {
             if (args.Canceled)
             {
-                SetDefaultTile("unavailable");
+                SetTile(true, "unavailable");
                 return;
             }
             if (string.IsNullOrEmpty(args.Json) || string.Equals(args.Json, "[]"))
@@ -71,33 +64,27 @@ namespace UpdateLiveTile
             try
             {
                 _balance.Load(args.Json);
-                SetTile();
+                SetTile(false, string.Empty);
             }
             catch (Exception)
             {
-                SetDefaultTile("error");
+                SetTile(true, "error");
             }
 #if(DEBUG)
             Debug.WriteLine("Live tile: Tile has been updated");
 #endif
         }
 
-        private void SetDefaultTile(string backContent)
+        private void SetTile(bool failed, string backContent)
         {
-            var newTile = new FlipTileData
+            if (_fromForeground)
             {
-                Count = 0,
-                BackContent = backContent,
-                BackBackgroundImage = (bool)IsolatedStorageSettings.ApplicationSettings["tileAccentColor"] ? new Uri("/Assets/336x336empty.png", UriKind.Relative) : new Uri("/Assets/336x336redempty.png", UriKind.Relative)
-            };
-            var firstOrDefault = ShellTile.ActiveTiles.FirstOrDefault();
-            if (firstOrDefault != null)
-                firstOrDefault.Update(newTile);
-        }
-
-        private void SetTile()
-        {
-            SaveImage();
+                SaveImageForeground(failed, backContent);
+            }
+            else
+            {
+                SaveImageBackground(failed, backContent);
+            }
             var newTile = new FlipTileData
             {
                 Count = _balance.Remaining,
@@ -109,10 +96,34 @@ namespace UpdateLiveTile
                 firstOrDefault.Update(newTile);
         }
 
-        public void SaveImage()
+        public void SaveImageBackground(bool failed, string backcontent)
         {
-            var color = (bool)IsolatedStorageSettings.ApplicationSettings["tileAccentColor"] ? (SolidColorBrush)Application.Current.Resources["PhoneAccentBrush"] : (SolidColorBrush)Application.Current.Resources["VikingColorBrush"];
-            var customTile = (_balance.Data != null) ? new Tile(color, _balance.Credit, _balance.Data, _balance.Sms, _balance.VikingSms, _balance.VikingMinutes) : new Tile(color, _balance.Credit, "0 MB", "0 SMS", string.Empty, string.Empty);
+            Deployment.Current.Dispatcher.BeginInvoke(() => SaveImageForeground(failed, backcontent));
+#if(DEBUG)
+            Debug.WriteLine("Live tile: From background: Image created");
+#endif
+        }
+
+        private void SaveImageForeground(bool failed, string backcontent)
+        {
+            var color = (bool)IsolatedStorageSettings.ApplicationSettings["tileAccentColor"]
+                    ? (SolidColorBrush)Application.Current.Resources["PhoneAccentBrush"]
+                    : new SolidColorBrush(new Color { A = 255, R = 150, G = 8, B = 8 });
+            Tile customTile;
+            if (failed)
+            {
+                customTile = new Tile(color, backcontent, string.Empty, string.Empty, string.Empty, string.Empty);
+            }
+            else if (_balance.Data != null)
+            {
+                customTile = new Tile(color, _balance.Credit, _balance.Data, _balance.Sms, _balance.VikingSms,
+                    _balance.VikingMinutes);
+            }
+            else
+            {
+                customTile = new Tile(color, _balance.Credit, "0 MB", "0 SMS", _balance.VikingMinutes, string.Empty);
+            }
+
             customTile.Measure(new Size(336, 336));
             customTile.Arrange(new Rect(0, 0, 336, 336));
 
@@ -132,9 +143,6 @@ namespace UpdateLiveTile
                     bmp.SaveJpeg(stream, 336, 366, 0, 100);
                 }
             }
-#if(DEBUG)
-            Debug.WriteLine("Live tile: Image created");
-#endif
         }
     }
 }

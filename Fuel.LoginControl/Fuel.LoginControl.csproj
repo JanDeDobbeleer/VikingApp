@@ -123,9 +123,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="AsyncOAuth, Version=0.8.2.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="AsyncOAuth, Version=0.8.3.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\AsyncOAuth.0.8.2\lib\AsyncOAuth.dll</HintPath>
+      <HintPath>..\packages\AsyncOAuth.0.8.3\lib\AsyncOAuth.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http, Version=1.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

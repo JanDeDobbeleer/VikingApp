@@ -38,7 +38,7 @@ namespace Fuel.Common
         private string GetType(Usage usage)
         {
             if (usage.IsMms)
-                return "sms";
+                return "mms";
             if (usage.IsSms)
                 return "sms";
             if (usage.IsVoice)

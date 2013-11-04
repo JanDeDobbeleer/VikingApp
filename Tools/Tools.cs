@@ -105,7 +105,7 @@ namespace Tools
         public static void UpdateLiveTile()
         {
             var update = new UpdateLiveTile.UpdateLiveTile();
-            update.Start();
+            update.Start(true);
         }
 
 

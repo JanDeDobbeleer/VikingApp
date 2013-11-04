@@ -20,7 +20,7 @@ namespace Fuel.Viewmodel
     public class MainPivotViewmodel : CancelAsyncTask, INotifyPropertyChanged
     {
         #region properties
-        private const string PeriodicTaskName = "UpdateTile";
+        private const string PeriodicTaskName = "UpdateVikingTile";
         private PeriodicTask _periodicTask;
 
         private IEnumerable<Sim> _sims;
@@ -175,17 +175,10 @@ namespace Fuel.Viewmodel
 
         public void StartPeriodicAgent()
         {
-            // is old task running, remove it
-            _periodicTask = ScheduledActionService.Find(PeriodicTaskName) as PeriodicTask;
-            if (_periodicTask != null)
+            // is old tasks are running, remove them
+            foreach (PeriodicTask pt in ScheduledActionService.GetActions<PeriodicTask>())
             {
-                try
-                {
-                    ScheduledActionService.Remove(PeriodicTaskName);
-                }
-                catch (Exception)
-                {
-                }
+                ScheduledActionService.Remove(pt.Name);
             }
             // create a new task
             _periodicTask = new PeriodicTask(PeriodicTaskName)
@@ -210,10 +203,16 @@ namespace Fuel.Viewmodel
             {
                 if (exception.Message.Contains("BNS Error: The action is disabled"))
                 {
+#if(DEBUG)
+                    System.Diagnostics.Debug.WriteLine("BNS Error: The action is disabled");
+#endif
                     // load error text from localized strings
                 }
                 if (exception.Message.Contains("BNS Error: The maximum number of ScheduledActions of this type have already been added."))
                 {
+#if(DEBUG)
+                    System.Diagnostics.Debug.WriteLine("BNS Error: The maximum number of ScheduledActions of this type have already been added.");
+#endif
                     // No user action required. The system prompts the user when the hard limit of periodic tasks has been reached.
                 }
             }
@@ -222,8 +221,7 @@ namespace Fuel.Viewmodel
                 // No user action required.
             }
             //update tile right now
-            var update = new UpdateLiveTile.UpdateLiveTile();
-            update.Start();
+            Tools.Tools.UpdateLiveTile();
         }
     }
 }
