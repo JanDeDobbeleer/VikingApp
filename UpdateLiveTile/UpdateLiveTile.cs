@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Security.Cryptography;
@@ -24,8 +25,6 @@ namespace UpdateLiveTile
         public async void Start(bool fromForeground)
         {
             _fromForeground = fromForeground;
-            /*if (!IsolatedStorageSettings.ApplicationSettings.Contains("sim")) 
-                return;*/
             if (string.IsNullOrEmpty((string)IsolatedStorageSettings.ApplicationSettings["sim"]))
                 return;
 #if(DEBUG)
@@ -98,7 +97,20 @@ namespace UpdateLiveTile
 
         public void SaveImageBackground(bool failed, string backcontent)
         {
-            Deployment.Current.Dispatcher.BeginInvoke(() => SaveImageForeground(failed, backcontent));
+            var i = 0;
+            while (i < 3)
+            {
+                try
+                {
+                    Deployment.Current.Dispatcher.BeginInvoke(() => SaveImageForeground(failed, backcontent));
+                }
+                catch (Exception)
+                {
+                    i++;
+                    continue;
+                }
+                i = 3;
+            }
 #if(DEBUG)
             Debug.WriteLine("Live tile: From background: Image created");
 #endif
@@ -106,42 +118,56 @@ namespace UpdateLiveTile
 
         private void SaveImageForeground(bool failed, string backcontent)
         {
-            var color = (bool)IsolatedStorageSettings.ApplicationSettings["tileAccentColor"]
-                    ? (SolidColorBrush)Application.Current.Resources["PhoneAccentBrush"]
-                    : new SolidColorBrush(new Color { A = 255, R = 150, G = 8, B = 8 });
-            Tile customTile;
-            if (failed)
+            var i = 0;
+            while (i < 3)
             {
-                customTile = new Tile(color, backcontent, string.Empty, string.Empty, string.Empty, string.Empty);
-            }
-            else if (_balance.Data != null)
-            {
-                customTile = new Tile(color, _balance.Credit, _balance.Data, _balance.Sms, _balance.VikingSms,
-                    _balance.VikingMinutes);
-            }
-            else
-            {
-                customTile = new Tile(color, _balance.Credit, "0 MB", "0 SMS", _balance.VikingMinutes, string.Empty);
-            }
-
-            customTile.Measure(new Size(336, 336));
-            customTile.Arrange(new Rect(0, 0, 336, 336));
-
-            var bmp = new WriteableBitmap(336, 336);
-            bmp.Render(customTile, null);
-            bmp.Invalidate();
-
-            using (var isf = IsolatedStorageFile.GetUserStoreForApplication())
-            {
-                if (!isf.DirectoryExists("/CustomLiveTiles"))
+                try
                 {
-                    isf.CreateDirectory("/CustomLiveTiles");
-                }
+                    var color = (bool) IsolatedStorageSettings.ApplicationSettings["tileAccentColor"]
+                        ? (SolidColorBrush) Application.Current.Resources["PhoneAccentBrush"]
+                        : new SolidColorBrush(new Color {A = 255, R = 150, G = 8, B = 8});
+                    Tile customTile;
+                    if (failed)
+                    {
+                        customTile = new Tile(color, backcontent, string.Empty, string.Empty, string.Empty, string.Empty);
+                    }
+                    else if (_balance.Data != null)
+                    {
+                        customTile = new Tile(color, _balance.Credit, _balance.Data, _balance.Sms, _balance.VikingSms,
+                            _balance.VikingMinutes);
+                    }
+                    else
+                    {
+                        customTile = new Tile(color, _balance.Credit, "0 MB", "0 SMS", _balance.VikingMinutes,
+                            string.Empty);
+                    }
 
-                using (var stream = isf.OpenFile(Filename, System.IO.FileMode.OpenOrCreate))
-                {
-                    bmp.SaveJpeg(stream, 336, 366, 0, 100);
+                    customTile.Measure(new Size(336, 336));
+                    customTile.Arrange(new Rect(0, 0, 336, 336));
+
+                    var bmp = new WriteableBitmap(336, 336);
+                    bmp.Render(customTile, null);
+                    bmp.Invalidate();
+
+                    using (var isf = IsolatedStorageFile.GetUserStoreForApplication())
+                    {
+                        if (!isf.DirectoryExists("/CustomLiveTiles"))
+                        {
+                            isf.CreateDirectory("/CustomLiveTiles");
+                        }
+
+                        using (var stream = isf.OpenFile(Filename, FileMode.OpenOrCreate))
+                        {
+                            bmp.SaveJpeg(stream, 336, 366, 0, 100);
+                        }
+                    }
                 }
+                catch (Exception)
+                {
+                    i++;
+                    continue;
+                }
+                i = 3;
             }
         }
     }

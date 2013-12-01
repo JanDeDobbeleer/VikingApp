@@ -66,10 +66,12 @@ namespace Console
             System.Console.WriteLine(  try1);
             System.Console.WriteLine();
             System.Console.WriteLine(try2);*/
-            int minutes = 3592/60;
+            /*int minutes = 3592/60;
             int seconds = 3592%60;
             System.Console.WriteLine("{0}m {1}s", minutes, seconds);
-            System.Console.ReadKey();
+            System.Console.ReadKey();*/
+
+            Authorizer auth = new Authorizer();
         }
     }
 }

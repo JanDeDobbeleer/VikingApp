@@ -60,7 +60,7 @@
         <!--Pivot Control-->
         <phone:Pivot>
             <phone:Pivot.Title>
-                <Grid Height="40" Width="{Binding ElementName=Pivot, Path=ActualWidth}">
+                <Grid Height="40" Width="{Binding ElementName=Pivot, Path=ActualWidth}"  Margin="-6,0,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>

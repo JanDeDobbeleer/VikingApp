@@ -112,7 +112,7 @@
         <!--Pivot Control-->
         <phone:Pivot x:Name="AboutPivot">
             <phone:Pivot.Title>
-                <Grid Height="40" Width="{Binding ElementName=Pivot, Path=ActualWidth}">
+                <Grid Height="40" Width="{Binding ElementName=Pivot, Path=ActualWidth}" Margin="-7,0,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
@@ -175,6 +175,22 @@
             <phone:PivotItem Header="about">
                 <ScrollViewer x:Name="Sv1"
                               Margin="0,0,-12,24">
+                </ScrollViewer>
+            </phone:PivotItem>
+            
+            <phone:PivotItem Header="changelog">
+                <ScrollViewer>
+                    <StackPanel Margin="13, 0, 0, 0">
+                        <TextBlock Text="2.0.3.0" Foreground="{StaticResource VikingColorBrush}"
+                                   FontSize="{StaticResource PhoneFontSizeLarge}" Margin="0,0,0,2" />
+                        <TextBlock Text="• price plan update" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
+                        <TextBlock Text="• live tile background image fix" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
+                        <TextBlock Text="• added changelog" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
+                        <TextBlock Text="2.0.2.0" FontSize="{StaticResource PhoneFontSizeLarge}" Margin="0,5,0,2" />
+                        <TextBlock Text="• live tile fix" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
+                        <TextBlock Text="2.0.1.0" FontSize="{StaticResource PhoneFontSizeLarge}" Margin="0,5,0,2" />
+                        <TextBlock Text="• initial release" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
+                    </StackPanel>
                 </ScrollViewer>
             </phone:PivotItem>
         </phone:Pivot>

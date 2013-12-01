@@ -110,10 +110,8 @@ namespace Fuel.Settings
                     return 1;
                 case "25":
                     return 2;
-                case "40":
+                case "50":
                     return 3;
-                case "60":
-                    return 4;
                 default:
                     return 0;
             }

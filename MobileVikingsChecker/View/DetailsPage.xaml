@@ -33,7 +33,7 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <StackPanel Orientation="Horizontal" Height="40">
+            <StackPanel Orientation="Horizontal" Height="40"  Margin="4,0,0,0">
                 <Image Source="/Assets/logo.png" />
                 <TextBlock Text="Fuel" FontSize="{StaticResource PhoneFontSizeLarge}" />
             </StackPanel>

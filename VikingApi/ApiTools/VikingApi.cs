@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -114,6 +115,10 @@ namespace VikingApi.ApiTools
                 var tokenResponse = await _authorizer.GetRequestToken(
                     RequestTokenUrl,
                     new[] { new KeyValuePair<string, string>("oauth_callback", "oob") });
+                /*var tokenResponse = await GetRequestToken(
+                    RequestTokenUrl,
+                    new[] { new KeyValuePair<string, string>("oauth_callback", "oob"), new KeyValuePair<String, String>("debug", "true") });*/
+
                 _requestToken = tokenResponse.Token;
 
                 //Get and return Pin URL
@@ -212,6 +217,43 @@ namespace VikingApi.ApiTools
             }
             return await GetInfo(token, path + builder, cts);
         }
+
+        /*public async Task<TokenResponse<T>> GetTokenResponse<T>(string url, OAuthMessageHandler handler, HttpContent postValue, Func<string, string, T> tokenFactory) where T : Token
+        {
+            var client = new HttpClient(handler);
+            //try to change the headers
+            client.DefaultRequestHeaders.Referrer = new Uri(AuthorizeTokenUrl, UriKind.RelativeOrAbsolute);
+            //client.DefaultRequestHeaders.Connection.Add("keep-alive");
+            client.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue() { MaxAge = TimeSpan.Zero };
+            client.DefaultRequestHeaders.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,#1#*;q=0.8");
+            //client.DefaultRequestHeaders.Add("Accept-Encoding", "gzip,deflate,sdch");
+            client.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.8");
+            client.DefaultRequestHeaders.Add("Accept-Charset", "ISO-8859-1");
+            client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.76 Safari/537.36");
+
+            var response = await client.PostAsync(AuthorizeTokenUrl, postValue ?? new FormUrlEncodedContent(Enumerable.Empty<KeyValuePair<string, string>>())).ConfigureAwait(false);
+            var tokenBase = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                throw new HttpRequestException(response.StatusCode + ":" + tokenBase); // error message
+            }
+
+            var splitted = tokenBase.Split('&').Select(s => s.Split('=')).ToLookup(xs => xs[0], xs => xs[1]);
+            var token = tokenFactory(splitted["oauth_token"].First().UrlDecode(), splitted["oauth_token_secret"].First().UrlDecode());
+            var extraData = splitted.Where(kvp => kvp.Key != "oauth_token" && kvp.Key != "oauth_token_secret")
+                .SelectMany(g => g, (g, value) => new { g.Key, Value = value })
+                .ToLookup(kvp => kvp.Key, kvp => kvp.Value);
+            return new TokenResponse<T>(token, extraData);
+        }
+
+        public Task<TokenResponse<RequestToken>> GetRequestToken(string requestTokenUrl, IEnumerable<KeyValuePair<string, string>> parameters = null, HttpContent postValue = null)
+        {
+            //Precondition.NotNull(requestTokenUrl, "requestTokenUrl");
+
+            var handler = new OAuthMessageHandler("un9HyMLftXRtDf89jP", "AaDM9yyXLmTemvM2nVahzBFYS9JG62a6", token: null, optionalOAuthHeaderParameters: parameters);
+            return GetTokenResponse(requestTokenUrl, handler, postValue, (key, secret) => new RequestToken(key, secret));
+        }*/
 
         #region IDisposable
         // Dispose() calls Dispose(true)

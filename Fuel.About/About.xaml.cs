@@ -18,7 +18,7 @@ namespace Fuel.About
     public partial class About : PhoneApplicationPage
     {
         private StackPanel _licenses;
-        private const string Disclaimer = "Hi there. Welcome to Fuel. This app has been built with passion, a lot of cursing, crying and occasional eufory. So, when you encounter an issue, please hit the contact button instead of handing out a 1 star review.\n\nFuel will remain free throughout it's lifecycle, all I ask is that you download my other apps (which you may immediately delete) so that I can get my stats up to par and receive some freebies to support all this development. Tap my name on the top of this page to reveal my apps.";
+        private const string Disclaimer = "Hi there. Welcome to Fuel. This app has been built with passion, a lot of cursing, crying and occasional eufory. So, when you encounter an issue, please hit the contact button instead of handing out a 1 star review.\n\nFuel will remain free throughout it's lifecycle, feel free to enjoy it as much as I do.";
 
         public About()
         {

@@ -47,8 +47,12 @@ namespace UpdateLiveTile.Classes
         public async Task<bool> GetInfo(AccessToken token, string path, bool fromForeground)
         {
             var args = new GetInfoCompletedArgs();
-            if (NetworkInterface.NetworkInterfaceType == NetworkInterfaceType.None) 
-                return false;
+            if (NetworkInterface.NetworkInterfaceType == NetworkInterfaceType.None)
+            {
+                args.Canceled = true;
+                OnGetInfoFinished(args);
+                return true;
+            }
             try
             {
                 using (var client = OAuthUtility.CreateOAuthClient(ConsumerKey, ConsumerSecret, token))

@@ -170,7 +170,7 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <StackPanel Orientation="Horizontal" Height="40">
+            <StackPanel Orientation="Horizontal" Height="40"  Margin="4,0,0,0">
                 <Image Source="/Assets/logo.png" />
                 <TextBlock Text="Fuel" FontSize="{StaticResource PhoneFontSizeLarge}"/>
             </StackPanel>
@@ -215,8 +215,7 @@
                     <toolkit:ListPickerItem Content="10" />
                     <toolkit:ListPickerItem Content="15" />
                     <toolkit:ListPickerItem Content="25" />
-                    <toolkit:ListPickerItem Content="40" />
-                    <toolkit:ListPickerItem Content="60" />
+                    <toolkit:ListPickerItem Content="50" />
                 </toolkit:ListPicker>
                 <TextBlock Grid.Row="6" Text="tile color" Style="{StaticResource TextStyle}" />
                 <toolkit:ListPicker x:Name="TileColorPicker" Grid.Row="7" Tag="defaulttilevalue"
