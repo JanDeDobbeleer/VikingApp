@@ -8,6 +8,7 @@ using AsyncOAuth;
 using Microsoft.Phone.Shell;
 using Newtonsoft.Json;
 using Tools;
+using VikingApi.Api;
 using VikingApi.ApiTools;
 using VikingApi.Json;
 

@@ -3,12 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:loginControl="clr-namespace:Fuel.LoginControl"
              mc:Ignorable="d"
              FontFamily="{StaticResource PhoneFontFamilyNormal}"
              FontSize="{StaticResource PhoneFontSizeNormal}"
-             Foreground="{StaticResource PhoneForegroundBrush}"
-             Loaded="OauthLogin_OnLoaded">
+             Foreground="{StaticResource PhoneForegroundBrush}">
 
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
@@ -22,13 +20,12 @@
             <Image Source="/Assets/logo.png" />
             <TextBlock Text="Fuel" Style="{StaticResource PhoneTextLargeStyle}" Margin="-3,0,0,0" />
         </StackPanel>
-
-        <!--Controls to be shown during first boot, button serves to start the login and show the browser-->
-        <Image Grid.Row="1"
-               x:Name="VikingImage"
-               HorizontalAlignment="Center"
-               VerticalAlignment="Center"
-               Margin="10,0,10,0" />
+        <StackPanel Grid.Row="1" VerticalAlignment="Center" Background="{StaticResource PhoneBackgroundBrush}">
+            <TextBlock Text="username or email" Margin="18,0,0,0"/>
+            <TextBox Margin="7,0,7,0" x:Name="UserName"/>
+            <TextBlock Text="password" Margin="18,0,0,0"/>
+            <PasswordBox Margin="7,0,7,0" x:Name="PassWord"/>
+        </StackPanel>
         <TextBlock x:Name="LoginBtn"
                    FontSize="{StaticResource PhoneFontSizeLarge}"
                    Grid.Row="2"
@@ -38,10 +35,5 @@
                    Foreground="{StaticResource PhoneForegroundBrush}"
                    Margin="0,50,0,50"
                    Tap="Login_OnTap" />
-
-        <!--Controls to be able to enter the pincode and proceed with the login-->
-        <!--
-        <phone:WebBrowser x:Name="PinBrowser" Grid.Row="1" Grid.RowSpan="2" Visibility="Collapsed" LoadCompleted="PinBrowser_OnLoadCompleted"/>-->
-        <loginControl:ApiBrowser x:Name="PinBrowser" Grid.Row="1" Grid.RowSpan="2" Visibility="Collapsed" />
     </Grid>
 </UserControl>

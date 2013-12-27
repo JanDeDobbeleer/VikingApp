@@ -11,6 +11,7 @@ using Microsoft.Phone.Shell;
 using Newtonsoft.Json;
 using Tools;
 using Tools.Properties;
+using VikingApi.Api;
 using VikingApi.ApiTools;
 using VikingApi.AppClasses;
 using VikingApi.Json;

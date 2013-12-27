@@ -9,6 +9,7 @@ using Microsoft.Phone.Shell;
 using Microsoft.Phone.UserData;
 using Newtonsoft.Json;
 using Tools;
+using VikingApi.Api;
 using VikingApi.ApiTools;
 using VikingApi.Json;
 
