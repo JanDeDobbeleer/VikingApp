@@ -89,7 +89,7 @@
             
             <!--Pivot item one-->
             <phone:PivotItem Header="bundle" x:Name="Bundle">
-                <Grid x:Name="BundleGrid">
+                <Grid x:Name="BundleGrid" Margin="15,0,10,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="300" />
                         <RowDefinition Height="Auto" />
@@ -151,7 +151,7 @@
 
             <!--Pivot item two-->
             <phone:PivotItem Header="bonus" x:Name="Bonus">
-                <Grid x:Name="BonusGrid">
+                <Grid x:Name="BonusGrid" Margin="15,0,10,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="300" />
                         <RowDefinition Height="Auto" />

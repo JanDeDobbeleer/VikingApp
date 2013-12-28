@@ -22,6 +22,7 @@ namespace UpdateLiveTile
         private readonly Api _client = new Api();
         const string Filename = "/Shared/ShellContent/CustomTile.jpg";
         private bool _fromForeground;
+        private bool _crashed = false;
 
         public async void Start(bool fromForeground)
         {
@@ -85,11 +86,22 @@ namespace UpdateLiveTile
             {
                 SaveImageBackground(failed, backContent);
             }
-            Uri image;
-            using (var isf = IsolatedStorageFile.GetUserStoreForApplication())
+            var image = _crashed ? GetDefaultTile() : new Uri("isostore:" + Filename, UriKind.Absolute);
+            /*using (var isf = IsolatedStorageFile.GetUserStoreForApplication())
             {
-                image = (isf.FileExists(Filename)) ? new Uri("isostore:" + Filename, UriKind.Absolute) : (bool)IsolatedStorageSettings.ApplicationSettings["tileAccentColor"] ? new Uri("Assets/336x336empty.png", UriKind.RelativeOrAbsolute) : new Uri("Assets/336x336redempty.png", UriKind.RelativeOrAbsolute);
-            }
+                if (isf.FileExists(Filename))
+                {
+                    var file = isf.OpenFile(Filename, FileMode.Open);
+                    image = (file.Length > 0)
+                        ? new Uri("isostore:" + Filename, UriKind.Absolute)
+                        : GetDefaultTile();
+                    file.Close();
+                }
+                else
+                {
+                    image = GetDefaultTile();
+                }
+            }*/
             var newTile = new FlipTileData
             {
                 Count = _balance.Remaining,
@@ -173,10 +185,19 @@ namespace UpdateLiveTile
                     i++;
                     //sleep for 3 seconds in order to try to resolve the isolatedstorage issues
                     Thread.Sleep(3000);
+                    if (i == 3)
+                        _crashed = true;
                     continue;
                 }
                 i = 3;
             }
+        }
+
+        private Uri GetDefaultTile()
+        {
+            return (bool)IsolatedStorageSettings.ApplicationSettings["tileAccentColor"]
+                            ? new Uri("Assets/336x336empty.png", UriKind.RelativeOrAbsolute)
+                            : new Uri("Assets/336x336redempty.png", UriKind.RelativeOrAbsolute);
         }
     }
 }
