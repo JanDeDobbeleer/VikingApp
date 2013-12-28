@@ -93,6 +93,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\logo.png" />
+    <Content Include="Assets\questionmark.png" />
+    <Content Include="Assets\questionmarklight.png" />
     <Content Include="Assets\vikinglogoblack.png" />
     <Content Include="Assets\vikinglogowhite.png" />
   </ItemGroup>

@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
@@ -84,10 +85,15 @@ namespace UpdateLiveTile
             {
                 SaveImageBackground(failed, backContent);
             }
+            Uri image;
+            using (var isf = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                image = (isf.FileExists(Filename)) ? new Uri("isostore:" + Filename, UriKind.Absolute) : (bool)IsolatedStorageSettings.ApplicationSettings["tileAccentColor"] ? new Uri("Assets/336x336empty.png", UriKind.RelativeOrAbsolute) : new Uri("Assets/336x336redempty.png", UriKind.RelativeOrAbsolute);
+            }
             var newTile = new FlipTileData
             {
                 Count = _balance.Remaining,
-                BackBackgroundImage = new Uri("isostore:" + Filename, UriKind.Absolute),
+                BackBackgroundImage = image,
                 BackContent = string.Empty,
             };
             var firstOrDefault = ShellTile.ActiveTiles.FirstOrDefault();
@@ -123,9 +129,9 @@ namespace UpdateLiveTile
             {
                 try
                 {
-                    var color = (bool) IsolatedStorageSettings.ApplicationSettings["tileAccentColor"]
-                        ? (SolidColorBrush) Application.Current.Resources["PhoneAccentBrush"]
-                        : new SolidColorBrush(new Color {A = 255, R = 150, G = 8, B = 8});
+                    var color = (bool)IsolatedStorageSettings.ApplicationSettings["tileAccentColor"]
+                        ? (SolidColorBrush)Application.Current.Resources["PhoneAccentBrush"]
+                        : new SolidColorBrush(new Color { A = 255, R = 150, G = 8, B = 8 });
                     Tile customTile;
                     if (failed)
                     {
@@ -165,6 +171,8 @@ namespace UpdateLiveTile
                 catch (Exception)
                 {
                     i++;
+                    //sleep for 3 seconds in order to try to resolve the isolatedstorage issues
+                    Thread.Sleep(3000);
                     continue;
                 }
                 i = 3;

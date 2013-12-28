@@ -186,6 +186,7 @@
                         <TextBlock Text="• price plan update" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
                         <TextBlock Text="• live tile background image fix" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
                         <TextBlock Text="• added changelog" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
+                        <TextBlock Text="• login using xAUTH" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
                         <TextBlock Text="2.0.2.0" FontSize="{StaticResource PhoneFontSizeLarge}" Margin="0,5,0,2" />
                         <TextBlock Text="• live tile fix" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
                         <TextBlock Text="2.0.1.0" FontSize="{StaticResource PhoneFontSizeLarge}" Margin="0,5,0,2" />

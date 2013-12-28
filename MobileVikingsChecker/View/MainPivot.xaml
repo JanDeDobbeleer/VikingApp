@@ -129,17 +129,17 @@
                                FontSize="{StaticResource PhoneFontSizeLarge}"
                                Foreground="{StaticResource PhoneForegroundBrush}" FontWeight="Bold"/>
 
-                    <Rectangle Fill="{StaticResource DataColorBrush}" Grid.Row="1" Grid.Column="0"
+                    <Rectangle Fill="{StaticResource SmsColorBrush}" Grid.Row="1" Grid.Column="0"
                                Style="{StaticResource RectangleStyle}" />
-                    <TextBlock Text="{Binding Data}" Style="{StaticResource ContentTextStyle}" Grid.Row="1"
+                    <TextBlock Text="{Binding Sms}" Style="{StaticResource ContentTextStyle}" Grid.Row="1"
                                Grid.Column="1" />
-                    <TextBlock Text="free data" Style="{StaticResource TextStyle}" Grid.Row="1" Grid.Column="2" />
+                    <TextBlock Text="free SMS" Style="{StaticResource TextStyle}" Grid.Row="1" Grid.Column="2" />
 
-                    <Rectangle Fill="{StaticResource SmsColorBrush}" Grid.Row="3" Grid.Column="0"
+                    <Rectangle Fill="{StaticResource DataColorBrush}" Grid.Row="3" Grid.Column="0"
                                Style="{StaticResource RectangleStyle}" />
-                    <TextBlock Text="{Binding Sms}" Style="{StaticResource ContentTextStyle}" Grid.Row="3"
+                    <TextBlock Text="{Binding Data}" Style="{StaticResource ContentTextStyle}" Grid.Row="3"
                                Grid.Column="1" />
-                    <TextBlock Text="free SMS" Style="{StaticResource TextStyle}" Grid.Row="3" Grid.Column="2" />
+                    <TextBlock Text="free data" Style="{StaticResource TextStyle}" Grid.Row="3" Grid.Column="2" />
 
                     <Rectangle Fill="{StaticResource VikingColorBrush}" Grid.Row="5" Grid.Column="0"
                                Style="{StaticResource RectangleStyle}" />
