@@ -2,6 +2,8 @@
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using Microsoft.Phone.Info;
+using Microsoft.Phone.Net.NetworkInformation;
 using Microsoft.Phone.Shell;
 using VikingApi.Api;
 
@@ -91,7 +93,7 @@ namespace Fuel.LoginControl
 
         private void UIElement_OnTap(object sender, GestureEventArgs e)
         {
-            MessageBox.Show("Your credentials are not stored locally and will only be used to request a token", "Privacy notice", MessageBoxButton.OK);
+            MessageBox.Show("Your credentials are not stored locally and will only be used to request a token.", "Privacy notice", MessageBoxButton.OK);
         }
     }
 }

@@ -159,7 +159,6 @@ namespace UpdateLiveTile
                         customTile = new Tile(color, _balance.Credit, "0 MB", "0 SMS", _balance.VikingMinutes,
                             string.Empty);
                     }
-
                     customTile.Measure(new Size(336, 336));
                     customTile.Arrange(new Rect(0, 0, 336, 336));
 

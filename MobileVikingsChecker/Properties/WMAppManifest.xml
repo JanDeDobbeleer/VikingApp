@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2012/deployment" AppPlatformVersion="8.0">
   <DefaultLanguage xmlns="" code="en-US" />
-  <App xmlns="" ProductID="{6cd0244a-eae4-45fc-b54b-24b8dc94b781}" Title="Fuel" RuntimeType="Silverlight" Version="2.0.3.5" Genre="apps.normal" Author="Jan Joris" Description="" Publisher="Jan Joris" PublisherID="{86e0bab2-f315-4544-93c8-9479f114b215}">
+  <App xmlns="" ProductID="{6cd0244a-eae4-45fc-b54b-24b8dc94b781}" Title="Fuel" RuntimeType="Silverlight" Version="2.0.3.7" Genre="apps.normal" Author="Jan Joris" Description="" Publisher="Jan Joris" PublisherID="{86e0bab2-f315-4544-93c8-9479f114b215}">
     <IconPath IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />
