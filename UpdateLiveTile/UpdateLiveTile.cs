@@ -20,7 +20,8 @@ namespace UpdateLiveTile
     {
         private readonly UserBalance _balance = new UserBalance();
         private readonly Api _client = new Api();
-        const string Filename = "/Shared/ShellContent/CustomTile.jpg";
+        const string FilenameBack = "/Shared/ShellContent/CustomTile.jpg";
+        const string FilenameFront = "/Shared/ShellContent/CustomTileFront.jpg";
         private bool _fromForeground;
         private bool _crashed = false;
 
@@ -72,7 +73,7 @@ namespace UpdateLiveTile
                 SetTile(true, "error");
             }
 #if(DEBUG)
-            Debug.WriteLine("Live tile: Tile has been updated");
+            Debug.WriteLine("Live tile: BackTile has been updated");
 #endif
         }
 
@@ -86,22 +87,7 @@ namespace UpdateLiveTile
             {
                 SaveImageBackground(failed, backContent);
             }
-            var image = _crashed ? GetDefaultTile() : new Uri("isostore:" + Filename, UriKind.Absolute);
-            /*using (var isf = IsolatedStorageFile.GetUserStoreForApplication())
-            {
-                if (isf.FileExists(Filename))
-                {
-                    var file = isf.OpenFile(Filename, FileMode.Open);
-                    image = (file.Length > 0)
-                        ? new Uri("isostore:" + Filename, UriKind.Absolute)
-                        : GetDefaultTile();
-                    file.Close();
-                }
-                else
-                {
-                    image = GetDefaultTile();
-                }
-            }*/
+            var image = _crashed ? GetDefaultTile() : new Uri("isostore:" + FilenameBack, UriKind.Absolute);
             var newTile = new FlipTileData
             {
                 Count = _balance.Remaining,
@@ -136,60 +122,8 @@ namespace UpdateLiveTile
 
         private void SaveImageForeground(bool failed, string backcontent)
         {
-            var i = 0;
-            while (i < 3)
-            {
-                try
-                {
-                    var color = (bool)IsolatedStorageSettings.ApplicationSettings["tileAccentColor"]
-                        ? (SolidColorBrush)Application.Current.Resources["PhoneAccentBrush"]
-                        : new SolidColorBrush(new Color { A = 255, R = 150, G = 8, B = 8 });
-                    Tile customTile;
-                    if (failed)
-                    {
-                        customTile = new Tile(color, backcontent, string.Empty, string.Empty, string.Empty, string.Empty);
-                    }
-                    else if (_balance.Data != null)
-                    {
-                        customTile = new Tile(color, _balance.Credit, _balance.Data, _balance.Sms, _balance.VikingSms,
-                            _balance.VikingMinutes);
-                    }
-                    else
-                    {
-                        customTile = new Tile(color, _balance.Credit, "0 MB", "0 SMS", _balance.VikingMinutes,
-                            string.Empty);
-                    }
-                    customTile.Measure(new Size(336, 336));
-                    customTile.Arrange(new Rect(0, 0, 336, 336));
-
-                    var bmp = new WriteableBitmap(336, 336);
-                    bmp.Render(customTile, null);
-                    bmp.Invalidate();
-
-                    using (var isf = IsolatedStorageFile.GetUserStoreForApplication())
-                    {
-                        if (!isf.DirectoryExists("/CustomLiveTiles"))
-                        {
-                            isf.CreateDirectory("/CustomLiveTiles");
-                        }
-
-                        using (var stream = isf.OpenFile(Filename, FileMode.OpenOrCreate))
-                        {
-                            bmp.SaveJpeg(stream, 336, 366, 0, 100);
-                        }
-                    }
-                }
-                catch (Exception)
-                {
-                    i++;
-                    //sleep for 3 seconds in order to try to resolve the isolatedstorage issues
-                    Thread.Sleep(3000);
-                    if (i == 3)
-                        _crashed = true;
-                    continue;
-                }
-                i = 3;
-            }
+            FrontTile.SaveTile(failed, _balance, FilenameFront, out _crashed);
+            BackTile.SaveTile(failed, _balance, backcontent, FilenameBack, out _crashed);
         }
 
         private Uri GetDefaultTile()

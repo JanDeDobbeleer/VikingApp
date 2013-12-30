@@ -85,8 +85,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Control\Tile.xaml.cs">
-      <DependentUpon>Tile.xaml</DependentUpon>
+    <Compile Include="Control\FrontTile.xaml.cs">
+      <DependentUpon>FrontTile.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\BackTile.xaml.cs">
+      <DependentUpon>BackTile.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="UpdateLiveTile.cs" />
@@ -131,12 +134,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Control\Tile.xaml">
+    <Page Include="Control\FrontTile.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\BackTile.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\logo.png" />
     <Content Include="Assets\336x336empty.png" />
     <Content Include="Assets\336x336redempty.png" />
   </ItemGroup>
