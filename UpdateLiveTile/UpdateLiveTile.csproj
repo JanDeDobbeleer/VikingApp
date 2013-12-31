@@ -144,7 +144,8 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\logo.png" />
+    <Content Include="Assets\336x336.png" />
+    <Content Include="Assets\336x336red.png" />
     <Content Include="Assets\336x336empty.png" />
     <Content Include="Assets\336x336redempty.png" />
   </ItemGroup>

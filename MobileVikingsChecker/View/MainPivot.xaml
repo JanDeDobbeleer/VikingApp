@@ -145,7 +145,7 @@
                                Style="{StaticResource RectangleStyle}" />
                     <TextBlock Text="{Binding Remaining}" Style="{StaticResource ContentTextStyle}" Grid.Row="5"
                                Grid.Column="1" />
-                    <TextBlock Text="remaining" Style="{StaticResource TextStyle}" Grid.Row="5" Grid.Column="2" />
+                    <TextBlock Text="left" Style="{StaticResource TextStyle}" Grid.Row="5" Grid.Column="2" />
                 </Grid>
             </phone:PivotItem>
 

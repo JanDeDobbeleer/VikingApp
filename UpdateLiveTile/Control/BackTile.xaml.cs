@@ -10,20 +10,20 @@ using UpdateLiveTile.Classes;
 
 namespace UpdateLiveTile.Control
 {
-    public partial class FrontTile : UserControl
+    public partial class BackTile : UserControl
     {
-        public FrontTile(SolidColorBrush background, string days)
+        public BackTile(SolidColorBrush background, string credit, string data, string sms, string vSms, string vCall)
         {
             InitializeComponent();
-            LayoutRoot.Background = background;
-            Days.Text = days;
-            if (days.Equals("?") || int.Parse(days) < 10)
-            {
-                Days.Margin = new Thickness(0, -138, 70, 0);
-            }
+            MainGrid.Background = background;
+            Credit.Text = credit;
+            Data.Text = data;
+            Sms.Text = sms;
+            VSms.Text = vSms;
+            VCall.Text = vCall;
         }
 
-        public static void SaveTile(bool failed, UserBalance balance, string path, out bool crashed)
+        public static void SaveTile(bool failed, UserBalance balance, string backcontent, string path, out bool crashed)
         {
             var i = 0;
             while (i < 5)
@@ -33,23 +33,23 @@ namespace UpdateLiveTile.Control
                     var color = (bool)IsolatedStorageSettings.ApplicationSettings["tileAccentColor"]
                         ? (SolidColorBrush)Application.Current.Resources["PhoneAccentBrush"]
                         : new SolidColorBrush(new Color { A = 255, R = 150, G = 8, B = 8 });
-                    FrontTile customFrontTile;
+                    BackTile customBackTile;
                     if (failed)
                     {
-                        customFrontTile = new FrontTile(color, "?");
+                        customBackTile = new BackTile(color, backcontent, string.Empty, string.Empty, string.Empty, string.Empty);
                     }
                     else if (balance.Data != null)
                     {
-                        customFrontTile = new FrontTile(color, balance.Remaining.ToString());
+                        customBackTile = new BackTile(color, balance.Credit, balance.Data, balance.Sms, balance.VikingSms, balance.VikingMinutes);
                     }
                     else
                     {
-                        customFrontTile = new FrontTile(color, "0");
+                        customBackTile = new BackTile(color, balance.Credit, "0 MB", "0 SMS", balance.VikingMinutes, string.Empty);
                     }
-                    customFrontTile.Measure(new Size(336, 336));
-                    customFrontTile.Arrange(new Rect(0, 0, 336, 336));
+                    customBackTile.Measure(new Size(336, 336));
+                    customBackTile.Arrange(new Rect(0, 0, 336, 336));
                     var bmp = new WriteableBitmap(336, 336);
-                    bmp.Render(customFrontTile, null);
+                    bmp.Render(customBackTile, null);
                     bmp.Invalidate();
 
                     using (var isf = IsolatedStorageFile.GetUserStoreForApplication())
