@@ -145,7 +145,7 @@ namespace Fuel.Settings
                     var pickerItem = (sender as ListPicker).SelectedItem as ListPickerItem;
                     if (pickerItem != null)
                         IsolatedStorageSettings.ApplicationSettings["tileAccentColor"] = string.Equals(pickerItem.Content.ToString(), "theme");
-                    Tools.Tools.ResetLiveTile();
+                    Tools.Tools.UpdateLiveTile();
                     break;
                 case "sim":
                     var pickerItem3 = (sender as ListPicker).SelectedItem as ListPickerItem;

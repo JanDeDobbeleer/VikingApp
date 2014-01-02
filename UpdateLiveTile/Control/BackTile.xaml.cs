@@ -23,63 +23,64 @@ namespace UpdateLiveTile.Control
             VCall.Text = vCall;
         }
 
-        public static void SaveTile(bool failed, UserBalance balance, string backcontent, string path, out bool crashed)
+        public static void SaveTile(bool failed, UserBalance balance, string backcontent, string path)
         {
-            var i = 0;
-            while (i < 5)
+            try
             {
-                try
+                var color = (bool)IsolatedStorageSettings.ApplicationSettings["tileAccentColor"]
+                    ? (SolidColorBrush)Application.Current.Resources["PhoneAccentBrush"]
+                    : new SolidColorBrush(new Color { A = 255, R = 150, G = 8, B = 8 });
+                var tile = GetElement(failed, balance, color, backcontent);
+                tile.Measure(new Size(336, 336));
+                tile.Arrange(new Rect(0, 0, 336, 336));
+                var bmp = new WriteableBitmap(336, 336);
+                bmp.Render(tile, null);
+                bmp.Invalidate();
+
+                using (var isf = IsolatedStorageFile.GetUserStoreForApplication())
                 {
-                    var color = (bool)IsolatedStorageSettings.ApplicationSettings["tileAccentColor"]
-                        ? (SolidColorBrush)Application.Current.Resources["PhoneAccentBrush"]
-                        : new SolidColorBrush(new Color { A = 255, R = 150, G = 8, B = 8 });
-                    BackTile customBackTile;
-                    if (failed)
+                    if (!isf.DirectoryExists("/CustomLiveTiles"))
                     {
-                        customBackTile = new BackTile(color, backcontent, string.Empty, string.Empty, string.Empty, string.Empty);
+                        isf.CreateDirectory("/CustomLiveTiles");
                     }
-                    else if (balance.Data != null)
-                    {
-                        customBackTile = new BackTile(color, balance.Credit, balance.Data, balance.Sms, balance.VikingSms, balance.VikingMinutes);
-                    }
-                    else
-                    {
-                        customBackTile = new BackTile(color, balance.Credit, "0 MB", "0 SMS", balance.VikingMinutes, string.Empty);
-                    }
-                    customBackTile.Measure(new Size(336, 336));
-                    customBackTile.Arrange(new Rect(0, 0, 336, 336));
-                    var bmp = new WriteableBitmap(336, 336);
-                    bmp.Render(customBackTile, null);
-                    bmp.Invalidate();
 
-                    using (var isf = IsolatedStorageFile.GetUserStoreForApplication())
+                    using (var stream = isf.OpenFile(path, FileMode.OpenOrCreate))
                     {
-                        if (!isf.DirectoryExists("/CustomLiveTiles"))
-                        {
-                            isf.CreateDirectory("/CustomLiveTiles");
-                        }
-
-                        using (var stream = isf.OpenFile(path, FileMode.OpenOrCreate))
-                        {
-                            bmp.SaveJpeg(stream, 336, 366, 0, 100);
-                        }
+                        bmp.SaveJpeg(stream, 336, 366, 0, 100);
                     }
                 }
-                catch (Exception)
-                {
-                    i++;
-                    //sleep for 3 seconds in order to try to resolve the isolatedstorage issues
-                    Thread.Sleep(3000);
-                    if (i == 5)
-                    {
-                        crashed = true;
-                        return;
-                    }
-                    continue;
-                }
-                i = 5;
             }
-            crashed = false;
+            catch (Exception)
+            {
+                //sleep for 0.5 seconds in order to try to resolve the isolatedstorage issues
+                Thread.Sleep(500);
+                SaveTile(failed, balance, backcontent, path);
+            }
+            if(!CheckFileSize(path, 52000))
+                SaveTile(failed, balance, backcontent, path);
+        }
+
+        private static UIElement GetElement(bool failed, UserBalance balance, SolidColorBrush color, string backcontent)
+        {
+            if (failed)
+            {
+                return new BackTile(color, backcontent, string.Empty, string.Empty, string.Empty, string.Empty);
+            }
+            return balance.Data != null ? new BackTile(color, balance.Credit, balance.Data, balance.Sms, balance.VikingSms, balance.VikingMinutes) : new BackTile(color, balance.Credit, "0 MB", "0 SMS", balance.VikingMinutes, string.Empty);
+        }
+
+        private static bool CheckFileSize(string path, int size)
+        {
+            using (var isf = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                if (!isf.FileExists(path))
+                    return false;
+                var file = isf.OpenFile(path, FileMode.Open);
+                if (file.Length >= size)
+                    return true;
+                file.Close();
+                return false;
+            }
         }
     }
 }

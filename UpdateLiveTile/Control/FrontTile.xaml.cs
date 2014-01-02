@@ -23,63 +23,64 @@ namespace UpdateLiveTile.Control
             }
         }
 
-        public static void SaveTile(bool failed, UserBalance balance, string path, out bool crashed)
+        public static void SaveTile(bool failed, UserBalance balance, string path)
         {
-            var i = 0;
-            while (i < 5)
+            try
             {
-                try
+                var color = (bool)IsolatedStorageSettings.ApplicationSettings["tileAccentColor"]
+                    ? (SolidColorBrush)Application.Current.Resources["PhoneAccentBrush"]
+                    : new SolidColorBrush(new Color { A = 255, R = 150, G = 8, B = 8 });
+                var tile = GetElement(failed, balance, color);
+                tile.Measure(new Size(336, 336));
+                tile.Arrange(new Rect(0, 0, 336, 336));
+                var bmp = new WriteableBitmap(336, 336);
+                bmp.Render(tile, null);
+                bmp.Invalidate();
+
+                using (var isf = IsolatedStorageFile.GetUserStoreForApplication())
                 {
-                    var color = (bool)IsolatedStorageSettings.ApplicationSettings["tileAccentColor"]
-                        ? (SolidColorBrush)Application.Current.Resources["PhoneAccentBrush"]
-                        : new SolidColorBrush(new Color { A = 255, R = 150, G = 8, B = 8 });
-                    FrontTile customFrontTile;
-                    if (failed)
+                    if (!isf.DirectoryExists("/CustomLiveTiles"))
                     {
-                        customFrontTile = new FrontTile(color, "?");
+                        isf.CreateDirectory("/CustomLiveTiles");
                     }
-                    else if (balance.Data != null)
-                    {
-                        customFrontTile = new FrontTile(color, balance.Remaining.ToString() ?? "?");
-                    }
-                    else
-                    {
-                        customFrontTile = new FrontTile(color, "0");
-                    }
-                    customFrontTile.Measure(new Size(336, 336));
-                    customFrontTile.Arrange(new Rect(0, 0, 336, 336));
-                    var bmp = new WriteableBitmap(336, 336);
-                    bmp.Render(customFrontTile, null);
-                    bmp.Invalidate();
 
-                    using (var isf = IsolatedStorageFile.GetUserStoreForApplication())
+                    using (var stream = isf.OpenFile(path, FileMode.OpenOrCreate))
                     {
-                        if (!isf.DirectoryExists("/CustomLiveTiles"))
-                        {
-                            isf.CreateDirectory("/CustomLiveTiles");
-                        }
-
-                        using (var stream = isf.OpenFile(path, FileMode.OpenOrCreate))
-                        {
-                            bmp.SaveJpeg(stream, 336, 366, 0, 100);
-                        }
+                        bmp.SaveJpeg(stream, 336, 366, 0, 100);
                     }
                 }
-                catch (Exception)
-                {
-                    i++;
-                    //sleep for 3 seconds in order to try to resolve the isolatedstorage issues
-                    Thread.Sleep(3000);
-                    if (i == 5)
-                    {
-                        crashed = true;
-                        return;
-                    }
-                    continue;
-                }
-                i = 5;
             }
-            crashed = false;
+            catch (Exception)
+            {
+                //sleep for 0.5 seconds in order to try to resolve the isolatedstorage issues
+                Thread.Sleep(500);
+                SaveTile(failed, balance, path);
+            }
+            if (!CheckFileSize(path, 27000))
+                SaveTile(failed, balance, path);
+        }
+
+        private static UIElement GetElement(bool failed, UserBalance balance, SolidColorBrush color)
+        {
+            if (failed)
+            {
+                return new FrontTile(color, "?");
+            }
+            return balance.Data != null ? new FrontTile(color, balance.Remaining.ToString() ?? "?") : new FrontTile(color, "0");
+        }
+
+        private static bool CheckFileSize(string path, int size)
+        {
+            using (var isf = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                if (!isf.FileExists(path))
+                    return false;
+                var file = isf.OpenFile(path, FileMode.Open);
+                if (file.Length >= size) 
+                    return true;
+                file.Close();
+                return false;
+            }
         }
     }
 }

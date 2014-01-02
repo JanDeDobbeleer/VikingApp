@@ -72,6 +72,7 @@ namespace UpdateLiveTile.Classes
                                 args.Json = reader.ReadToEnd();
                             }
                             args.Canceled = false;
+                            //args.Canceled = true;
                         }
                         OnGetInfoFinished(args);
                     }

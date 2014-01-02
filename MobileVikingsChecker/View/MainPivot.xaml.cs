@@ -159,7 +159,7 @@ namespace Fuel.View
         #region events
         async void MainPivotViewmodel_GetSimInfoFinished(object sender, VikingApi.ApiTools.GetInfoCompletedArgs args)
         {
-            if (App.Viewmodel.MainPivotViewmodel.Sims != null && App.Viewmodel.MainPivotViewmodel.Sims.Any() && !args.Canceled)
+            if (App.Viewmodel.MainPivotViewmodel.Sims != null && App.Viewmodel.MainPivotViewmodel.Sims.Any() && !args.Canceled && !(bool)IsolatedStorageSettings.ApplicationSettings["login"])
             {
                 if (IsolatedStorageSettings.ApplicationSettings.Contains("sim"))
                 {
