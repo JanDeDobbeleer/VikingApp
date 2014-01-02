@@ -93,11 +93,11 @@ namespace Tools
         {
             if ((bool)IsolatedStorageSettings.ApplicationSettings["tileAccentColor"])
             {
-                BuildTile("/Assets/336x336.png", "/Assets/159x159.png");
+                BuildTile("/Assets/336x336.png","/Assets/336x336empty.png", "/Assets/159x159.png");
             }
             else
             {
-                BuildTile("/Assets/336x336red.png", "/Assets/159x159red.png");
+                BuildTile("/Assets/336x336red.png", "/Assets/336x336redempty.png", "/Assets/159x159red.png");
             }
             UpdateLiveTile();
         }
@@ -110,11 +110,12 @@ namespace Tools
 
 
 
-        public static void BuildTile(string frontImageUri, string smallBackImageUri)
+        public static void BuildTile(string frontImageUri, string backImageUri, string smallBackImageUri)
         {
             var newTile = new FlipTileData
             {
                 BackgroundImage = new Uri(frontImageUri, UriKind.Relative),
+                BackBackgroundImage = new Uri(backImageUri, UriKind.Relative),
                 SmallBackgroundImage = new Uri(smallBackImageUri, UriKind.Relative)
             };
             var firstOrDefault = ShellTile.ActiveTiles.FirstOrDefault();

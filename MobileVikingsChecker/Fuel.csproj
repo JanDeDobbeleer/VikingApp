@@ -190,6 +190,7 @@
     <Content Include="Assets\336x336.png" />
     <Content Include="Assets\336x336empty.png" />
     <Content Include="Assets\336x336red.png" />
+    <Content Include="Assets\336x336redempty.png" />
     <Content Include="Assets\arrow.png" />
     <Content Include="Assets\cancel.png" />
     <Content Include="Assets\check.png" />

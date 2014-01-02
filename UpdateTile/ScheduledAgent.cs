@@ -40,6 +40,7 @@ namespace UpdateTile
         protected override void OnInvoke(ScheduledTask task)
         {
             var update = new UpdateLiveTile.UpdateLiveTile();
+            update.TileFinished += update_TileFinished;
 #if(DEBUG)
             Debug.WriteLine("Periodic task is starting");
 #endif
@@ -47,6 +48,11 @@ namespace UpdateTile
 #if(DEBUG)
             Debug.WriteLine("Periodic task has finished updating");
 #endif
+            NotifyComplete();
+        }
+
+        void update_TileFinished(object sender, UpdateLiveTile.Classes.GetInfoCompletedArgs args)
+        {
             NotifyComplete();
         }
     }

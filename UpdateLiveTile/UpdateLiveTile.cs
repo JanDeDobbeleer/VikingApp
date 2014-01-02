@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 using AsyncOAuth;
 using Microsoft.Phone.Shell;
 using UpdateLiveTile.Classes;
@@ -18,6 +19,7 @@ namespace UpdateLiveTile
         private readonly Api _client = new Api();
         const string FilenameBack = "/Shared/ShellContent/CustomTile.jpg";
         const string FilenameFront = "/Shared/ShellContent/CustomTileFront.jpg";
+        public event GetInfoFinishedEventHandler TileFinished;
         private bool _fromForeground;
         private bool _backCrashed;
         private bool _frontCrashed;
@@ -26,11 +28,22 @@ namespace UpdateLiveTile
         {
             _fromForeground = fromForeground;
             if (string.IsNullOrEmpty((string)IsolatedStorageSettings.ApplicationSettings["sim"]))
+            {
+                SetTile(true, "unavailable");
                 return;
+            }
 #if(DEBUG)
             Debug.WriteLine("Live tile: Start updating Live tile for number " + (string)IsolatedStorageSettings.ApplicationSettings["sim"]);
 #endif
             await GetData((string)IsolatedStorageSettings.ApplicationSettings["sim"]);
+        }
+
+        protected void OnTileFinished(GetInfoCompletedArgs args)
+        {
+            if (TileFinished != null)
+            {
+                TileFinished(this, args);
+            }
         }
 
         private async Task<bool> GetData(string msisdn)
@@ -70,7 +83,7 @@ namespace UpdateLiveTile
                 SetTile(true, "error");
             }
 #if(DEBUG)
-            Debug.WriteLine("Live tile: BackTile has been updated");
+            Debug.WriteLine("Live tile: Tile has been updated");
 #endif
         }
 
@@ -103,23 +116,71 @@ namespace UpdateLiveTile
             {
                 try
                 {
-                    Deployment.Current.Dispatcher.BeginInvoke(() => SaveImageForeground(failed, backcontent));
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+#if(DEBUG)
+            Debug.WriteLine("Live tile: From background: Starting timer");
+#endif
+                        var dt = new DispatcherTimer
+                        {
+                            Interval = new TimeSpan(0, 0, 0, 20, 0)
+                        };
+                        dt.Tick += Tick;
+                        dt.Start();
+#if(DEBUG)
+            Debug.WriteLine("Live tile: From background: Timer started");
+#endif
+                        SaveImageForeground(failed, backcontent);
+#if(DEBUG)
+                        Debug.WriteLine("Live tile: From background: Images created");
+#endif
+                    });
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     i++;
+#if(DEBUG)
+                    Debug.WriteLine("Live tile: From background: error: " + e.Message);
+#endif
                 }
                 i = 5;
             }
 #if(DEBUG)
-            Debug.WriteLine("Live tile: From background: Image created");
+            Debug.WriteLine("Live tile: From background: Live tile updated");
 #endif
+        }
+
+        private void Tick(object sender, EventArgs e)
+        {
+
+            Deployment.Current.Dispatcher.BeginInvoke(() => {
+#if(DEBUG)
+                Debug.WriteLine("Live tile: From background: Get default tile after 20 seconds");
+#endif
+                _client.CancelTask();
+                SaveImageForeground(true, "unavailable");
+                if (sender as DispatcherTimer != null)
+                    (sender as DispatcherTimer).Stop();
+                _client.RenewToken();
+                OnTileFinished(new GetInfoCompletedArgs());
+#if(DEBUG)
+                Debug.WriteLine("Live tile: From background: Default tile created");
+#endif
+            });
+
+
         }
 
         private void SaveImageForeground(bool failed, string backcontent)
         {
             FrontTile.SaveTile(failed, _balance, FilenameFront, out _frontCrashed);
+#if(DEBUG)
+            Debug.WriteLine("Live tile: Front image created");
+#endif
             BackTile.SaveTile(failed, _balance, backcontent, FilenameBack, out _backCrashed);
+#if(DEBUG)
+            Debug.WriteLine("Live tile: Back image created");
+#endif
         }
 
         private Uri GetDefaultBackTile()

@@ -213,6 +213,7 @@ namespace Fuel.View
             }
             SimBox.Text = string.Empty;
             _loading = false;
+            _isLoginControlEnabled = false;
         }
 
         private void ShowLogin()

@@ -40,7 +40,7 @@ namespace UpdateLiveTile.Control
                     }
                     else if (balance.Data != null)
                     {
-                        customFrontTile = new FrontTile(color, balance.Remaining.ToString());
+                        customFrontTile = new FrontTile(color, balance.Remaining.ToString() ?? "?");
                     }
                     else
                     {

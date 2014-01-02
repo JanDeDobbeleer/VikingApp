@@ -80,16 +80,14 @@ namespace Fuel.Settings
                     try
                     {
                         _sims = JsonConvert.DeserializeObject<Sim[]>(args.Json);
+                        ShowHideDefaultSim(_sims.Count() > 1);
                     }
                     catch (Exception)
                     {
                         Tools.Tools.SetProgressIndicator(false);
-                        return;
                     }
-                    Tools.Tools.SetProgressIndicator(false);
                     break;
             }
-            ShowHideDefaultSim(_sims.Count() > 1);
         }
 
         private void ShowHideSimTopup(bool on)
@@ -129,6 +127,7 @@ namespace Fuel.Settings
             SimPicker.Visibility = visible;
             SimCheck.Visibility = (_sims.Count() == 1) ? visible : Visibility.Visible;
             LastUsedText.Visibility = (_sims.Count() == 1) ? visible : Visibility.Visible;
+            Tools.Tools.SetProgressIndicator(false);
         }
 
         private void Picker_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
