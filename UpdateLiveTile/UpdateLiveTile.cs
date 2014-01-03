@@ -21,6 +21,8 @@ namespace UpdateLiveTile
         const string FilenameFront = "/Shared/ShellContent/CustomTileFront.jpg";
         public event GetInfoFinishedEventHandler TileFinished;
         private bool _fromForeground;
+        private bool _backCrashed;
+        private bool _frontCrashed;
 
         public async void Start(bool fromForeground)
         {
@@ -95,16 +97,33 @@ namespace UpdateLiveTile
             {
                 SaveImageBackground(failed, backContent);
             }
-            var newTile = new FlipTileData
+            var i = 0;
+            while (i < 5)
             {
-                Count = 0,
-                BackBackgroundImage = new Uri("isostore:" + FilenameBack, UriKind.Absolute),
-                BackgroundImage = new Uri("isostore:" + FilenameFront, UriKind.Absolute),
-                BackContent = string.Empty,
-            };
-            var firstOrDefault = ShellTile.ActiveTiles.FirstOrDefault();
-            if (firstOrDefault != null)
-                firstOrDefault.Update(newTile);
+                try
+                {
+                    var newTile = new FlipTileData
+                    {
+                        Count = 0,
+                        BackBackgroundImage =
+                            _backCrashed ? GetDefaultBackTile() : new Uri("isostore:" + FilenameBack, UriKind.Absolute),
+                        BackgroundImage =
+                            _frontCrashed
+                                ? GetDefaultFrontTile()
+                                : new Uri("isostore:" + FilenameFront, UriKind.Absolute),
+                        BackContent = string.Empty,
+                    };
+                    var firstOrDefault = ShellTile.ActiveTiles.FirstOrDefault();
+                    if (firstOrDefault != null)
+                        firstOrDefault.Update(newTile);
+                }
+                catch (Exception)
+                {
+                    i++;
+                    continue;
+                }
+                i = 5;
+            }
         }
 
         public void SaveImageBackground(bool failed, string backcontent)
@@ -134,7 +153,7 @@ namespace UpdateLiveTile
 #endif
                     });
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     i++;
 #if(DEBUG)
@@ -171,14 +190,28 @@ namespace UpdateLiveTile
 
         private void SaveImageForeground(bool failed, string backcontent)
         {
-            FrontTile.SaveTile(failed, _balance, FilenameFront);
+            FrontTile.SaveTile(failed, _balance, FilenameFront, out _frontCrashed);
 #if(DEBUG)
             Debug.WriteLine("Live tile: Front image created");
 #endif
-            BackTile.SaveTile(failed, _balance, backcontent, FilenameBack);
+            BackTile.SaveTile(failed, _balance, backcontent, FilenameBack, out _backCrashed);
 #if(DEBUG)
             Debug.WriteLine("Live tile: Back image created");
 #endif
+        }
+
+        private Uri GetDefaultBackTile()
+        {
+            return (bool)IsolatedStorageSettings.ApplicationSettings["tileAccentColor"]
+                            ? new Uri("/Assets/336x336empty.png", UriKind.RelativeOrAbsolute)
+                            : new Uri("/Assets/336x336redempty.png", UriKind.RelativeOrAbsolute);
+        }
+
+        private Uri GetDefaultFrontTile()
+        {
+            return (bool)IsolatedStorageSettings.ApplicationSettings["tileAccentColor"]
+                            ? new Uri("/Assets/336x336.png", UriKind.RelativeOrAbsolute)
+                            : new Uri("/Assets/336x336red.png", UriKind.RelativeOrAbsolute);
         }
     }
 }

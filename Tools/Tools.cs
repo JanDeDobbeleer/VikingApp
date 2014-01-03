@@ -99,6 +99,7 @@ namespace Tools
             {
                 BuildTile("/Assets/336x336red.png", "/Assets/336x336redempty.png", "/Assets/159x159red.png");
             }
+            UpdateLiveTile();
         }
 
         public static void UpdateLiveTile()
