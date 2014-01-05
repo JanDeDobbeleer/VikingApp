@@ -1,11 +1,8 @@
 ﻿using System;
-using System.IO;
 using System.IO.IsolatedStorage;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using UpdateLiveTile.Classes;
 
 namespace UpdateLiveTile.Control
@@ -23,7 +20,7 @@ namespace UpdateLiveTile.Control
             VCall.Text = vCall;
         }
 
-        public static void SaveTile(bool failed, UserBalance balance, string backcontent, string path, out bool crashed)
+        public static void SaveTile(bool failed, UserBalance balance, string backcontent)
         {
             var i = 0;
             while (i < 5)
@@ -49,7 +46,7 @@ namespace UpdateLiveTile.Control
                         customBackTile = new BackTile(color, balance.Credit, "0 MB", "0 SMS", balance.VikingMinutes,
                             string.Empty);
                     }
-                    if (!Helper.SaveElement(customBackTile, path))
+                    if (!Helper.SaveElement(customBackTile, Tile.Back))
                     {
                         i++;
                         continue;
@@ -60,13 +57,11 @@ namespace UpdateLiveTile.Control
                     i++;
                     if (i == 5)
                     {
-                        crashed = true;
                         return;
                     }
                 }
                 i = 5;
             }
-            crashed = false;
         }
     }
 }

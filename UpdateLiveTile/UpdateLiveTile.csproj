@@ -93,6 +93,9 @@
     <Compile Include="Control\BackTile.xaml.cs">
       <DependentUpon>BackTile.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Control\SmallTile.xaml.cs">
+      <DependentUpon>SmallTile.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="UpdateLiveTile.cs" />
     <Compile Include="Classes\Api.cs" />
@@ -144,8 +147,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Control\SmallTile.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\159x159.png" />
+    <Content Include="Assets\159x159red.png" />
     <Content Include="Assets\336x336.png" />
     <Content Include="Assets\336x336red.png" />
     <Content Include="Assets\336x336empty.png" />

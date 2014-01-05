@@ -1,48 +1,115 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.IO.IsolatedStorage;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using Microsoft.Phone.Shell;
 
 namespace UpdateLiveTile.Classes
 {
+    public enum Tile
+    {
+        Front,
+        Back,
+        Small
+    }
+
     class Helper
     {
-        public static bool SaveElement(UIElement element, string path)
+        public static bool SaveElement(UIElement element, Tile tile)
         {
             try
             {
-                element.Measure(new Size(336, 336));
-                element.Arrange(new Rect(0, 0, 336, 336));
-                var bmp = new WriteableBitmap(336, 336);
+                var side = (tile == Tile.Small) ? 159 : 336;
+                element.Measure(new Size(side, side));
+                element.Arrange(new Rect(0, 0, side, side));
+                var bmp = new WriteableBitmap(side, side);
                 bmp.Render(element, null);
                 bmp.Invalidate();
-
+                var name = tile.ToString() + Guid.NewGuid() + ".jpg";
                 using (var isf = IsolatedStorageFile.GetUserStoreForApplication())
                 {
                     if (!isf.DirectoryExists("/CustomLiveTiles"))
                     {
                         isf.CreateDirectory("/CustomLiveTiles");
                     }
-                    if(isf.FileExists(path))
-                        isf.DeleteFile(path);
-                    using (var stream = isf.OpenFile(path, FileMode.Create))
+                    using (var myFileStream = isf.CreateFile("shared/shellcontent/" + name))
                     {
-                        bmp.SaveJpeg(stream, 336, 366, 0, 100);
+                        // Encode WriteableBitmap object to a JPEG stream.
+                        bmp.SaveJpeg(myFileStream, side, side, 0, 100);
+                        myFileStream.Close();
+                    }
+                    var filesTodelete =
+                             from f in isf.GetFileNames("shared/shellcontent/" + tile + "*").AsQueryable()
+                             where !f.EndsWith(name)
+                             select f;
+                    foreach (var file in filesTodelete)
+                    {
+                        isf.DeleteFile("shared/shellcontent/" + file);
                     }
                 }
+                SaveTilePart("isostore:/Shared/ShellContent/" + name, tile);
             }
             catch (Exception)
             {
-                Thread.Sleep(500);
+                Thread.Sleep(1000);
+                if (tile == Tile.Small)
+                {
+                    SaveTilePart(GetDefaultSmallTile(), tile);
+                }
+                else
+                {
+                    SaveTilePart((tile == Tile.Front) ? GetDefaultFrontTile() : GetDefaultBackTile(), tile);
+                }
                 return false;
             }
             return true;
+        }
+
+        private static string GetDefaultBackTile()
+        {
+            return (bool)IsolatedStorageSettings.ApplicationSettings["tileAccentColor"]
+                ? "/Assets/336x336empty.png"
+                : "/Assets/336x336redempty.png";
+        }
+
+        private static string GetDefaultFrontTile()
+        {
+            return (bool)IsolatedStorageSettings.ApplicationSettings["tileAccentColor"]
+                ? "/Assets/336x336.png"
+                : "/Assets/336x336red.png";
+        }
+
+        private static string GetDefaultSmallTile()
+        {
+            return (bool)IsolatedStorageSettings.ApplicationSettings["tileAccentColor"]
+                ? "/Assets/159x159.png"
+                : "/Assets/159x159red.png";
+        }
+
+        private static void SaveTilePart(string filename, Tile tile)
+        {
+            var newTile = new FlipTileData
+            {
+                Count = 0,
+                BackContent = string.Empty
+            };
+            switch (tile)
+            {
+                case Tile.Front:
+                    newTile.BackgroundImage = new Uri(filename, UriKind.Absolute);
+                    break;
+                case Tile.Back:
+                    newTile.BackBackgroundImage = new Uri(filename, UriKind.Absolute);
+                    break;
+                case Tile.Small:
+                    newTile.SmallBackgroundImage = new Uri(filename, UriKind.Absolute);
+                    break;
+            }
+            var firstOrDefault = ShellTile.ActiveTiles.FirstOrDefault();
+            if (firstOrDefault != null)
+                firstOrDefault.Update(newTile);
         }
     }
 }

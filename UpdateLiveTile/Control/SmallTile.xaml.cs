@@ -7,16 +7,16 @@ using UpdateLiveTile.Classes;
 
 namespace UpdateLiveTile.Control
 {
-    public partial class FrontTile : UserControl
+    public partial class SmallTile : UserControl
     {
-        public FrontTile(SolidColorBrush background, string days)
+        public SmallTile(SolidColorBrush background, string days)
         {
             InitializeComponent();
             LayoutRoot.Background = background;
             Days.Text = days;
             if (days.Equals("?") || int.Parse(days) < 10)
             {
-                Days.Margin = new Thickness(0, -138, 70, 0);
+                Days.Margin = new Thickness(0, -60, 29, 0);
             }
         }
 
@@ -30,20 +30,20 @@ namespace UpdateLiveTile.Control
                     var color = (bool)IsolatedStorageSettings.ApplicationSettings["tileAccentColor"]
                         ? (SolidColorBrush)Application.Current.Resources["PhoneAccentBrush"]
                         : new SolidColorBrush(new Color { A = 255, R = 150, G = 8, B = 8 });
-                    FrontTile customFrontTile;
+                    SmallTile customSmallTile;
                     if (failed)
                     {
-                        customFrontTile = new FrontTile(color, "?");
+                        customSmallTile = new SmallTile(color, "?");
                     }
                     else if (balance.Data != null)
                     {
-                        customFrontTile = new FrontTile(color, string.IsNullOrWhiteSpace(balance.Remaining.ToString()) ? "?" : balance.Remaining.ToString());
+                        customSmallTile = new SmallTile(color, string.IsNullOrWhiteSpace(balance.Remaining.ToString()) ? "?" : balance.Remaining.ToString());
                     }
                     else
                     {
-                        customFrontTile = new FrontTile(color, "0");
+                        customSmallTile = new SmallTile(color, "0");
                     }
-                    if (!Helper.SaveElement(customFrontTile, Tile.Front))
+                    if (!Helper.SaveElement(customSmallTile, Tile.Small))
                     {
                         i++;
                         continue;
@@ -62,4 +62,6 @@ namespace UpdateLiveTile.Control
             }
         }
     }
+
+
 }

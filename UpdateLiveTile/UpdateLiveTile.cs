@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO.IsolatedStorage;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Threading;
 using AsyncOAuth;
-using Microsoft.Phone.Shell;
 using UpdateLiveTile.Classes;
 using UpdateLiveTile.Control;
 
@@ -17,12 +14,7 @@ namespace UpdateLiveTile
     {
         private readonly UserBalance _balance = new UserBalance();
         private readonly Api _client = new Api();
-        const string FilenameBack = "/Shared/ShellContent/CustomTile.jpg";
-        const string FilenameFront = "/Shared/ShellContent/CustomTileFront.jpg";
-        public event GetInfoFinishedEventHandler TileFinished;
         private bool _fromForeground;
-        private bool _backCrashed;
-        private bool _frontCrashed;
 
         public async void Start(bool fromForeground)
         {
@@ -36,14 +28,6 @@ namespace UpdateLiveTile
             Debug.WriteLine("Live tile: Start updating Live tile for number " + (string)IsolatedStorageSettings.ApplicationSettings["sim"]);
 #endif
             await GetData((string)IsolatedStorageSettings.ApplicationSettings["sim"]);
-        }
-
-        protected void OnTileFinished(GetInfoCompletedArgs args)
-        {
-            if (TileFinished != null)
-            {
-                TileFinished(this, args);
-            }
         }
 
         private async Task<bool> GetData(string msisdn)
@@ -97,33 +81,6 @@ namespace UpdateLiveTile
             {
                 SaveImageBackground(failed, backContent);
             }
-            var i = 0;
-            while (i < 5)
-            {
-                try
-                {
-                    var newTile = new FlipTileData
-                    {
-                        Count = 0,
-                        BackBackgroundImage =
-                            _backCrashed ? GetDefaultBackTile() : new Uri("isostore:" + FilenameBack, UriKind.Absolute),
-                        BackgroundImage =
-                            _frontCrashed
-                                ? GetDefaultFrontTile()
-                                : new Uri("isostore:" + FilenameFront, UriKind.Absolute),
-                        BackContent = string.Empty,
-                    };
-                    var firstOrDefault = ShellTile.ActiveTiles.FirstOrDefault();
-                    if (firstOrDefault != null)
-                        firstOrDefault.Update(newTile);
-                }
-                catch (Exception)
-                {
-                    i++;
-                    continue;
-                }
-                i = 5;
-            }
         }
 
         public void SaveImageBackground(bool failed, string backcontent)
@@ -135,18 +92,6 @@ namespace UpdateLiveTile
                 {
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
-#if(DEBUG)
-            Debug.WriteLine("Live tile: From background: Starting timer");
-#endif
-                        var dt = new DispatcherTimer
-                        {
-                            Interval = new TimeSpan(0, 0, 0, 20, 0)
-                        };
-                        dt.Tick += Tick;
-                        dt.Start();
-#if(DEBUG)
-            Debug.WriteLine("Live tile: From background: Timer started");
-#endif
                         SaveImageForeground(failed, backcontent);
 #if(DEBUG)
                         Debug.WriteLine("Live tile: From background: Images created");
@@ -157,7 +102,7 @@ namespace UpdateLiveTile
                 {
                     i++;
 #if(DEBUG)
-                    Debug.WriteLine("Live tile: From background: error: " + e.Message);
+                    Debug.WriteLine("Live tile: From background: error");
 #endif
                 }
                 i = 5;
@@ -167,51 +112,20 @@ namespace UpdateLiveTile
 #endif
         }
 
-        private void Tick(object sender, EventArgs e)
-        {
-
-            Deployment.Current.Dispatcher.BeginInvoke(() => {
-#if(DEBUG)
-                Debug.WriteLine("Live tile: From background: Get default tile after 20 seconds");
-#endif
-                _client.CancelTask();
-                SaveImageForeground(true, "unavailable");
-                if (sender as DispatcherTimer != null)
-                    (sender as DispatcherTimer).Stop();
-                _client.RenewToken();
-                OnTileFinished(new GetInfoCompletedArgs());
-#if(DEBUG)
-                Debug.WriteLine("Live tile: From background: Default tile created");
-#endif
-            });
-
-
-        }
-
         private void SaveImageForeground(bool failed, string backcontent)
         {
-            FrontTile.SaveTile(failed, _balance, FilenameFront, out _frontCrashed);
+            FrontTile.SaveTile(failed, _balance);
 #if(DEBUG)
             Debug.WriteLine("Live tile: Front image created");
 #endif
-            BackTile.SaveTile(failed, _balance, backcontent, FilenameBack, out _backCrashed);
+            BackTile.SaveTile(failed, _balance, backcontent);
 #if(DEBUG)
             Debug.WriteLine("Live tile: Back image created");
 #endif
-        }
-
-        private Uri GetDefaultBackTile()
-        {
-            return (bool)IsolatedStorageSettings.ApplicationSettings["tileAccentColor"]
-                            ? new Uri("/Assets/336x336empty.png", UriKind.RelativeOrAbsolute)
-                            : new Uri("/Assets/336x336redempty.png", UriKind.RelativeOrAbsolute);
-        }
-
-        private Uri GetDefaultFrontTile()
-        {
-            return (bool)IsolatedStorageSettings.ApplicationSettings["tileAccentColor"]
-                            ? new Uri("/Assets/336x336.png", UriKind.RelativeOrAbsolute)
-                            : new Uri("/Assets/336x336red.png", UriKind.RelativeOrAbsolute);
+            SmallTile.SaveTile(failed, _balance);
+#if(DEBUG)
+            Debug.WriteLine("Live tile: Small image created");
+#endif
         }
     }
 }
