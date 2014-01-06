@@ -16,7 +16,7 @@ namespace UpdateLiveTile.Control
             Days.Text = days;
             if (days.Equals("?") || int.Parse(days) < 10)
             {
-                Days.Margin = new Thickness(0, -138, 70, 0);
+                Days.Margin = new Thickness(0, -121, 61, 0);
             }
         }
 

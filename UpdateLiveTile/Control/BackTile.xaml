@@ -12,11 +12,12 @@
     <UserControl.Resources>
         <Style TargetType="TextBlock" x:Key="TextStyle">
             <Setter Property="HorizontalAlignment" Value="Left"/>
-            <Setter Property="Margin" Value="13,-5,0,-10"/>
+            <Setter Property="Margin" Value="13,0,0,-10"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="FontSize" Value="47"/>
             <Setter Property="TextAlignment" Value="Left"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="Text" Value="testest"></Setter>
         </Style>
     </UserControl.Resources>
 
