@@ -12,11 +12,11 @@
     <Grid x:Name="LayoutRoot" Background="{StaticResource PhoneChromeBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="30"/>
-            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="58"/>
+            <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
         <Image Grid.ColumnSpan="3" Source="/Assets/336x336.png"/>
-        <Ellipse Grid.Column="1" Width="30" Fill="Black" Height="30" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,10,0,0"/>
-        <TextBlock x:Name="Days" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+        <Ellipse Grid.Column="1" Width="58" Fill="Black" Height="58" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,20,0,0"/>
+        <TextBlock x:Name="Days" Grid.Column="1" FontSize="36" FontWeight="Bold" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,22,0,0"/>
     </Grid>
 </UserControl>

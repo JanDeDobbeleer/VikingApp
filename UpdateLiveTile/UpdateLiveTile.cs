@@ -116,37 +116,18 @@ namespace UpdateLiveTile
 
         private void SaveImageForeground(bool failed, string backcontent)
         {
-            if ((bool) IsolatedStorageSettings.ApplicationSettings["emptysmall"])
+            if ((bool)IsolatedStorageSettings.ApplicationSettings["oldtilestyle"])
             {
-                if ((bool) IsolatedStorageSettings.ApplicationSettings["oldtilestyle"])
-                {
-                    OldSmallTile.SaveTile(failed, _balance);
-                }
-                else
-                {
-                    SmallTile.SaveTile(failed, _balance);
-                }
-                SmallTile.SaveTile(failed, _balance);
-#if(DEBUG)
-            Debug.WriteLine("Live tile: Small image created");
-#endif
+                OldSmallTile.SaveTile(failed, _balance);
             }
             else
             {
-                var tile = new FlipTileData
-                {
-                    SmallBackgroundImage = 
-                        (bool) IsolatedStorageSettings.ApplicationSettings["tileAccentColor"]
-                            ? new Uri("/Assets/159x159.png", UriKind.Relative)
-                            : new Uri("/Assets/159x159red.png", UriKind.Relative)
-                };
-                var firstOrDefault = ShellTile.ActiveTiles.FirstOrDefault();
-                if (firstOrDefault != null)
-                    firstOrDefault.Update(tile);
-#if(DEBUG)
-            Debug.WriteLine("Live tile: Standard image created");
-#endif
+                SmallTile.SaveTile(failed, _balance);
             }
+#if(DEBUG)
+            Debug.WriteLine("Live tile: Small image created");
+#endif
+
             FrontTile.SaveTile(failed, _balance);
 #if(DEBUG)
             Debug.WriteLine("Live tile: Front image created");

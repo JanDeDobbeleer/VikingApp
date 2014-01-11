@@ -235,13 +235,11 @@
                         <toolkit:ListPickerItem Content="theme" />
                         <toolkit:ListPickerItem Content="viking red" />
                     </toolkit:ListPicker>
-                    <toolkit:ToggleSwitch x:Name="SmallTileSwitch" HorizontalAlignment="Stretch" VerticalAlignment="Center"
-                                      Margin="0,0,0,-10" SwitchForeground="#960808" Checked="SmallTileSwitch_OnChecked"
-                                      Unchecked="SmallTileSwitch_OnChecked">
-                        <toolkit:ToggleSwitch.Header>
-                            <TextBlock Text="indicate days left on small tile" Style="{StaticResource TextStyle}" Margin="0,0,0,0" />
-                        </toolkit:ToggleSwitch.Header>
-                    </toolkit:ToggleSwitch>
+                    <TextBlock Text="small tile days left indication" Style="{StaticResource TextStyle}" Margin="11,0,0,-10" />
+                    <toolkit:ListPicker x:Name="SmallTilePicker" Tag="smalltilestyle" SelectionChanged="Picker_OnSelectionChanged" Template="{StaticResource ListPickerControlTemplate}">
+                        <toolkit:ListPickerItem Content="text" />
+                        <toolkit:ListPickerItem Content="circle"/>
+                    </toolkit:ListPicker>
                 </StackPanel>
             </phone:PivotItem>
         </phone:Pivot>
