@@ -18,6 +18,22 @@ namespace UpdateLiveTile.Control
             {
                 Days.Margin = new Thickness(0, -121, 61, 0);
             }
+            else if (int.Parse(days) >= 10 && int.Parse(days) < 20)
+            {
+                switch (int.Parse(days))
+                {
+                    case 11:
+                        Days.Margin = new Thickness(0, -121, 50, 0);
+                        break;
+                    default:
+                        Days.Margin = new Thickness(0, -121, 42, 0);
+                        break;
+                }
+            }
+            else if (int.Parse(days) == 21)
+            {
+                    Days.Margin = new Thickness(0, -121, 42, 0);
+            }
         }
 
         public static void SaveTile(bool failed, UserBalance balance)

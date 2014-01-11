@@ -70,7 +70,7 @@ namespace Fuel.View
 
         private void AboutOnClick(object sender, EventArgs e)
         {
-            if(!_loading)
+            if (!_loading)
             {
                 App.Viewmodel.MainPivotViewmodel.CancelTask();
                 NavigationService.Navigate(new Uri("/Fuel.About;component/About.xaml", UriKind.Relative));
@@ -179,7 +179,7 @@ namespace Fuel.View
         }
 
         void MainPivotViewmodel_GetBalanceInfoFinished(object sender, VikingApi.ApiTools.GetInfoCompletedArgs args)
-        { 
+        {
             if (!args.Canceled)
             {
                 Bundle.Visibility = Visibility.Visible;
@@ -206,14 +206,15 @@ namespace Fuel.View
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             App.Viewmodel.MainPivotViewmodel.CancelTask();
-            if ((bool) IsolatedStorageSettings.ApplicationSettings["lastusedsim"] || (App.Viewmodel.MainPivotViewmodel.Sims != null && App.Viewmodel.MainPivotViewmodel.Sims.Count() == 1))
+            if ((bool)IsolatedStorageSettings.ApplicationSettings["lastusedsim"] || (App.Viewmodel.MainPivotViewmodel.Sims != null && App.Viewmodel.MainPivotViewmodel.Sims.Count() == 1))
             {
                 if (!string.IsNullOrWhiteSpace(SimBox.Text))
-                    Tools.Tools.SaveSetting(new KeyValuePair { Name = "sim", Content = SimBox.Text});
+                    Tools.Tools.SaveSetting(new KeyValuePair { Name = "sim", Content = SimBox.Text });
             }
             SimBox.Text = string.Empty;
             _loading = false;
-            _isLoginControlEnabled = false;
+            if (e.NavigationMode == NavigationMode.Back)
+                _isLoginControlEnabled = false;
         }
 
         private void ShowLogin()

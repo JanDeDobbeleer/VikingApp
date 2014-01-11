@@ -2,6 +2,7 @@
 using System.IO.IsolatedStorage;
 using System.Linq;
 using Microsoft.Phone.Net.NetworkInformation;
+using Microsoft.Phone.Scheduler;
 using Microsoft.Phone.Shell;
 
 namespace Tools
@@ -104,6 +105,11 @@ namespace Tools
 
         public static void UpdateLiveTile()
         {
+            //remove all background tasks.
+            foreach (var pt in ScheduledActionService.GetActions<PeriodicTask>())
+            {
+                ScheduledActionService.Remove(pt.Name);
+            }
             var update = new UpdateLiveTile.UpdateLiveTile();
             update.Start(true);
         }

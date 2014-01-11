@@ -181,8 +181,11 @@
             <phone:PivotItem Header="changelog">
                 <ScrollViewer>
                     <StackPanel Margin="13, 0, 0, 0">
-                        <TextBlock Text="2.0.3" Foreground="{StaticResource VikingColorBrush}"
-                                   FontSize="{StaticResource PhoneFontSizeLarge}" Margin="0,0,0,2" />
+                        <TextBlock Text="2.0.4" Foreground="{StaticResource VikingColorBrush}" FontSize="{StaticResource PhoneFontSizeLarge}" Margin="0,0,0,2" />
+                        <TextBlock Text="• live tile number alignment fix" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
+                        <TextBlock Text="• login screen logo fix" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
+                        <TextBlock Text="• removed background task on logout" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
+                        <TextBlock Text="2.0.3" FontSize="{StaticResource PhoneFontSizeLarge}" Margin="0,5,0,2" />
                         <TextBlock Text="• price plan update" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
                         <TextBlock Text="• new live tile design" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
                         <TextBlock Text="• live tile image fix" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
