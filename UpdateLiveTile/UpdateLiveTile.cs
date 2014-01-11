@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO.IsolatedStorage;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Windows;
 using AsyncOAuth;
+using Microsoft.Phone.Shell;
 using UpdateLiveTile.Classes;
 using UpdateLiveTile.Control;
 
@@ -114,6 +116,29 @@ namespace UpdateLiveTile
 
         private void SaveImageForeground(bool failed, string backcontent)
         {
+            if ((bool) IsolatedStorageSettings.ApplicationSettings["newtilestyle"])
+            {
+                SmallTile.SaveTile(failed, _balance);
+#if(DEBUG)
+            Debug.WriteLine("Live tile: Small image created");
+#endif
+            }
+            else
+            {
+                var tile = new FlipTileData
+                {
+                    SmallBackgroundImage = 
+                        (bool) IsolatedStorageSettings.ApplicationSettings["tileAccentColor"]
+                            ? new Uri("/Assets/159x159.png", UriKind.Relative)
+                            : new Uri("/Assets/159x159red.png", UriKind.Relative)
+                };
+                var firstOrDefault = ShellTile.ActiveTiles.FirstOrDefault();
+                if (firstOrDefault != null)
+                    firstOrDefault.Update(tile);
+#if(DEBUG)
+            Debug.WriteLine("Live tile: Standard image created");
+#endif
+            }
             FrontTile.SaveTile(failed, _balance);
 #if(DEBUG)
             Debug.WriteLine("Live tile: Front image created");
@@ -122,10 +147,7 @@ namespace UpdateLiveTile
 #if(DEBUG)
             Debug.WriteLine("Live tile: Back image created");
 #endif
-            SmallTile.SaveTile(failed, _balance);
-#if(DEBUG)
-            Debug.WriteLine("Live tile: Small image created");
-#endif
+
         }
     }
 }

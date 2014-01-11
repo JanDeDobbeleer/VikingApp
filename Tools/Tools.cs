@@ -78,6 +78,7 @@ namespace Tools
             IsolatedStorageSettings.ApplicationSettings["lastusedsim"] = false;
             IsolatedStorageSettings.ApplicationSettings["sim"] = string.Empty;
             IsolatedStorageSettings.ApplicationSettings["tileAccentColor"] = true;
+            IsolatedStorageSettings.ApplicationSettings["newtilestyle"] = true;
             var newTile = new FlipTileData
             {
                 BackContent = string.Empty,

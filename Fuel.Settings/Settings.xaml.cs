@@ -38,6 +38,7 @@ namespace Fuel.Settings
             TileColorPicker.SelectedIndex = (bool)IsolatedStorageSettings.ApplicationSettings["tileAccentColor"] ? 0 : 1;
             SystemTray.ProgressIndicator = new ProgressIndicator();
             ShowHideSimTopup((bool)IsolatedStorageSettings.ApplicationSettings["topup"]);
+            SmallTileSwitch.IsChecked = (bool)IsolatedStorageSettings.ApplicationSettings["newtilestyle"];
             _starting = false;
             _cts = new CancellationTokenSource();
             await GetSimInfo(_cts);
@@ -63,7 +64,7 @@ namespace Fuel.Settings
                     }
                 };
                 await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Sim, new KeyValuePair { Content = "1", Name = "alias" }, _cts);
-            } 
+            }
             return true;
         }
 
@@ -118,7 +119,7 @@ namespace Fuel.Settings
 
         private void ShowHideDefaultSim(bool on)
         {
-            foreach (var item in _sims.Select(sim => new ListPickerItem {Content = sim.msisdn}))
+            foreach (var item in _sims.Select(sim => new ListPickerItem { Content = sim.msisdn }))
             {
                 SimPicker.Items.Add(item);
             }
@@ -194,6 +195,14 @@ namespace Fuel.Settings
             IsolatedStorageSettings.ApplicationSettings["login"] = true;
             Tools.Tools.DefaultAllSettings();
             NavigationService.GoBack();
+        }
+
+        private void SmallTileSwitch_OnChecked(object sender, RoutedEventArgs e)
+        {
+            if ((sender as ToggleSwitch) == null || _starting)
+                return;
+            IsolatedStorageSettings.ApplicationSettings["newtilestyle"] = (sender as ToggleSwitch).IsChecked;
+            Tools.Tools.ResetLiveTile();
         }
     }
 }
