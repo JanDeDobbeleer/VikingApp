@@ -116,8 +116,16 @@ namespace UpdateLiveTile
 
         private void SaveImageForeground(bool failed, string backcontent)
         {
-            if ((bool) IsolatedStorageSettings.ApplicationSettings["newtilestyle"])
+            if ((bool) IsolatedStorageSettings.ApplicationSettings["emptysmall"])
             {
+                if ((bool) IsolatedStorageSettings.ApplicationSettings["oldtilestyle"])
+                {
+                    OldSmallTile.SaveTile(failed, _balance);
+                }
+                else
+                {
+                    SmallTile.SaveTile(failed, _balance);
+                }
                 SmallTile.SaveTile(failed, _balance);
 #if(DEBUG)
             Debug.WriteLine("Live tile: Small image created");

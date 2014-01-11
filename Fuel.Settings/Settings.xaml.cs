@@ -201,7 +201,7 @@ namespace Fuel.Settings
         {
             if ((sender as ToggleSwitch) == null || _starting)
                 return;
-            IsolatedStorageSettings.ApplicationSettings["newtilestyle"] = (sender as ToggleSwitch).IsChecked;
+            IsolatedStorageSettings.ApplicationSettings["emptysmall"] = (sender as ToggleSwitch).IsChecked;
             Tools.Tools.ResetLiveTile();
         }
     }

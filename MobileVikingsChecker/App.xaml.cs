@@ -67,8 +67,11 @@ namespace Fuel
         // This code will not execute when the application is reactivated
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
-            if (!IsolatedStorageSettings.ApplicationSettings.Contains("newtilestyle"))
-                IsolatedStorageSettings.ApplicationSettings["newtilestyle"] = true;
+            if (!IsolatedStorageSettings.ApplicationSettings.Contains("emptysmall"))
+            {
+                IsolatedStorageSettings.ApplicationSettings["emptysmall"] = true;
+                IsolatedStorageSettings.ApplicationSettings["oldtilestyle"] = true;
+            }
             if (!IsolatedStorageSettings.ApplicationSettings.Contains("login"))
             {
                 IsolatedStorageSettings.ApplicationSettings["login"] = true;

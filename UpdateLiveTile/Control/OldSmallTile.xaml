@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="UpdateLiveTile.Control.OldSmallTile"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    d:DesignHeight="159" d:DesignWidth="159">
+    
+    <Grid x:Name="LayoutRoot" Background="{StaticResource PhoneChromeBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="30"/>
+            <ColumnDefinition Width="10"/>
+        </Grid.ColumnDefinitions>
+        <Image Grid.ColumnSpan="3" Source="/Assets/336x336.png"/>
+        <Ellipse Grid.Column="1" Width="30" Fill="Black" Height="30" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,10,0,0"/>
+        <TextBlock x:Name="Days" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+    </Grid>
+</UserControl>

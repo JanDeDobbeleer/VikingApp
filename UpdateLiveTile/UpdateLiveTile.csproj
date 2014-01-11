@@ -93,6 +93,9 @@
     <Compile Include="Control\BackTile.xaml.cs">
       <DependentUpon>BackTile.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Control\OldSmallTile.xaml.cs">
+      <DependentUpon>OldSmallTile.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Control\SmallTile.xaml.cs">
       <DependentUpon>SmallTile.xaml</DependentUpon>
     </Compile>
@@ -144,6 +147,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Control\BackTile.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\OldSmallTile.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
