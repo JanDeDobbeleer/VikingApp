@@ -89,6 +89,11 @@ namespace Tools
             if (firstOrDefault != null)
                 firstOrDefault.Update(newTile);
             ResetLiveTile();
+            //remove all background tasks.
+            foreach (var pt in ScheduledActionService.GetActions<PeriodicTask>())
+            {
+                ScheduledActionService.Remove(pt.Name);
+            }
         }
 
         public static void ResetLiveTile()
@@ -106,11 +111,6 @@ namespace Tools
 
         public static void UpdateLiveTile()
         {
-            //remove all background tasks.
-            foreach (var pt in ScheduledActionService.GetActions<PeriodicTask>())
-            {
-                ScheduledActionService.Remove(pt.Name);
-            }
             var update = new UpdateLiveTile.UpdateLiveTile();
             update.Start(true);
         }

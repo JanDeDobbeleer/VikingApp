@@ -41,7 +41,7 @@ namespace UpdateTile
         {
             var update = new UpdateLiveTile.UpdateLiveTile();
 #if(DEBUG)
-            Debug.WriteLine("Periodic task is starting");
+            Debug.WriteLine("Periodic task for live tile is starting");
 #endif
             update.Start(false);
 #if(DEBUG)

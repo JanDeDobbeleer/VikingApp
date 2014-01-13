@@ -12,7 +12,7 @@
     <Grid x:Name="LayoutRoot">
         <Image x:Name="Image" Margin="-52,0,0,0" Source="/Assets/336x336.png" Width="320" HorizontalAlignment="Left" />
         <TextBlock x:Name="Days" FontSize="98" Margin="0,-121,35,0" HorizontalAlignment="Right" VerticalAlignment="Center"  FontWeight="SemiBold"/>
-        <TextBlock Text="days" Margin="0,5,38,0" FontSize="51"  FontWeight="Medium" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <TextBlock x:Name="DaysBlock" Text="days" Margin="0,5,38,0" FontSize="51"  FontWeight="Medium" HorizontalAlignment="Right" VerticalAlignment="Center"/>
         <TextBlock Text="left" Margin="0,126,39,0" FontSize="70" FontWeight="Medium" HorizontalAlignment="Right" VerticalAlignment="Center"/>
     </Grid>
 </UserControl>
