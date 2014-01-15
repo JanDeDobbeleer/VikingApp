@@ -20,7 +20,7 @@ namespace UpdateLiveTile.Control
                 int result;
                 if (int.TryParse(days, out result))
                 {
-                    DaysBlock.Text = days;
+                    DaysBlock.Text = (result == 1) ? "day" : "days";
                     DaysBlock.Margin = new Thickness(0, 2, 24, 0);
                 }
             }
