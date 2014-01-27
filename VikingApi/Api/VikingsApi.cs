@@ -34,7 +34,7 @@ namespace VikingApi.Api
         {
             get { return "usage.json"; }
         }
-        
+
         public string Referrals
         {
             get { return "referrals.json"; }
@@ -131,6 +131,19 @@ namespace VikingApi.Api
             if (valuePair.Content != null && valuePair.Name != null)
                 return await GetInfo(token, location + "?" + string.Format(Parameter, valuePair.Name, HttpUtility.UrlEncode((string)valuePair.Content)), cts);
             return false;
+        }
+
+        public async Task<bool> GetInfo(AccessToken token, string location, KeyValuePair[] valuePair, CancellationTokenSource cts)
+        {
+            var start = location + "?";
+            var get = string.Empty;
+            for (var i = 0; i < valuePair.Length; i++)
+            {
+                get += string.Format(Parameter, valuePair[i].Name, HttpUtility.UrlEncode((string)valuePair[i].Content));
+                if (i != valuePair.Length - 1)
+                    get += HttpUtility.UrlEncode("&");
+            }
+            return await GetInfo(token, start + get, cts);
         }
 
         public void Dispose()
