@@ -116,7 +116,7 @@ namespace UpdateLiveTile
 
         private void SaveImageForeground(bool failed, string backcontent)
         {
-            if ((bool)IsolatedStorageSettings.ApplicationSettings["oldtilestyle"])
+            if (IsolatedStorageSettings.ApplicationSettings.Contains("oldtilestyle") && (bool)IsolatedStorageSettings.ApplicationSettings["oldtilestyle"])
             {
                 OldSmallTile.SaveTile(failed, _balance);
             }

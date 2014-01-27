@@ -90,7 +90,7 @@
     <Compile Include="ApiTools\GetInfoCompletedArgs.cs" />
     <Compile Include="ApiTools\CancelTask.cs" />
     <Compile Include="Api\Oauth.cs" />
-    <Compile Include="Api\VikingApi.cs" />
+    <Compile Include="Api\VikingsApi.cs" />
     <Compile Include="Api\VikingXauth.cs" />
     <Compile Include="AppClasses\UserBalance.cs" />
     <Compile Include="Json\Balance.cs" />
