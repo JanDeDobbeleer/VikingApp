@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AsyncOAuth;
@@ -133,17 +134,15 @@ namespace VikingApi.Api
             return false;
         }
 
-        public async Task<bool> GetInfo(AccessToken token, string location, KeyValuePair[] valuePair, CancellationTokenSource cts)
+        public async Task<bool> GetInfo(AccessToken token, string path, KeyValuePair[] valuePair, CancellationTokenSource cts)
         {
-            var start = location + "?";
-            var get = string.Empty;
-            for (var i = 0; i < valuePair.Length; i++)
+            var builder = new StringBuilder();
+            builder.Append(string.Format("?{0}={1}", valuePair[0].Name, HttpUtility.UrlEncode(((string)valuePair[0].Content))));
+            for (var i = 1; i < valuePair.Length; i++)
             {
-                get += string.Format(Parameter, valuePair[i].Name, HttpUtility.UrlEncode((string)valuePair[i].Content));
-                if (i != valuePair.Length - 1)
-                    get += HttpUtility.UrlEncode("&");
+                builder.Append(string.Format("&{0}={1}", valuePair[i].Name, valuePair[i].Content));
             }
-            return await GetInfo(token, start + get, cts);
+            return await GetInfo(token, path + builder, cts);
         }
 
         public void Dispose()
