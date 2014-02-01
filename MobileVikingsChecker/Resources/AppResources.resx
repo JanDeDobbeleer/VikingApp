@@ -126,9 +126,72 @@
     <comment>Controls the Language and ensures that the font for all elements in the RootFrame aligns with the app's language. Set to the language code of this resource file's language.</comment>
   </data>
   <data name="ApplicationTitle" xml:space="preserve">
-    <value>My Viking</value>
+    <value>Fuel</value>
   </data>
-  <data name="SampleProperty" xml:space="preserve">
-    <value>Sample Runtime Property Value</value>
+  <data name="MainViewBundle" xml:space="preserve">
+    <value>bundle</value>
+  </data>
+  <data name="AppBarButtonRefresh" xml:space="preserve">
+    <value>refresh</value>
+  </data>
+  <data name="AppBarButtonSim" xml:space="preserve">
+    <value>sim</value>
+  </data>
+  <data name="AppBarButtonUsage" xml:space="preserve">
+    <value>usage</value>
+  </data>
+  <data name="AppBarMenuAbout" xml:space="preserve">
+    <value>about</value>
+  </data>
+  <data name="AppBarMenuProfile" xml:space="preserve">
+    <value>profile</value>
+  </data>
+  <data name="AppBarMenuSettings" xml:space="preserve">
+    <value>settings</value>
+  </data>
+  <data name="AppBarMenuSmsBalance" xml:space="preserve">
+    <value>sms balance</value>
+  </data>
+  <data name="AppBarMenuSmsTopup" xml:space="preserve">
+    <value>sms topup</value>
+  </data>
+  <data name="MainViewBonus" xml:space="preserve">
+    <value>bonus</value>
+  </data>
+  <data name="MainViewFreeData" xml:space="preserve">
+    <value>free data</value>
+  </data>
+  <data name="MainViewFreeSms" xml:space="preserve">
+    <value>free sms</value>
+  </data>
+  <data name="MainViewLeft" xml:space="preserve">
+    <value>left</value>
+  </data>
+  <data name="MainViewVikingCall" xml:space="preserve">
+    <value>viking call</value>
+  </data>
+  <data name="MainViewVikingSms" xml:space="preserve">
+    <value>viking SMS</value>
+  </data>
+  <data name="ProgressfecthingData" xml:space="preserve">
+    <value>fetching data</value>
+  </data>
+  <data name="ProgressLoadingSims" xml:space="preserve">
+    <value>loading sims</value>
+  </data>
+  <data name="ToastBummer" xml:space="preserve">
+    <value>bummer, it looks like we're all out of internet</value>
+  </data>
+  <data name="ToastDefaultSim" xml:space="preserve">
+    <value>default sim does not exist anymore, loading first</value>
+  </data>
+  <data name="ToastHoldHorses" xml:space="preserve">
+    <value>hold your horses, we still need to load some information here</value>
+  </data>
+  <data name="ToastNoSim" xml:space="preserve">
+    <value>there is no sim linked to this account</value>
+  </data>
+  <data name="ToastSimLoaded" xml:space="preserve">
+    <value>please wait till your sim information is loaded</value>
   </data>
 </root>

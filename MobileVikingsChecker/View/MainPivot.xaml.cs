@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
 using Fuel.LoginControl;
+using Fuel.Resources;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
@@ -33,9 +34,9 @@ namespace Fuel.View
         private void BuildApplicationBar()
         {
             ApplicationBar = new ApplicationBar { Mode = ApplicationBarMode.Default, Opacity = 1, IsVisible = true };
-            ApplicationBar.Buttons.Add(Tools.Tools.CreateButton("/Assets/refresh.png", "refresh", true, RefreshOnClick));
-            ApplicationBar.Buttons.Add(Tools.Tools.CreateButton("/Assets/feature.calendar.png", "usage", true, UsageOnClick));
-            ApplicationBar.Buttons.Add(Tools.Tools.CreateButton("/Assets/sim.png", "sim", true, SimOnClick));
+            ApplicationBar.Buttons.Add(Tools.Tools.CreateButton("/Assets/refresh.png", AppResources.AppBarButtonRefresh, true, RefreshOnClick));
+            ApplicationBar.Buttons.Add(Tools.Tools.CreateButton("/Assets/feature.calendar.png", AppResources.AppBarButtonUsage, true, UsageOnClick));
+            ApplicationBar.Buttons.Add(Tools.Tools.CreateButton("/Assets/sim.png", AppResources.AppBarButtonSim, true, SimOnClick));
         }
 
         private async void RefreshOnClick(object sender, EventArgs e)
@@ -60,7 +61,7 @@ namespace Fuel.View
         {
             if (string.IsNullOrWhiteSpace(SimBox.Text) && string.IsNullOrWhiteSpace((string)IsolatedStorageSettings.ApplicationSettings["sim"]))
             {
-                Message.ShowToast("please wait till your sim information is loaded");
+                Message.ShowToast(AppResources.ToastSimLoaded);
                 return;
             }
             App.Viewmodel.MainPivotViewmodel.CancelTask();
@@ -77,7 +78,7 @@ namespace Fuel.View
             }
             else
             {
-                Message.ShowToast("Hold your horses, we still need to load some information here.");
+                Message.ShowToast(AppResources.ToastHoldHorses);
             }
         }
 
@@ -91,7 +92,7 @@ namespace Fuel.View
         {
             if (string.IsNullOrWhiteSpace(SimBox.Text) && string.IsNullOrWhiteSpace((string)IsolatedStorageSettings.ApplicationSettings["sim"]))
             {
-                Message.ShowToast("please wait until your sim information is loaded");
+                Message.ShowToast(AppResources.ToastSimLoaded);
                 return;
             }
             App.Viewmodel.MainPivotViewmodel.CancelTask();
@@ -103,7 +104,7 @@ namespace Fuel.View
         {
             if (string.IsNullOrWhiteSpace(SimBox.Text) && string.IsNullOrWhiteSpace((string)IsolatedStorageSettings.ApplicationSettings["sim"]))
             {
-                Message.ShowToast("please wait until your sim information is loaded");
+                Message.ShowToast(AppResources.ToastSimLoaded);
                 return;
             }
             App.Viewmodel.MainPivotViewmodel.CancelTask();
@@ -118,18 +119,18 @@ namespace Fuel.View
             ApplicationBar.MenuItems.Clear();
             if ((bool)IsolatedStorageSettings.ApplicationSettings["topup"])
             {
-                ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("sms topup", true, ReloadOnClick));
-                ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("sms balance", true, BalanceOnClick));
-                ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("profile", true, ProfileOnClick));
-                ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("settings", true, SettingsOnClick));
-                ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("about", true, AboutOnClick));
+                ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem(AppResources.AppBarMenuSmsTopup, true, ReloadOnClick));
+                ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem(AppResources.AppBarMenuSmsBalance, true, BalanceOnClick));
+                ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem(AppResources.AppBarMenuProfile, true, ProfileOnClick));
+                ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem(AppResources.AppBarMenuSettings, true, SettingsOnClick));
+                ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem(AppResources.AppBarMenuAbout, true, AboutOnClick));
             }
             else
             {
-                ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("sms balance", true, BalanceOnClick));
-                ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("profile", true, ProfileOnClick));
-                ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("settings", true, SettingsOnClick));
-                ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("about", true, AboutOnClick));
+                ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem(AppResources.AppBarMenuSmsBalance, true, BalanceOnClick));
+                ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem(AppResources.AppBarMenuProfile, true, ProfileOnClick));
+                ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem(AppResources.AppBarMenuSettings, true, SettingsOnClick));
+                ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem(AppResources.AppBarMenuAbout, true, AboutOnClick));
             }
             SystemTray.ProgressIndicator = new ProgressIndicator();
             Bundle.Visibility = Visibility.Collapsed;
@@ -143,7 +144,7 @@ namespace Fuel.View
             {
                 ApplicationBar.IsVisible = true;
                 Pivot.Visibility = Visibility.Visible;
-                Message.ShowToast("Bummer, it looks like we're all out of internet.");
+                Message.ShowToast(AppResources.ToastBummer);
             }
             else
             {
@@ -173,7 +174,7 @@ namespace Fuel.View
             }
             else if (!args.Canceled)
             {
-                Message.ShowToast("there is no sim linked to this account");
+                Message.ShowToast(AppResources.ToastNoSim);
             }
             _loading = false;
         }
@@ -239,7 +240,7 @@ namespace Fuel.View
             Debug.WriteLine("Number " + (string)IsolatedStorageSettings.ApplicationSettings["sim"] + " not in list");
 #endif
             if (App.Viewmodel.MainPivotViewmodel.Sims.Count() > 1 && !login && !string.IsNullOrWhiteSpace((string)IsolatedStorageSettings.ApplicationSettings["sim"]))
-                Message.ShowToast("default sim does not exist anymore, loading first");
+                Message.ShowToast(AppResources.ToastDefaultSim);
             return App.Viewmodel.MainPivotViewmodel.Sims.Select(x => x.msisdn).FirstOrDefault();
         }
 

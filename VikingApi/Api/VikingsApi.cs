@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,6 +20,8 @@ namespace VikingApi.Api
         private const string ConsumerSecret = "AaDM9yyXLmTemvM2nVahzBFYS9JG62a6";
         private const string BaseUrl = "https://mobilevikings.com:443/api/2.0/oauth/";
         private const string Parameter = "{0}={1}";
+
+        private IntPtr _nativeResource = Marshal.AllocHGlobal(100);
 
         #region apilocations
         public string Sim
@@ -145,9 +148,30 @@ namespace VikingApi.Api
             return await GetInfo(token, path + builder, cts);
         }
 
+        #region IDisposable
+        // Dispose() calls Dispose(true)
         public void Dispose()
         {
-            CancelTask();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
+        // NOTE: Leave out the finalizer altogether if this class doesn't 
+        // own unmanaged resources itself, but leave the other methods
+        // exactly as they are. 
+        ~VikingsApi()
+        {
+            // Finalizer calls Dispose(false)
+            Dispose(false);
+        }
+        // The bulk of the clean-up code is implemented in Dispose(bool)
+        protected virtual void Dispose(bool disposing)
+        {
+            // free native resources if there are any.
+            if (_nativeResource == IntPtr.Zero)
+                return;
+            Marshal.FreeHGlobal(_nativeResource);
+            _nativeResource = IntPtr.Zero;
+        }
+        #endregion
     }
 }

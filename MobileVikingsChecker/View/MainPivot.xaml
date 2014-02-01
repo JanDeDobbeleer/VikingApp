@@ -81,14 +81,14 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel Orientation="Horizontal">
                         <Image Source="/Assets/logo.png" />
-                        <TextBlock Text="Fuel" FontSize="{StaticResource PhoneFontSizeLarge}" />
+                        <TextBlock Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}" FontSize="{StaticResource PhoneFontSizeLarge}" />
                     </StackPanel>
                     <TextBlock Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" x:Name="SimBox" Margin="0,0,54,0" Tap="SimBox_OnTap"/>
                 </Grid>
             </phone:Pivot.Title>
             
             <!--Pivot item one-->
-            <phone:PivotItem Header="bundle" x:Name="Bundle">
+            <phone:PivotItem Header="{Binding Path=LocalizedResources.MainViewBundle, Source={StaticResource LocalizedStrings}}" x:Name="Bundle">
                 <Grid x:Name="BundleGrid" Margin="15,0,10,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="300" />
@@ -133,24 +133,24 @@
                                Style="{StaticResource RectangleStyle}" />
                     <TextBlock Text="{Binding Sms}" Style="{StaticResource ContentTextStyle}" Grid.Row="1"
                                Grid.Column="1" />
-                    <TextBlock Text="free SMS" Style="{StaticResource TextStyle}" Grid.Row="1" Grid.Column="2" />
+                    <TextBlock Text="{Binding Path=LocalizedResources.MainViewFreeSms, Source={StaticResource LocalizedStrings}}" Style="{StaticResource TextStyle}" Grid.Row="1" Grid.Column="2" />
 
                     <Rectangle Fill="{StaticResource DataColorBrush}" Grid.Row="3" Grid.Column="0"
                                Style="{StaticResource RectangleStyle}" />
                     <TextBlock Text="{Binding Data}" Style="{StaticResource ContentTextStyle}" Grid.Row="3"
                                Grid.Column="1" />
-                    <TextBlock Text="free data" Style="{StaticResource TextStyle}" Grid.Row="3" Grid.Column="2" />
+                    <TextBlock Text="{Binding Path=LocalizedResources.MainViewFreeData, Source={StaticResource LocalizedStrings}}" Style="{StaticResource TextStyle}" Grid.Row="3" Grid.Column="2" />
 
                     <Rectangle Fill="{StaticResource VikingColorBrush}" Grid.Row="5" Grid.Column="0"
                                Style="{StaticResource RectangleStyle}" />
                     <TextBlock Text="{Binding Remaining}" Style="{StaticResource ContentTextStyle}" Grid.Row="5"
                                Grid.Column="1" />
-                    <TextBlock Text="left" Style="{StaticResource TextStyle}" Grid.Row="5" Grid.Column="2" />
+                    <TextBlock Text="{Binding Path=LocalizedResources.MainViewLeft, Source={StaticResource LocalizedStrings}}" Style="{StaticResource TextStyle}" Grid.Row="5" Grid.Column="2" />
                 </Grid>
             </phone:PivotItem>
 
             <!--Pivot item two-->
-            <phone:PivotItem Header="bonus" x:Name="Bonus">
+            <phone:PivotItem Header="{Binding Path=LocalizedResources.MainViewBonus, Source={StaticResource LocalizedStrings}}" x:Name="Bonus">
                 <Grid x:Name="BonusGrid" Margin="15,0,10,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="300" />
@@ -181,13 +181,13 @@
                                Style="{StaticResource RectangleStyle}" />
                     <TextBlock Text="{Binding VikingSms}" Style="{StaticResource ContentTextStyle}" Grid.Row="1"
                                Grid.Column="1" />
-                    <TextBlock Text="viking SMS" Style="{StaticResource TextStyle}" Grid.Row="1" Grid.Column="2" />
+                    <TextBlock Text="{Binding Path=LocalizedResources.MainViewVikingSms, Source={StaticResource LocalizedStrings}}" Style="{StaticResource TextStyle}" Grid.Row="1" Grid.Column="2" />
 
                     <Rectangle Fill="{StaticResource VikingMinutesColorBrush}" Grid.Row="3" Grid.Column="0"
                                Style="{StaticResource RectangleStyle}" />
                     <TextBlock Text="{Binding VikingMinutes}" Style="{StaticResource ContentTextStyle}" Grid.Row="3"
                                Grid.Column="1" />
-                    <TextBlock Text="viking call" Style="{StaticResource TextStyle}" Grid.Row="3" Grid.Column="2" />
+                    <TextBlock Text="{Binding Path=LocalizedResources.MainViewVikingCall, Source={StaticResource LocalizedStrings}}" Style="{StaticResource TextStyle}" Grid.Row="3" Grid.Column="2" />
 
                 </Grid>
             </phone:PivotItem>
