@@ -19,7 +19,7 @@
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,10,0,10" Orientation="Horizontal" Height="40">
             <Image Source="/Assets/logo.png" />
-            <TextBlock Text="Fuel" Style="{StaticResource PhoneTextLargeStyle}" Margin="-3,0,0,0" />
+            <TextBlock Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextLargeStyle}" Margin="-3,0,0,0" />
         </StackPanel>
         <Image Grid.Row="1"
                x:Name="VikingImage"
@@ -29,16 +29,16 @@
         <TextBlock x:Name="LoginBtn"
                    FontSize="{StaticResource PhoneFontSizeLarge}"
                    Grid.Row="2"
-                   Text="sign in"
+                   Text="{Binding Path=LocalizedResources.LoginSignIn, Source={StaticResource LocalizedStrings}}"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Center"
                    Foreground="{StaticResource PhoneForegroundBrush}"
                    Margin="0,50,0,50"
                    Tap="Login_OnTap" />
         <StackPanel Visibility="Collapsed" Grid.Row="1" Margin="0,50,0,0" x:Name="StackPanel" Background="{StaticResource PhoneBackgroundBrush}">
-            <TextBlock Text="username or email" Margin="18,0,0,0"/>
+            <TextBlock Text="{Binding Path=LocalizedResources.LoginUserName, Source={StaticResource LocalizedStrings}}" Margin="18,0,0,0"/>
             <TextBox Margin="7,0,7,0" x:Name="UserName"/>
-            <TextBlock Text="password" Margin="18,0,0,0"/>
+            <TextBlock Text="{Binding Path=LocalizedResources.LoginPassword, Source={StaticResource LocalizedStrings}}" Margin="18,0,0,0"/>
             <PasswordBox Margin="7,0,7,0" x:Name="PassWord" KeyDown="PassWord_OnKeyDown"/>
             <Image x:Name="QuestionMark" Height="50" Width="50" Margin="0,10,0,0" Tap="UIElement_OnTap"/>
         </StackPanel>

@@ -173,7 +173,7 @@
   <data name="MainViewVikingSms" xml:space="preserve">
     <value>viking SMS</value>
   </data>
-  <data name="ProgressfecthingData" xml:space="preserve">
+  <data name="ProgressFetchingData" xml:space="preserve">
     <value>fetching data</value>
   </data>
   <data name="ProgressLoadingSims" xml:space="preserve">
@@ -193,5 +193,32 @@
   </data>
   <data name="ToastSimLoaded" xml:space="preserve">
     <value>please wait till your sim information is loaded</value>
+  </data>
+  <data name="LoginPassword" xml:space="preserve">
+    <value>password</value>
+  </data>
+  <data name="LoginSignIn" xml:space="preserve">
+    <value>sign in</value>
+  </data>
+  <data name="LoginUserName" xml:space="preserve">
+    <value>username or password</value>
+  </data>
+  <data name="PopupPrivacy" xml:space="preserve">
+    <value>your credentials are not stored locally and will only be used to request a token</value>
+  </data>
+  <data name="ProgressRequestingAccess" xml:space="preserve">
+    <value>requesting access</value>
+  </data>
+  <data name="ToastLoginUnsuccessful" xml:space="preserve">
+    <value>login unsuccessful, please try again</value>
+  </data>
+  <data name="ToastPassword" xml:space="preserve">
+    <value>please provide a password</value>
+  </data>
+  <data name="ToastUserName" xml:space="preserve">
+    <value>please provide a username</value>
+  </data>
+  <data name="PopupPrivacyHeader" xml:space="preserve">
+    <value>privacy notice</value>
   </data>
 </root>

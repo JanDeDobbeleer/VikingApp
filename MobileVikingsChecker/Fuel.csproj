@@ -112,13 +112,7 @@
     </Compile>
     <Compile Include="Controls\ListLoopingDataSource.cs" />
     <Compile Include="Controls\LoopingDataSourceBase.cs" />
-    <Compile Include="LocalizedStrings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resources\AppResources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AppResources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Controls\CircularProgressBar.xaml.cs">
       <DependentUpon>CircularProgressBar.xaml</DependentUpon>
     </Compile>
@@ -232,12 +226,6 @@
     <Content Include="OVER.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\AppResources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="AsyncOAuth, Version=0.8.3.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\AsyncOAuth.0.8.3\lib\AsyncOAuth.dll</HintPath>
@@ -271,9 +259,21 @@
     <Reference Include="System.Windows.Interactivity, Version=3.9.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Fuel.About\Fuel.About.csproj">
+      <Project>{450EA373-90FB-493F-96AB-EAF9F77BF8A2}</Project>
+      <Name>Fuel.About</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fuel.Localization\Fuel.Localization.csproj">
+      <Project>{0C00C813-4104-4A36-8F22-A7D675BDE4AB}</Project>
+      <Name>Fuel.Localization</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fuel.LoginControl\Fuel.LoginControl.csproj">
       <Project>{9CD9F551-E510-41E5-A1D9-B06B6340117E}</Project>
       <Name>Fuel.LoginControl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fuel.Settings\Fuel.Settings.csproj">
+      <Project>{6F741219-580C-42C0-BADB-502B88435431}</Project>
+      <Name>Fuel.Settings</Name>
     </ProjectReference>
     <ProjectReference Include="..\Tools\Tools.csproj">
       <Project>{CF7909FE-98C4-48C2-B7EE-B2E9187B8BAE}</Project>

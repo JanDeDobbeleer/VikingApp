@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Fuel.Resources {
+namespace Fuel.Localization.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Fuel.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Fuel.Resources.AppResources", typeof(AppResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Fuel.Localization.Resources.AppResources", typeof(AppResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -142,6 +142,33 @@ namespace Fuel.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to password.
+        /// </summary>
+        public static string LoginPassword {
+            get {
+                return ResourceManager.GetString("LoginPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to sign in.
+        /// </summary>
+        public static string LoginSignIn {
+            get {
+                return ResourceManager.GetString("LoginSignIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to username or password.
+        /// </summary>
+        public static string LoginUserName {
+            get {
+                return ResourceManager.GetString("LoginUserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to bonus.
         /// </summary>
         public static string MainViewBonus {
@@ -205,11 +232,29 @@ namespace Fuel.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to your credentials are not stored locally and will only be used to request a token.
+        /// </summary>
+        public static string PopupPrivacy {
+            get {
+                return ResourceManager.GetString("PopupPrivacy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to privacy notice.
+        /// </summary>
+        public static string PopupPrivacyHeader {
+            get {
+                return ResourceManager.GetString("PopupPrivacyHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to fetching data.
         /// </summary>
-        public static string ProgressfecthingData {
+        public static string ProgressFetchingData {
             get {
-                return ResourceManager.GetString("ProgressfecthingData", resourceCulture);
+                return ResourceManager.GetString("ProgressFetchingData", resourceCulture);
             }
         }
         
@@ -219,6 +264,15 @@ namespace Fuel.Resources {
         public static string ProgressLoadingSims {
             get {
                 return ResourceManager.GetString("ProgressLoadingSims", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to requesting access.
+        /// </summary>
+        public static string ProgressRequestingAccess {
+            get {
+                return ResourceManager.GetString("ProgressRequestingAccess", resourceCulture);
             }
         }
         
@@ -268,6 +322,15 @@ namespace Fuel.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to login unsuccessful, please try again.
+        /// </summary>
+        public static string ToastLoginUnsuccessful {
+            get {
+                return ResourceManager.GetString("ToastLoginUnsuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to there is no sim linked to this account.
         /// </summary>
         public static string ToastNoSim {
@@ -277,11 +340,29 @@ namespace Fuel.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to please provide a password.
+        /// </summary>
+        public static string ToastPassword {
+            get {
+                return ResourceManager.GetString("ToastPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to please wait till your sim information is loaded.
         /// </summary>
         public static string ToastSimLoaded {
             get {
                 return ResourceManager.GetString("ToastSimLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to please provide a username.
+        /// </summary>
+        public static string ToastUserName {
+            get {
+                return ResourceManager.GetString("ToastUserName", resourceCulture);
             }
         }
     }

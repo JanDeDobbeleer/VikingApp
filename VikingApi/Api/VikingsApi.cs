@@ -41,7 +41,7 @@ namespace VikingApi.Api
 
         public string Referrals
         {
-            get { return "referrals.json"; }
+            get { return "points/referrals.json"; }
         }
 
         public string TopUp
@@ -51,7 +51,7 @@ namespace VikingApi.Api
 
         public string Stats
         {
-            get { return "stats.json"; }
+            get { return "points/stats.json"; }
         }
 
         public string Card
@@ -61,7 +61,7 @@ namespace VikingApi.Api
 
         public string Links
         {
-            get { return "links.json"; }
+            get { return "points/links.json"; }
         }
 
         public string PricePlan

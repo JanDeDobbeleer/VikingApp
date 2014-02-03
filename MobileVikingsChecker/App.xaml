@@ -6,7 +6,7 @@
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:fuel="clr-namespace:Fuel"
+             xmlns:localization1="clr-namespace:Fuel.Localization;assembly=Fuel.Localization"
              mc:Ignorable="d">
     <!--Application Resources-->
     <Application.Resources>
@@ -20,7 +20,7 @@
                 <Setter Property="FontSize" Value="{StaticResource PanoramaItemHeaderFontSize}" />
                 <Setter Property="CharacterSpacing" Value="-35" />
             </Style>
-            <fuel:LocalizedStrings x:Key="LocalizedStrings" />
+            <localization1:LocalizedStrings x:Key="LocalizedStrings" />
         </ResourceDictionary>
     </Application.Resources>
     <Application.ApplicationLifetimeObjects>

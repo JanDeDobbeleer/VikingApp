@@ -1,6 +1,6 @@
-﻿using Fuel.Resources;
+﻿using Fuel.Localization.Resources;
 
-namespace Fuel
+namespace Fuel.Localization
 {
     /// <summary>
     ///     Provides access to string resources.

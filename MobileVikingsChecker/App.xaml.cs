@@ -4,7 +4,7 @@ using System.IO.IsolatedStorage;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Navigation;
-using Fuel.Resources;
+using Fuel.Localization.Resources;
 using Fuel.Viewmodel;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;

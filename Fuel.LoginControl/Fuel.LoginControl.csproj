@@ -102,6 +102,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Fuel.Localization\Fuel.Localization.csproj">
+      <Project>{0C00C813-4104-4A36-8F22-A7D675BDE4AB}</Project>
+      <Name>Fuel.Localization</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Tools\Tools.csproj">
       <Project>{CF7909FE-98C4-48C2-B7EE-B2E9187B8BAE}</Project>
       <Name>Tools</Name>

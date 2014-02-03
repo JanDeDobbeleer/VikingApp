@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using Fuel.Localization.Resources;
 using Microsoft.Phone.Shell;
 using VikingApi.Api;
 
@@ -63,17 +65,17 @@ namespace Fuel.LoginControl
         {
             if (string.IsNullOrWhiteSpace(UserName.Text))
             {
-                Tools.Message.ShowToast("Please provide a username");
+                Tools.Message.ShowToast(AppResources.ToastUserName);
                 return;
             }
             if (string.IsNullOrWhiteSpace(PassWord.Password))
             {
-                Tools.Message.ShowToast("Please provide a password");
+                Tools.Message.ShowToast(AppResources.ToastPassword);
                 return;
             }
 
             Tools.Tools.SetProgressIndicator(true);
-            SystemTray.ProgressIndicator.Text = "requesting access";
+            SystemTray.ProgressIndicator.Text = AppResources.ProgressRequestingAccess;
             using (var client = new VikingsApi())
             {
                 if (await client.Authorize(UserName.Text, PassWord.Password))
@@ -84,14 +86,14 @@ namespace Fuel.LoginControl
                 }
                 else
                 {
-                    Tools.Message.ShowToast("login unsuccessful, please try again");
+                    Tools.Message.ShowToast(AppResources.ToastLoginUnsuccessful);
                 }
             }
         }
 
         private void UIElement_OnTap(object sender, GestureEventArgs e)
         {
-            MessageBox.Show("Your credentials are not stored locally and will only be used to request a token.", "Privacy notice", MessageBoxButton.OK);
+            MessageBox.Show(AppResources.PopupPrivacy, AppResources.PopupPrivacyHeader, MessageBoxButton.OK);
         }
     }
 }
