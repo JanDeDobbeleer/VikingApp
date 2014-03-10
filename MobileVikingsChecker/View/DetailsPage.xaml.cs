@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Navigation;
+using Fuel.Localization.Resources;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Tools;
@@ -34,11 +35,11 @@ namespace Fuel.View
         private void BuildUsageAppbar()
         {
             ApplicationBar.Buttons.Clear();
-            ApplicationBar.Buttons.Add(Tools.Tools.CreateButton("/Assets/feature.calendar.png", "calendar", true, CalendarOnClick));
-            ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("last day", true, LastOnClick));
-            ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("last week", true, LastOnClick));
-            ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem("last month", true, LastOnClick));
-            SubTitleBlock.Text = "usage";
+            ApplicationBar.Buttons.Add(Tools.Tools.CreateButton("/Assets/feature.calendar.png", AppResources.AppBarButtonCalendar, true, CalendarOnClick));
+            ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem(AppResources.AppBarMenuLastDay, true, LastOnClick));
+            ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem(AppResources.AppBarMenuLastWeek, true, LastOnClick));
+            ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem(AppResources.AppBarMenuLastMonth, true, LastOnClick));
+            SubTitleBlock.Text = AppResources.DetailsViewSubtitleDefault;
         }
 
         private async void LastOnClick(object sender, EventArgs e)
@@ -50,18 +51,20 @@ namespace Fuel.View
             App.Viewmodel.UsageViewmodel.CancelTask();
             Viewer.Visibility = Visibility.Collapsed;
             App.Viewmodel.UsageViewmodel.RenewToken();
-            switch ((sender as ApplicationBarMenuItem).Text)
+            DateTime date;
+            if ((sender as ApplicationBarMenuItem).Text == AppResources.AppBarMenuLastDay)
             {
-                case "last day":
-                    await App.Viewmodel.UsageViewmodel.GetUsage(DateTime.Today.AddDays(-1), DateTime.Now);
-                    break;
-                case "last week":
-                    await App.Viewmodel.UsageViewmodel.GetUsage(DateTime.Today.AddDays(-7), DateTime.Now);
-                    break;
-                case "last month":
-                    await App.Viewmodel.UsageViewmodel.GetUsage(DateTime.Today.AddDays(-30), DateTime.Now);
-                    break;
+                date = DateTime.Today.AddDays(-1);
             }
+            else if ((sender as ApplicationBarMenuItem).Text == AppResources.AppBarMenuLastWeek)
+            {
+                date = DateTime.Today.AddDays(-7);
+            }
+            else
+            {
+                date = DateTime.Today.AddDays(-30);
+            }
+            await App.Viewmodel.UsageViewmodel.GetUsage(date, DateTime.Now);
         }
 
         private void BuildCalendarAppbar()
@@ -69,9 +72,9 @@ namespace Fuel.View
             _datepicker = true;
             ApplicationBar.Buttons.Clear();
             ApplicationBar.MenuItems.Clear();
-            ApplicationBar.Buttons.Add(Tools.Tools.CreateButton("/Assets/arrow.png", "next", true, CalendarCheckOnClick));
-            ApplicationBar.Buttons.Add(Tools.Tools.CreateButton("/Assets/cancel.png", "cancel", true, CalendarCancelOnClick));
-            SubTitleBlock.Text = "from";
+            ApplicationBar.Buttons.Add(Tools.Tools.CreateButton("/Assets/arrow.png", AppResources.AppBarButtonNext, true, CalendarCheckOnClick));
+            ApplicationBar.Buttons.Add(Tools.Tools.CreateButton("/Assets/cancel.png", AppResources.AppBarButtonCancel, true, CalendarCancelOnClick));
+            SubTitleBlock.Text = AppResources.DetailsViewSubtitleFrom;
         }
 
         private void CalendarCancelOnClick(object sender, EventArgs e)
@@ -101,9 +104,9 @@ namespace Fuel.View
             }
             else
             {
-                SubTitleBlock.Text = "until";
+                SubTitleBlock.Text = AppResources.DetailsViewSubtitleUntil;
                 ((ApplicationBarIconButton)ApplicationBar.Buttons[0]).IconUri = new Uri("/Assets/check.png", UriKind.Relative);
-                ((ApplicationBarIconButton)ApplicationBar.Buttons[0]).Text = "ok";
+                ((ApplicationBarIconButton)ApplicationBar.Buttons[0]).Text = AppResources.AppBarButtonOk;
                 _isSecondDate = true;
             }
         }
@@ -114,7 +117,7 @@ namespace Fuel.View
             {
                 if (DatePicker.SelectedDate > DateTime.Now)
                 {
-                    Message.ShowToast("Hey now, Marty McFly, let's stick to the present!");
+                    Message.ShowToast(AppResources.ToastFutureDate);
                     return false;
                 }
                 if (!_isSecondDate)
@@ -126,7 +129,7 @@ namespace Fuel.View
                     _secondDate = (DatePicker.SelectedDate.Date == DateTime.Now.Date) ? DateTime.Now : DatePicker.SelectedDate;
                     if (_secondDate < _firstDate)
                     {
-                        Message.ShowToast("Please select a date later than the first one");
+                        Message.ShowToast(AppResources.ToastInconsistentDateChoice);
                         return false;
                     }
 
@@ -134,7 +137,7 @@ namespace Fuel.View
             }
             catch (Exception)
             {
-                Message.ShowToast("Looks like that's not a valid date, check again professor!");
+                Message.ShowToast(AppResources.ToastInvalidDate);
                 return false;
             }
             return true;
@@ -165,7 +168,7 @@ namespace Fuel.View
                 return;
             if (!Tools.Tools.HasInternetConnection())
             {
-                Message.ShowToast("Bummer, it looks like we're all out of internet.");
+                Message.ShowToast(AppResources.ToastNoInternet);
             }
             else
             {
@@ -185,9 +188,9 @@ namespace Fuel.View
             }
             else if (_isSecondDate)
             {
-                SubTitleBlock.Text = "from";
+                SubTitleBlock.Text = AppResources.DetailsViewSubtitleFrom;
                 ((ApplicationBarIconButton)ApplicationBar.Buttons[0]).IconUri = new Uri("/Assets/arrow.png", UriKind.Relative);
-                ((ApplicationBarIconButton)ApplicationBar.Buttons[0]).Text = "next";
+                ((ApplicationBarIconButton)ApplicationBar.Buttons[0]).Text = AppResources.AppBarButtonNext;
                 _isSecondDate = false;
                 e.Cancel = true;
                 base.OnBackKeyPress(e);
@@ -212,7 +215,7 @@ namespace Fuel.View
             Viewer.Visibility = Visibility.Visible;
             if (App.Viewmodel.UsageViewmodel.Usage == null)
             {
-                Message.ShowToast("There is no data for this period");
+                Message.ShowToast(AppResources.ToastNoDataForPeriod);
                 return;
             }
             Viewer.ScrollIntoView(App.Viewmodel.UsageViewmodel.Usage.ElementAt(0));

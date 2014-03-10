@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using AsyncOAuth;
+using Fuel.Localization.Resources;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.UserData;
 using Newtonsoft.Json;
@@ -67,7 +68,7 @@ namespace Fuel.Viewmodel
                 new KeyValuePair{Content = page, Name = VikingApi.Json.Usage.Page},
             };
             Tools.Tools.SetProgressIndicator(true);
-            SystemTray.ProgressIndicator.Text = "retrieving information";
+            SystemTray.ProgressIndicator.Text = AppResources.ProgressRetrievingUsage;
             var client = new VikingsApi();
             client.GetInfoFinished += client_GetInfoFinished;
             OAuthUtility.ComputeHash = (key, buffer) =>

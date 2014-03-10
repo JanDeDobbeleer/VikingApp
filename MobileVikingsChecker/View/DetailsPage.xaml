@@ -35,9 +35,9 @@
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
             <StackPanel Orientation="Horizontal" Height="40"  Margin="4,0,0,0">
                 <Image Source="/Assets/logo.png" />
-                <TextBlock Text="Fuel" FontSize="{StaticResource PhoneFontSizeLarge}" />
+                <TextBlock Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}" FontSize="{StaticResource PhoneFontSizeLarge}" />
             </StackPanel>
-            <TextBlock x:Name="SubTitleBlock" Text="usage" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock x:Name="SubTitleBlock" Text="{Binding Path=LocalizedResources.DetailsViewUsage, Source={StaticResource LocalizedStrings}}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Navigation;
+using Fuel.Localization.Resources;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Tools;
@@ -22,7 +23,7 @@ namespace Fuel.View
         private void BuildApplicationBar()
         {
             ApplicationBar = new ApplicationBar { Mode = ApplicationBarMode.Default, Opacity = 1, IsVisible = true };
-            ApplicationBar.Buttons.Add(Tools.Tools.CreateButton("/Assets/refresh.png", "refresh", true, RefreshOnClick));
+            ApplicationBar.Buttons.Add(Tools.Tools.CreateButton("/Assets/refresh.png", AppResources.AppBarButtonRefresh, true, RefreshOnClick));
         }
 
         private void RefreshOnClick(object sender, EventArgs e)
@@ -36,7 +37,7 @@ namespace Fuel.View
             SystemTray.ProgressIndicator = new ProgressIndicator();
             if (!Tools.Tools.HasInternetConnection())
             {
-                Message.ShowToast("Bummer, it looks like we're all out of internet.");
+                Message.ShowToast(AppResources.ToastNoInternet);
             }
             else
             {

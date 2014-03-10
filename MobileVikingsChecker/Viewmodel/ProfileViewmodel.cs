@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using AsyncOAuth;
+using Fuel.Localization.Resources;
 using Microsoft.Phone.Shell;
 using Newtonsoft.Json;
 using Tools;
@@ -66,7 +67,7 @@ namespace Fuel.Viewmodel
                 new KeyValuePair{Content = page, Name = "page"}
             };
             Tools.Tools.SetProgressIndicator(true);
-            SystemTray.ProgressIndicator.Text = "retrieving referrals";
+            SystemTray.ProgressIndicator.Text = AppResources.ProgressRetrievingReferrals;
             using (var client = new VikingsApi())
             {
                 client.GetInfoFinished += client_GetReferralFinished;
@@ -114,7 +115,7 @@ namespace Fuel.Viewmodel
         public async Task<bool> GetStats()
         {
             Tools.Tools.SetProgressIndicator(true);
-            SystemTray.ProgressIndicator.Text = "getting statistics";
+            SystemTray.ProgressIndicator.Text = AppResources.ProgressGettingStatistics;
             using (var client = new VikingsApi())
             {
                 client.GetInfoFinished += client_GetStatsFinished;
@@ -160,7 +161,7 @@ namespace Fuel.Viewmodel
         public async Task<bool> GetLinks()
         {
             Tools.Tools.SetProgressIndicator(true);
-            SystemTray.ProgressIndicator.Text = "fetching links";
+            SystemTray.ProgressIndicator.Text = AppResources.ProgressFetchingLinks;
             using (var client = new VikingsApi())
             {
                 client.GetInfoFinished += client_GetLinksFinished;

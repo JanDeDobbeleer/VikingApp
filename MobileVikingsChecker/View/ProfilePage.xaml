@@ -43,28 +43,28 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel Orientation="Horizontal">
                         <Image Source="/Assets/logo.png" />
-                        <TextBlock Text="Fuel" FontSize="{StaticResource PhoneFontSizeLarge}"/>
+                        <TextBlock Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}" FontSize="{StaticResource PhoneFontSizeLarge}"/>
                     </StackPanel>
                 </Grid>
             </phone:Pivot.Title>
             <!--Pivot item one-->
-            <phone:PivotItem Header="points">
+            <phone:PivotItem Header="{Binding Path=LocalizedResources.ProfileViewPoints, Source={StaticResource LocalizedStrings}}">
                 <StackPanel x:Name="StatsPanel" Visibility="Collapsed">
-                    <TextBlock Style="{StaticResource LeftStyle}" Text="Remaining" FontSize="{StaticResource PhoneFontSizeExtraLarge}" Foreground="{StaticResource VikingColorBrush}"/>
+                    <TextBlock Style="{StaticResource LeftStyle}" Text="{Binding Path=LocalizedResources.ProfileViewRemaining, Source={StaticResource LocalizedStrings}}" FontSize="{StaticResource PhoneFontSizeExtraLarge}" Foreground="{StaticResource VikingColorBrush}"/>
                     <TextBlock Style="{StaticResource RightStyle}" x:Name="Remaining"/>
-                    <TextBlock Style="{StaticResource LeftStyle}" Text="Used"/>
+                    <TextBlock Style="{StaticResource LeftStyle}" Text="{Binding Path=LocalizedResources.ProfileViewUsed, Source={StaticResource LocalizedStrings}}"/>
                     <TextBlock Style="{StaticResource RightStyle}" x:Name="Used"/>
-                    <TextBlock Style="{StaticResource LeftStyle}" Text="Waiting"/>
+                    <TextBlock Style="{StaticResource LeftStyle}" Text="{Binding Path=LocalizedResources.ProfileViewWaiting, Source={StaticResource LocalizedStrings}}"/>
                     <TextBlock Style="{StaticResource RightStyle}" x:Name="Waiting"/>
-                    <TextBlock Style="{StaticResource LeftStyle}" Text="Topups used"/>
+                    <TextBlock Style="{StaticResource LeftStyle}" Text="{Binding Path=LocalizedResources.ProfileViewTopupsUsed, Source={StaticResource LocalizedStrings}}"/>
                     <TextBlock Style="{StaticResource RightStyle}" x:Name="Topups"/>
-                    <TextBlock Style="{StaticResource LeftStyle}" Text="earned"/>
+                    <TextBlock Style="{StaticResource LeftStyle}" Text="{Binding Path=LocalizedResources.ProfileViewEarned, Source={StaticResource LocalizedStrings}}"/>
                     <TextBlock Style="{StaticResource RightStyle}" x:Name="Earned"/>
                 </StackPanel>
             </phone:PivotItem>
 
             <!--Pivot item two-->
-            <phone:PivotItem Header="referrals">
+            <phone:PivotItem Header="{Binding Path=LocalizedResources.ProfileViewReferral, Source={StaticResource LocalizedStrings}}">
                 <ListBox x:Name="ReferralViewer" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Visibility="Collapsed">
                     <ListBox.ItemTemplate >
                         <DataTemplate>

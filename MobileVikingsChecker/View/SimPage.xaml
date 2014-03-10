@@ -68,12 +68,12 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel Orientation="Horizontal">
                         <Image Source="/Assets/logo.png" />
-                        <TextBlock Text="Fuel" FontSize="{StaticResource PhoneFontSizeLarge}"/>
+                        <TextBlock Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}" FontSize="{StaticResource PhoneFontSizeLarge}"/>
                     </StackPanel>
                 </Grid>
             </phone:Pivot.Title>
             <!--Pivot item one-->
-            <phone:PivotItem Header="topups">
+            <phone:PivotItem Header="{Binding Path=LocalizedResources.SimViewTopups, Source={StaticResource LocalizedStrings}}">
                 <ListBox x:Name="TopUpViewer" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Visibility="Collapsed">
                     <ListBox.ItemTemplate >
                         <DataTemplate>
@@ -99,7 +99,7 @@
             </phone:PivotItem>
 
             <!--Pivot item two-->
-            <phone:PivotItem Header="plan">
+            <phone:PivotItem Header="{Binding Path=LocalizedResources.SimViewPlan, Source={StaticResource LocalizedStrings}}">
                 <Grid x:Name="PricePlan" Visibility="Collapsed">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -109,7 +109,7 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <TextBlock x:Name="PlanTextBlock" Grid.Row="0" HorizontalAlignment="Left" FontSize="{StaticResource PhoneFontSizeExtraLarge}" Margin="13,0,0,0" Foreground="{StaticResource VikingColorBrush}"/>
-                    <TextBlock Grid.Row="1" Text="Bundle" Style="{StaticResource IndentStyle}"/>
+                    <TextBlock Grid.Row="1" Text="{Binding Path=LocalizedResources.SimViewPlanBundle, Source={StaticResource LocalizedStrings}}" Style="{StaticResource IndentStyle}"/>
                     <ListBox Grid.Row="2" x:Name="ListBoxBundles" Style="{StaticResource ListBoxStyle}" ScrollViewer.VerticalScrollBarVisibility="Disabled">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
@@ -125,7 +125,7 @@
                             </Style>
                         </ListBox.ItemContainerStyle>
                     </ListBox>
-                    <TextBlock Grid.Row="3" Text="Prices" Style="{StaticResource IndentStyle}"/>
+                    <TextBlock Grid.Row="3" Text="{Binding Path=LocalizedResources.SimViewPlanPrices, Source={StaticResource LocalizedStrings}}" Style="{StaticResource IndentStyle}"/>
                     <ListBox Grid.Row="4" x:Name="ListBoxPrices"  Style="{StaticResource ListBoxStyle}" ScrollViewer.VerticalScrollBarVisibility="Disabled">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
@@ -143,19 +143,19 @@
                     </ListBox>
                 </Grid>
             </phone:PivotItem>
-            <phone:PivotItem Header="info">
+            <phone:PivotItem Header="{Binding Path=LocalizedResources.SimViewInfo, Source={StaticResource LocalizedStrings}}">
                     <StackPanel x:Name="CardPanel" Visibility="Collapsed">
-                    <TextBlock Style="{StaticResource LeftStyle}" Text="Card number" FontSize="{StaticResource PhoneFontSizeExtraLarge}" Foreground="{StaticResource VikingColorBrush}"/>
+                    <TextBlock Style="{StaticResource LeftStyle}" Text="{Binding Path=LocalizedResources.SimViewCardNumber, Source={StaticResource LocalizedStrings}}" FontSize="{StaticResource PhoneFontSizeExtraLarge}" Foreground="{StaticResource VikingColorBrush}"/>
                     <TextBlock Style="{StaticResource RightStyle}" x:Name="CardNumber"/>
-                    <TextBlock Style="{StaticResource LeftStyle}" Text="Pin 1"/>
+                    <TextBlock Style="{StaticResource LeftStyle}" Text="{Binding Path=LocalizedResources.SimViewPin1, Source={StaticResource LocalizedStrings}}"/>
                     <TextBlock Style="{StaticResource RightStyle}" x:Name="Pin1"/>
-                    <TextBlock Style="{StaticResource LeftStyle}" Text="Pin 2"/>
+                    <TextBlock Style="{StaticResource LeftStyle}" Text="{Binding Path=LocalizedResources.SimViewPin2, Source={StaticResource LocalizedStrings}}"/>
                     <TextBlock Style="{StaticResource RightStyle}" x:Name="Pin2"/>
-                    <TextBlock Style="{StaticResource LeftStyle}" Text="Puk 1"/>
+                    <TextBlock Style="{StaticResource LeftStyle}" Text="{Binding Path=LocalizedResources.SimViewPuk1, Source={StaticResource LocalizedStrings}}"/>
                     <TextBlock Style="{StaticResource RightStyle}" x:Name="Puk1"/>
-                    <TextBlock Style="{StaticResource LeftStyle}" Text="Puk 2"/>
+                    <TextBlock Style="{StaticResource LeftStyle}" Text="{Binding Path=LocalizedResources.SimViewPuk2, Source={StaticResource LocalizedStrings}}"/>
                     <TextBlock Style="{StaticResource RightStyle}" x:Name="Puk2"/>
-                    <TextBlock Style="{StaticResource LeftStyle}" Text="Imsi"/>
+                    <TextBlock Style="{StaticResource LeftStyle}" Text="{Binding Path=LocalizedResources.SimViewImsi, Source={StaticResource LocalizedStrings}}"/>
                     <TextBlock Style="{StaticResource RightStyle}" x:Name="IMSI"/>
                 </StackPanel>
             </phone:PivotItem>

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using AsyncOAuth;
+using Fuel.Localization.Resources;
 using Microsoft.Phone.Shell;
 using Newtonsoft.Json;
 using Tools;
@@ -73,7 +74,7 @@ namespace Fuel.Viewmodel
                 new KeyValuePair{Content = page, Name = "page"}
             };
             Tools.Tools.SetProgressIndicator(true);
-            SystemTray.ProgressIndicator.Text = "retrieving topups";
+            SystemTray.ProgressIndicator.Text = AppResources.ProgressRetrievingTopups;
             using (var client = new VikingsApi())
             {
                 client.GetInfoFinished += client_GetInfoFinished;
@@ -121,7 +122,7 @@ namespace Fuel.Viewmodel
         public async Task<bool> GetPlan()
         {
             Tools.Tools.SetProgressIndicator(true);
-            SystemTray.ProgressIndicator.Text = "getting price plan info";
+            SystemTray.ProgressIndicator.Text = AppResources.ProgressRetrievingPricePlanInfo;
             using (var client = new VikingsApi())
             {
                 client.GetInfoFinished += client_GetPlanInfoFinished;
@@ -167,7 +168,7 @@ namespace Fuel.Viewmodel
         public async Task<bool> GetSimInfo()
         {
             Tools.Tools.SetProgressIndicator(true);
-            SystemTray.ProgressIndicator.Text = "getting card info";
+            SystemTray.ProgressIndicator.Text = AppResources.ProgressRetrievingCardInfo;
             using (var client = new VikingsApi())
             {
                 client.GetInfoFinished += client_GetSimInfoFinished;

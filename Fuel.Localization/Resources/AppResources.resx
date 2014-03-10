@@ -179,7 +179,7 @@
   <data name="ProgressLoadingSims" xml:space="preserve">
     <value>loading sims</value>
   </data>
-  <data name="ToastBummer" xml:space="preserve">
+  <data name="ToastNoInternet" xml:space="preserve">
     <value>bummer, it looks like we're all out of internet</value>
   </data>
   <data name="ToastDefaultSim" xml:space="preserve">
@@ -220,5 +220,132 @@
   </data>
   <data name="PopupPrivacyHeader" xml:space="preserve">
     <value>privacy notice</value>
+  </data>
+  <data name="AppBarButtonCalendar" xml:space="preserve">
+    <value>calendar</value>
+  </data>
+  <data name="AppBarButtonCancel" xml:space="preserve">
+    <value>cancel</value>
+  </data>
+  <data name="AppBarButtonNext" xml:space="preserve">
+    <value>next</value>
+  </data>
+  <data name="AppBarButtonOk" xml:space="preserve">
+    <value>ok</value>
+  </data>
+  <data name="AppBarMenuLastDay" xml:space="preserve">
+    <value>last day</value>
+  </data>
+  <data name="AppBarMenuLastMonth" xml:space="preserve">
+    <value>last month</value>
+  </data>
+  <data name="AppBarMenuLastWeek" xml:space="preserve">
+    <value>last week</value>
+  </data>
+  <data name="DetailsViewSubtitleDefault" xml:space="preserve">
+    <value>usage</value>
+  </data>
+  <data name="DetailsViewSubtitleFrom" xml:space="preserve">
+    <value>from</value>
+  </data>
+  <data name="DetailsViewSubtitleUntil" xml:space="preserve">
+    <value>until</value>
+  </data>
+  <data name="DetailsViewUsage" xml:space="preserve">
+    <value>usage</value>
+  </data>
+  <data name="ProfileViewEarned" xml:space="preserve">
+    <value>earned</value>
+  </data>
+  <data name="ProfileViewPoints" xml:space="preserve">
+    <value>points
+points</value>
+  </data>
+  <data name="ProfileViewReferral" xml:space="preserve">
+    <value>referrals</value>
+  </data>
+  <data name="ProfileViewRemaining" xml:space="preserve">
+    <value>remaining</value>
+  </data>
+  <data name="ProfileViewShareLinkBody" xml:space="preserve">
+    <value>Join the revolution, become a viking! #fuel</value>
+  </data>
+  <data name="ProfileViewShareLinkTitle" xml:space="preserve">
+    <value>Become a viking!</value>
+  </data>
+  <data name="ProfileViewTopupsUsed" xml:space="preserve">
+    <value>topups used</value>
+  </data>
+  <data name="ProfileViewUsed" xml:space="preserve">
+    <value>used</value>
+  </data>
+  <data name="ProfileViewWaiting" xml:space="preserve">
+    <value>waiting</value>
+  </data>
+  <data name="ProgressFetchingLinks" xml:space="preserve">
+    <value>fetching links</value>
+  </data>
+  <data name="ProgressGettingStatistics" xml:space="preserve">
+    <value>getting statistics</value>
+  </data>
+  <data name="ProgressRetrievingCardInfo" xml:space="preserve">
+    <value>getting card info</value>
+  </data>
+  <data name="ProgressRetrievingPricePlanInfo" xml:space="preserve">
+    <value>getting price plan info</value>
+  </data>
+  <data name="ProgressRetrievingReferrals" xml:space="preserve">
+    <value>retrieving referrals</value>
+  </data>
+  <data name="ProgressRetrievingTopups" xml:space="preserve">
+    <value>retrieving topups</value>
+  </data>
+  <data name="ProgressRetrievingUsage" xml:space="preserve">
+    <value>retrieving information</value>
+  </data>
+  <data name="SimViewCardNumber" xml:space="preserve">
+    <value>card number</value>
+  </data>
+  <data name="SimViewImsi" xml:space="preserve">
+    <value>imsi</value>
+  </data>
+  <data name="SimViewInfo" xml:space="preserve">
+    <value>info</value>
+  </data>
+  <data name="SimViewPin1" xml:space="preserve">
+    <value>pin 1</value>
+  </data>
+  <data name="SimViewPin2" xml:space="preserve">
+    <value>pin2</value>
+  </data>
+  <data name="SimViewPlan" xml:space="preserve">
+    <value>plan</value>
+  </data>
+  <data name="SimViewPlanBundle" xml:space="preserve">
+    <value>bundle</value>
+  </data>
+  <data name="SimViewPlanPrices" xml:space="preserve">
+    <value>prices</value>
+  </data>
+  <data name="SimViewPuk1" xml:space="preserve">
+    <value>puk 1</value>
+  </data>
+  <data name="SimViewPuk2" xml:space="preserve">
+    <value>puk 2</value>
+  </data>
+  <data name="SimViewTopups" xml:space="preserve">
+    <value>topups</value>
+  </data>
+  <data name="ToastFutureDate" xml:space="preserve">
+    <value>hey now, Marty McFly, let's stick to the present!</value>
+  </data>
+  <data name="ToastInconsistentDateChoice" xml:space="preserve">
+    <value>please select a date later than the first one</value>
+  </data>
+  <data name="ToastInvalidDate" xml:space="preserve">
+    <value>looks like that's not a valid date, check again professor!</value>
+  </data>
+  <data name="ToastNoDataForPeriod" xml:space="preserve">
+    <value>there is no data for this period</value>
   </data>
 </root>

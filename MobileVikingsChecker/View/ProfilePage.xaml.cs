@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Navigation;
+using Fuel.Localization.Resources;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
@@ -24,8 +25,8 @@ namespace Fuel.View
         private void BuildApplicationBar()
         {
             ApplicationBar = new ApplicationBar { Mode = ApplicationBarMode.Default, Opacity = 1, IsVisible = true };
-            ApplicationBar.Buttons.Add(Tools.Tools.CreateButton("/Assets/refresh.png", "refresh", true, RefreshOnClick));
-            ApplicationBar.Buttons.Add(Tools.Tools.CreateButton("/Assets/share.png", "referral", true, ShareOnClick));
+            ApplicationBar.Buttons.Add(Tools.Tools.CreateButton("/Assets/refresh.png", AppResources.AppBarButtonRefresh, true, RefreshOnClick));
+            ApplicationBar.Buttons.Add(Tools.Tools.CreateButton("/Assets/share.png", AppResources.ProfileViewReferral, true, ShareOnClick));
             ((ApplicationBarIconButton) ApplicationBar.Buttons[1]).IsEnabled = false;
         }
 
@@ -42,8 +43,8 @@ namespace Fuel.View
             var shareLinkTask = new ShareLinkTask
                 {
                     LinkUri = new Uri(App.Viewmodel.ProfileViewmodel.Links.Select(x => x.Link).First(), UriKind.Absolute),
-                    Message = "Join the revolution, become a viking! #fuel",
-                    Title = "Become a viking!"
+                    Message = AppResources.ProfileViewShareLinkBody,
+                    Title = AppResources.ProfileViewShareLinkTitle
                 };
             shareLinkTask.Show();
         }
@@ -53,7 +54,7 @@ namespace Fuel.View
             SystemTray.ProgressIndicator = new ProgressIndicator();
             if (!Tools.Tools.HasInternetConnection())
             {
-                Message.ShowToast("Bummer, it looks like we're all out of internet.");
+                Message.ShowToast(AppResources.ToastNoInternet);
             }
             else
             {

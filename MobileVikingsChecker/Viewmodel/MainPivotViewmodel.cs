@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using AsyncOAuth;
+using Fuel.Localization.Resources;
 using Microsoft.Phone.Scheduler;
 using Microsoft.Phone.Shell;
 using Newtonsoft.Json;
@@ -81,7 +82,7 @@ namespace Fuel.Viewmodel
         public async Task<bool> GetData(string msisdn)
         {
             Tools.Tools.SetProgressIndicator(true);
-            SystemTray.ProgressIndicator.Text = "fetching data";
+            SystemTray.ProgressIndicator.Text = AppResources.ProgressFetchingData;
             using (var client = new VikingsApi())
             {
                 client.GetInfoFinished += client_GetDataFinished;
@@ -125,7 +126,7 @@ namespace Fuel.Viewmodel
         public async Task<bool> GetSimInfo()
         {
             Tools.Tools.SetProgressIndicator(true);
-            SystemTray.ProgressIndicator.Text = "loading sims";
+            SystemTray.ProgressIndicator.Text = AppResources.ProgressLoadingSims;
             using (var client = new VikingsApi())
             {
                 client.GetInfoFinished += client_GetSimInfoFinished;

@@ -144,7 +144,7 @@ namespace Fuel.View
             {
                 ApplicationBar.IsVisible = true;
                 Pivot.Visibility = Visibility.Visible;
-                Message.ShowToast(AppResources.ToastBummer);
+                Message.ShowToast(AppResources.ToastNoInternet);
             }
             else
             {
