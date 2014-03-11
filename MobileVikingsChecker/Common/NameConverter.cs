@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
+using Fuel.Localization.Resources;
 
 namespace Fuel.Common
 {
@@ -18,7 +19,7 @@ namespace Fuel.Common
 
         private string ReturnInformation(string value)
         {
-            return "by " + value;
+            return AppResources.ConverterBy.Space() + value;
         }
     }
 }

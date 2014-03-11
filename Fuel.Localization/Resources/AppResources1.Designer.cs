@@ -205,6 +205,177 @@ namespace Fuel.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to by.
+        /// </summary>
+        public static string ConverterBy {
+            get {
+                return ResourceManager.GetString("ConverterBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Call.
+        /// </summary>
+        public static string ConverterCall {
+            get {
+                return ResourceManager.GetString("ConverterCall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to cost: {0}.
+        /// </summary>
+        public static string ConverterCostFormat {
+            get {
+                return ResourceManager.GetString("ConverterCostFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to data.
+        /// </summary>
+        public static string ConverterData {
+            get {
+                return ResourceManager.GetString("ConverterData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to data: {0}.
+        /// </summary>
+        public static string ConverterDataFormat {
+            get {
+                return ResourceManager.GetString("ConverterDataFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} at {1}.
+        /// </summary>
+        public static string ConverterDateAtTimeFormat {
+            get {
+                return ResourceManager.GetString("ConverterDateAtTimeFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}d.
+        /// </summary>
+        public static string ConverterDaysFormat {
+            get {
+                return ResourceManager.GetString("ConverterDaysFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to duration: {0}.
+        /// </summary>
+        public static string ConverterDurationFormat {
+            get {
+                return ResourceManager.GetString("ConverterDurationFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to from.
+        /// </summary>
+        public static string ConverterFrom {
+            get {
+                return ResourceManager.GetString("ConverterFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}h.
+        /// </summary>
+        public static string ConverterHoursFormat {
+            get {
+                return ResourceManager.GetString("ConverterHoursFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MB.
+        /// </summary>
+        public static string ConverterMB {
+            get {
+                return ResourceManager.GetString("ConverterMB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}m.
+        /// </summary>
+        public static string ConverterMinutesFormat {
+            get {
+                return ResourceManager.GetString("ConverterMinutesFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MMS.
+        /// </summary>
+        public static string ConverterMMS {
+            get {
+                return ResourceManager.GetString("ConverterMMS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}s.
+        /// </summary>
+        public static string ConverterSecondsFormat {
+            get {
+                return ResourceManager.GetString("ConverterSecondsFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SMS.
+        /// </summary>
+        public static string ConverterSMS {
+            get {
+                return ResourceManager.GetString("ConverterSMS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to to.
+        /// </summary>
+        public static string ConverterTo {
+            get {
+                return ResourceManager.GetString("ConverterTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown.
+        /// </summary>
+        public static string ConverterUnknown {
+            get {
+                return ResourceManager.GetString("ConverterUnknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to vCall.
+        /// </summary>
+        public static string ConverterVCall {
+            get {
+                return ResourceManager.GetString("ConverterVCall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to vSMS.
+        /// </summary>
+        public static string ConverterVSMS {
+            get {
+                return ResourceManager.GetString("ConverterVSMS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to usage.
         /// </summary>
         public static string DetailsViewSubtitleDefault {

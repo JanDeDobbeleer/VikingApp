@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
+using Fuel.Localization.Resources;
 using VikingApi.Json;
 
 namespace Fuel.Common
@@ -27,19 +28,19 @@ namespace Fuel.Common
             switch (typeId)
             {
                 case 1:
-                    return "Call";
+                    return AppResources.ConverterCall;
                 case 2:
-                    return "MB";
+                    return AppResources.ConverterMB;
                 case 5:
-                    return "SMS";
+                    return AppResources.ConverterSMS;
                 case 7:
-                    return "MMS";
+                    return AppResources.ConverterMMS;
                 case 11:
-                    return "vCall";
+                    return AppResources.ConverterVCall;
                 case 15:
-                    return "vSMS";
+                    return AppResources.ConverterVSMS;
                 default:
-                    return "Unknown";
+                    return AppResources.ConverterUnknown;
             }
         }
 

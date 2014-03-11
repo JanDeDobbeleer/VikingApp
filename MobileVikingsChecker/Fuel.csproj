@@ -98,6 +98,7 @@
     <Compile Include="Common\AmountConverter.cs" />
     <Compile Include="Common\BundlesConverter.cs" />
     <Compile Include="Common\CircleConverter.cs" />
+    <Compile Include="Common\Extensions.cs" />
     <Compile Include="Common\ExtraInformationConverter.cs" />
     <Compile Include="Common\InformationConverter.cs" />
     <Compile Include="Common\MethodConverter.cs" />

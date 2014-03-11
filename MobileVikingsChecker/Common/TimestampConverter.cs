@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
+using Fuel.Localization.Resources;
 using VikingApi.Json;
 
 namespace Fuel.Common
@@ -20,7 +21,7 @@ namespace Fuel.Common
         private string ReturnTimestamp(string timestamp)
         {
             var date = System.Convert.ToDateTime(timestamp);
-            return string.Format("{0} at {1}", date.ToShortDateString(), date.ToShortTimeString());
+            return string.Format(AppResources.ConverterDateAtTimeFormat, date.ToShortDateString(), date.ToShortTimeString());
         }
     }
 }

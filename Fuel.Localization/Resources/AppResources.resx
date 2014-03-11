@@ -348,4 +348,61 @@ points</value>
   <data name="ToastNoDataForPeriod" xml:space="preserve">
     <value>there is no data for this period</value>
   </data>
+  <data name="ConverterCall" xml:space="preserve">
+    <value>Call</value>
+  </data>
+  <data name="ConverterCostFormat" xml:space="preserve">
+    <value>cost: {0}</value>
+  </data>
+  <data name="ConverterData" xml:space="preserve">
+    <value>data</value>
+  </data>
+  <data name="ConverterDataFormat" xml:space="preserve">
+    <value>data: {0}</value>
+  </data>
+  <data name="ConverterDaysFormat" xml:space="preserve">
+    <value>{0}d</value>
+  </data>
+  <data name="ConverterDurationFormat" xml:space="preserve">
+    <value>duration: {0}</value>
+  </data>
+  <data name="ConverterFrom" xml:space="preserve">
+    <value>from</value>
+  </data>
+  <data name="ConverterHoursFormat" xml:space="preserve">
+    <value>{0}h</value>
+  </data>
+  <data name="ConverterMB" xml:space="preserve">
+    <value>MB</value>
+  </data>
+  <data name="ConverterMinutesFormat" xml:space="preserve">
+    <value>{0}m</value>
+  </data>
+  <data name="ConverterMMS" xml:space="preserve">
+    <value>MMS</value>
+  </data>
+  <data name="ConverterSecondsFormat" xml:space="preserve">
+    <value>{0}s</value>
+  </data>
+  <data name="ConverterSMS" xml:space="preserve">
+    <value>SMS</value>
+  </data>
+  <data name="ConverterTo" xml:space="preserve">
+    <value>to</value>
+  </data>
+  <data name="ConverterUnknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="ConverterVCall" xml:space="preserve">
+    <value>vCall</value>
+  </data>
+  <data name="ConverterVSMS" xml:space="preserve">
+    <value>vSMS</value>
+  </data>
+  <data name="ConverterBy" xml:space="preserve">
+    <value>by</value>
+  </data>
+  <data name="ConverterDateAtTimeFormat" xml:space="preserve">
+    <value>{0} at {1}</value>
+  </data>
 </root>

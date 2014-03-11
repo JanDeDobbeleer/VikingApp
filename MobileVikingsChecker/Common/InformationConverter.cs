@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
+using Fuel.Localization.Resources;
 using Microsoft.Phone.UserData;
 using VikingApi.Json;
 
@@ -25,12 +26,12 @@ namespace Fuel.Common
             string information;
             if (usage.IsMms || usage.IsSms || usage.IsVoice)
             {
-                var to = (usage.IsIncoming) ? "from":"to";
+                var to = (usage.IsIncoming) ? AppResources.ConverterFrom:AppResources.ConverterTo;
                 information = string.Format("{0} {1} {2} ", GetType(usage), to, FetchContactName(usage.To));
             }
             else
             {
-                information = string.Format("data: {0}", (!usage.DurationHuman.Equals("n/a")) ? usage.DurationHuman : "0 MB");
+                information = string.Format(AppResources.ConverterDataFormat, (!usage.DurationHuman.Equals("n/a")) ? usage.DurationHuman : "0 " + AppResources.ConverterMB);
             }
             return information;
         }
@@ -38,12 +39,12 @@ namespace Fuel.Common
         private string GetType(Usage usage)
         {
             if (usage.IsMms)
-                return "mms";
+                return AppResources.ConverterMMS.ToLower();
             if (usage.IsSms)
-                return "sms";
+                return AppResources.ConverterSMS.ToLower();
             if (usage.IsVoice)
-                return "call";
-            return usage.IsData ? "data" : string.Empty;
+                return AppResources.ConverterCall.ToLower();
+            return usage.IsData ? AppResources.ConverterData : string.Empty;
         }
 
          private string FetchContactName(string numberStr)
