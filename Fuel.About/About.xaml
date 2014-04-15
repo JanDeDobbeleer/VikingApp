@@ -119,19 +119,19 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel Orientation="Horizontal">
                         <Image Source="/Assets/logo.png" />
-                        <TextBlock Text="Fuel" FontSize="{StaticResource PhoneFontSizeLarge}" />
+                        <TextBlock Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}" FontSize="{StaticResource PhoneFontSizeLarge}" />
                     </StackPanel>
                 </Grid>
             </phone:Pivot.Title>
             <!--Pivot item one-->
-            <phone:PivotItem Header="info">
+            <phone:PivotItem Header="{Binding Path=LocalizedResources.AboutViewHeaderInfo, Source={StaticResource LocalizedStrings}}">
                 <ScrollViewer>
                     <StackPanel Margin="0,-12,0,24">
                         <TextBlock Style="{StaticResource PhoneTextExtraLargeStyle}"
-                                   Text="Fuel for Mobile Vikings"
+                                   Text="{Binding Path=LocalizedResources.AboutViewAppTitle, Source={StaticResource LocalizedStrings}}"
                                    Foreground="{StaticResource VikingColorBrush}"/>
                         <TextBlock Style="{StaticResource PhoneTextLargeStyle}"
-                                   Text="by Jan Joris"
+                                   Text="{Binding Path=LocalizedResources.AboutViewBy, Source={StaticResource LocalizedStrings}}"
                                    Tap="UIElement_OnTap"/>
                         <HyperlinkButton x:Name="HyperLinkButton"
                                          TargetName="_new"
@@ -139,7 +139,7 @@
                                          Content="homepage" Style="{StaticResource HyperlinkButtonStyle}"/>
                         <StackPanel Orientation="Horizontal" Margin="0,18,0,0">
                             <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
-                                       Text="Version:"/>
+                                       Text="{Binding Path=LocalizedResources.AboutViewVersion, Source={StaticResource LocalizedStrings}}"/>
                             <TextBlock Margin="0"
                                        Style="{StaticResource PhoneTextNormalStyle}"
                                        x:Name="VersionText"/>
@@ -155,7 +155,7 @@
                                 <ColumnDefinition Width="20"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Button Content="Contact"
+                            <Button Content="{Binding Path=LocalizedResources.AboutViewReviewButton, Source={StaticResource LocalizedStrings}}"
                                     Grid.Column="0"
                                     HorizontalAlignment="Right"
                                     Click="ButtonBase_OnClick"
@@ -164,7 +164,7 @@
                                     Grid.Column="2"
                                     Tag="Review"
                                     Click="HyperlinkButton_Click"
-                                    Content="Review"
+                                    Content="{Binding Path=LocalizedResources.AboutViewContactButton, Source={StaticResource LocalizedStrings}}"
                                     Style="{StaticResource ButtonStyle}"/>
                         </Grid>
                     </StackPanel>
@@ -172,32 +172,32 @@
             </phone:PivotItem>
 
             <!--Pivot item two-->
-            <phone:PivotItem Header="about">
+            <phone:PivotItem Header="{Binding Path=LocalizedResources.AboutViewHeaderAbout, Source={StaticResource LocalizedStrings}}">
                 <ScrollViewer x:Name="Sv1"
                               Margin="0,0,-12,24">
                 </ScrollViewer>
             </phone:PivotItem>
-            
-            <phone:PivotItem Header="changelog">
+
+            <phone:PivotItem Header="{Binding Path=LocalizedResources.AboutViewHeaderChangelog, Source={StaticResource LocalizedStrings}}">
                 <ScrollViewer>
                     <StackPanel Margin="13, 0, 0, 0">
                         <TextBlock Text="2.0.4" Foreground="{StaticResource VikingColorBrush}" FontSize="{StaticResource PhoneFontSizeLarge}" Margin="0,0,0,2"/>
-                        <TextBlock Text="• live tile number alignment fix" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
-                        <TextBlock Text="• login screen logo fix" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
-                        <TextBlock Text="• removed background task on logout" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
-                        <TextBlock Text="• live tile fix for 1 day left (silly me)" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
-                        <TextBlock Text="• new settings menu for tile" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
+                        <TextBlock Text="{Binding Path=LocalizedResources.ChangeLog204_1, Source={StaticResource LocalizedStrings}}" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
+                        <TextBlock Text="{Binding Path=LocalizedResources.ChangeLog204_2, Source={StaticResource LocalizedStrings}}" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
+                        <TextBlock Text="{Binding Path=LocalizedResources.ChangeLog204_3, Source={StaticResource LocalizedStrings}}" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
+                        <TextBlock Text="{Binding Path=LocalizedResources.ChangeLog204_4, Source={StaticResource LocalizedStrings}}" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
+                        <TextBlock Text="{Binding Path=LocalizedResources.ChangeLog204_5, Source={StaticResource LocalizedStrings}}" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
                         <TextBlock Text="2.0.3" FontSize="{StaticResource PhoneFontSizeLarge}" Margin="0,5,0,2"/>
-                        <TextBlock Text="• price plan update" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
-                        <TextBlock Text="• new live tile design" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
-                        <TextBlock Text="• live tile image fix" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
-                        <TextBlock Text="• added changelog" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
-                        <TextBlock Text="• login using xAUTH" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
-                        <TextBlock Text="• small bugfixes" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
+                        <TextBlock Text="{Binding Path=LocalizedResources.ChangeLog203_1, Source={StaticResource LocalizedStrings}}" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
+                        <TextBlock Text="{Binding Path=LocalizedResources.ChangeLog203_2, Source={StaticResource LocalizedStrings}}" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
+                        <TextBlock Text="{Binding Path=LocalizedResources.ChangeLog203_3, Source={StaticResource LocalizedStrings}}" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
+                        <TextBlock Text="{Binding Path=LocalizedResources.ChangeLog203_4, Source={StaticResource LocalizedStrings}}" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
+                        <TextBlock Text="{Binding Path=LocalizedResources.ChangeLog203_5, Source={StaticResource LocalizedStrings}}" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
+                        <TextBlock Text="{Binding Path=LocalizedResources.ChangeLog203_6, Source={StaticResource LocalizedStrings}}" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
                         <TextBlock Text="2.0.2" FontSize="{StaticResource PhoneFontSizeLarge}" Margin="0,5,0,2" />
-                        <TextBlock Text="• live tile fix" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
+                        <TextBlock Text="{Binding Path=LocalizedResources.ChangeLog202_1, Source={StaticResource LocalizedStrings}}" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
                         <TextBlock Text="2.0.1" FontSize="{StaticResource PhoneFontSizeLarge}" Margin="0,5,0,2" />
-                        <TextBlock Text="• initial release" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
+                        <TextBlock Text="{Binding Path=LocalizedResources.ChangeLog201_1, Source={StaticResource LocalizedStrings}}" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
                     </StackPanel>
                 </ScrollViewer>
             </phone:PivotItem>

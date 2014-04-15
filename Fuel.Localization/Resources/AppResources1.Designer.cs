@@ -61,6 +61,105 @@ namespace Fuel.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fuel for Mobile Vikings.
+        /// </summary>
+        public static string AboutViewAppTitle {
+            get {
+                return ResourceManager.GetString("AboutViewAppTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to by Jan Joris.
+        /// </summary>
+        public static string AboutViewBy {
+            get {
+                return ResourceManager.GetString("AboutViewBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contact.
+        /// </summary>
+        public static string AboutViewContactButton {
+            get {
+                return ResourceManager.GetString("AboutViewContactButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hi there. Welcome to Fuel. This app has been built with passion, a lot of cursing, crying and occasional eufory. So, when you encounter an issue, please hit the contact button instead of handing out a 1 star review.\n\nFuel will remain free throughout its lifecycle, feel free to enjoy it as much as I do..
+        /// </summary>
+        public static string AboutViewDisclaimer {
+            get {
+                return ResourceManager.GetString("AboutViewDisclaimer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to about.
+        /// </summary>
+        public static string AboutViewHeaderAbout {
+            get {
+                return ResourceManager.GetString("AboutViewHeaderAbout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to changelog.
+        /// </summary>
+        public static string AboutViewHeaderChangelog {
+            get {
+                return ResourceManager.GetString("AboutViewHeaderChangelog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to info.
+        /// </summary>
+        public static string AboutViewHeaderInfo {
+            get {
+                return ResourceManager.GetString("AboutViewHeaderInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mission\n\nJust like every earth resident has the right for drinking water, energy and education, they believe everyone should have free access to information and digital services. Mobile Vikings wants to be a movement that accelerates this process.\n\nDescription\n\nMobile Vikings is an online mobile operator that focuses on mobile Internet. Mobile Vikings was launched in 2009 in Belgium. As of December 2012 they are also active in the Netherlands..
+        /// </summary>
+        public static string AboutViewMobileVikings {
+            get {
+                return ResourceManager.GetString("AboutViewMobileVikings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Review.
+        /// </summary>
+        public static string AboutViewReviewButton {
+            get {
+                return ResourceManager.GetString("AboutViewReviewButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to unknown.
+        /// </summary>
+        public static string AboutViewUnknownAssembly {
+            get {
+                return ResourceManager.GetString("AboutViewUnknownAssembly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Version:.
+        /// </summary>
+        public static string AboutViewVersion {
+            get {
+                return ResourceManager.GetString("AboutViewVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to calendar.
         /// </summary>
         public static string AppBarButtonCalendar {
@@ -201,6 +300,123 @@ namespace Fuel.Localization.Resources {
         public static string ApplicationTitle {
             get {
                 return ResourceManager.GetString("ApplicationTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • initial release.
+        /// </summary>
+        public static string ChangeLog201_1 {
+            get {
+                return ResourceManager.GetString("ChangeLog201_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • live tile fix.
+        /// </summary>
+        public static string ChangeLog202_1 {
+            get {
+                return ResourceManager.GetString("ChangeLog202_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • price plan update.
+        /// </summary>
+        public static string ChangeLog203_1 {
+            get {
+                return ResourceManager.GetString("ChangeLog203_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • new live tile design.
+        /// </summary>
+        public static string ChangeLog203_2 {
+            get {
+                return ResourceManager.GetString("ChangeLog203_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • live tile image fix.
+        /// </summary>
+        public static string ChangeLog203_3 {
+            get {
+                return ResourceManager.GetString("ChangeLog203_3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • added changelog.
+        /// </summary>
+        public static string ChangeLog203_4 {
+            get {
+                return ResourceManager.GetString("ChangeLog203_4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • login using xAUTH.
+        /// </summary>
+        public static string ChangeLog203_5 {
+            get {
+                return ResourceManager.GetString("ChangeLog203_5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • small bugfixes.
+        /// </summary>
+        public static string ChangeLog203_6 {
+            get {
+                return ResourceManager.GetString("ChangeLog203_6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • live tile number alignment fix.
+        /// </summary>
+        public static string ChangeLog204_1 {
+            get {
+                return ResourceManager.GetString("ChangeLog204_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • login screen logo fix.
+        /// </summary>
+        public static string ChangeLog204_2 {
+            get {
+                return ResourceManager.GetString("ChangeLog204_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • removed background task on logout.
+        /// </summary>
+        public static string ChangeLog204_3 {
+            get {
+                return ResourceManager.GetString("ChangeLog204_3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • live tile fix for 1 day left (silly me).
+        /// </summary>
+        public static string ChangeLog204_4 {
+            get {
+                return ResourceManager.GetString("ChangeLog204_4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • new settings menu for tile.
+        /// </summary>
+        public static string ChangeLog204_5 {
+            get {
+                return ResourceManager.GetString("ChangeLog204_5", resourceCulture);
             }
         }
         
@@ -529,8 +745,7 @@ namespace Fuel.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to points
-        ///points.
+        ///   Looks up a localized string similar to points.
         /// </summary>
         public static string ProfileViewPoints {
             get {

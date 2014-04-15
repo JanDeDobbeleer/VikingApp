@@ -100,6 +100,12 @@
   <ItemGroup>
     <Content Include="Assets\logo.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fuel.Localization\Fuel.Localization.csproj">
+      <Project>{0C00C813-4104-4A36-8F22-A7D675BDE4AB}</Project>
+      <Name>Fuel.Localization</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
   <ProjectExtensions />

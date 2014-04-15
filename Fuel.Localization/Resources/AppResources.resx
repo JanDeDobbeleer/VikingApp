@@ -258,8 +258,7 @@
     <value>earned</value>
   </data>
   <data name="ProfileViewPoints" xml:space="preserve">
-    <value>points
-points</value>
+    <value>points</value>
   </data>
   <data name="ProfileViewReferral" xml:space="preserve">
     <value>referrals</value>
@@ -402,7 +401,79 @@ points</value>
   <data name="ConverterBy" xml:space="preserve">
     <value>by</value>
   </data>
+  <data name="AboutViewAppTitle" xml:space="preserve">
+    <value>Fuel for Mobile Vikings</value>
+  </data>
+  <data name="AboutViewBy" xml:space="preserve">
+    <value>by Jan Joris</value>
+  </data>
+  <data name="AboutViewContactButton" xml:space="preserve">
+    <value>Contact</value>
+  </data>
+  <data name="AboutViewHeaderAbout" xml:space="preserve">
+    <value>about</value>
+  </data>
+  <data name="AboutViewHeaderChangelog" xml:space="preserve">
+    <value>changelog</value>
+  </data>
+  <data name="AboutViewHeaderInfo" xml:space="preserve">
+    <value>info</value>
+  </data>
+  <data name="AboutViewReviewButton" xml:space="preserve">
+    <value>Review</value>
+  </data>
+  <data name="AboutViewVersion" xml:space="preserve">
+    <value>Version:</value>
+  </data>
   <data name="ConverterDateAtTimeFormat" xml:space="preserve">
     <value>{0} at {1}</value>
+  </data>
+  <data name="AboutViewDisclaimer" xml:space="preserve">
+    <value>Hi there. Welcome to Fuel. This app has been built with passion, a lot of cursing, crying and occasional eufory. So, when you encounter an issue, please hit the contact button instead of handing out a 1 star review.\n\nFuel will remain free throughout its lifecycle, feel free to enjoy it as much as I do.</value>
+  </data>
+  <data name="AboutViewMobileVikings" xml:space="preserve">
+    <value>Mission\n\nJust like every earth resident has the right for drinking water, energy and education, they believe everyone should have free access to information and digital services. Mobile Vikings wants to be a movement that accelerates this process.\n\nDescription\n\nMobile Vikings is an online mobile operator that focuses on mobile Internet. Mobile Vikings was launched in 2009 in Belgium. As of December 2012 they are also active in the Netherlands.</value>
+  </data>
+  <data name="AboutViewUnknownAssembly" xml:space="preserve">
+    <value>unknown</value>
+  </data>
+  <data name="ChangeLog201_1" xml:space="preserve">
+    <value>• initial release</value>
+  </data>
+  <data name="ChangeLog202_1" xml:space="preserve">
+    <value>• live tile fix</value>
+  </data>
+  <data name="ChangeLog203_1" xml:space="preserve">
+    <value>• price plan update</value>
+  </data>
+  <data name="ChangeLog203_2" xml:space="preserve">
+    <value>• new live tile design</value>
+  </data>
+  <data name="ChangeLog203_3" xml:space="preserve">
+    <value>• live tile image fix</value>
+  </data>
+  <data name="ChangeLog203_4" xml:space="preserve">
+    <value>• added changelog</value>
+  </data>
+  <data name="ChangeLog203_5" xml:space="preserve">
+    <value>• login using xAUTH</value>
+  </data>
+  <data name="ChangeLog203_6" xml:space="preserve">
+    <value>• small bugfixes</value>
+  </data>
+  <data name="ChangeLog204_1" xml:space="preserve">
+    <value>• live tile number alignment fix</value>
+  </data>
+  <data name="ChangeLog204_2" xml:space="preserve">
+    <value>• login screen logo fix</value>
+  </data>
+  <data name="ChangeLog204_3" xml:space="preserve">
+    <value>• removed background task on logout</value>
+  </data>
+  <data name="ChangeLog204_4" xml:space="preserve">
+    <value>• live tile fix for 1 day left (silly me)</value>
+  </data>
+  <data name="ChangeLog204_5" xml:space="preserve">
+    <value>• new settings menu for tile</value>
   </data>
 </root>

@@ -9,6 +9,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Shapes;
 using Windows.System;
+using Fuel.Localization.Resources;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Net.NetworkInformation;
 using Microsoft.Phone.Tasks;
@@ -18,7 +19,6 @@ namespace Fuel.About
     public partial class About : PhoneApplicationPage
     {
         private StackPanel _licenses;
-        private const string Disclaimer = "Hi there. Welcome to Fuel. This app has been built with passion, a lot of cursing, crying and occasional eufory. So, when you encounter an issue, please hit the contact button instead of handing out a 1 star review.\n\nFuel will remain free throughout its lifecycle, feel free to enjoy it as much as I do.";
 
         public About()
         {
@@ -31,7 +31,7 @@ namespace Fuel.About
             GetVersionNumber();
             LoadLicense();
             HyperLinkButton.NavigateUri = new Uri("http://www.jan-joris.be");
-            ReviewBlock.Text = Disclaimer;
+            ReviewBlock.Text = AppResources.AboutViewDisclaimer;
             GetVikingNumbers();
         }
 
@@ -55,58 +55,18 @@ namespace Fuel.About
 
         private void GetVersionNumber()
         {
-            VersionText.Text = Assembly.GetExecutingAssembly().FullName.Split('=')[1].Split(',')[0] ?? "Unknown";
+            VersionText.Text = Assembly.GetExecutingAssembly().FullName.Split('=')[1].Split(',')[0] ?? AppResources.AboutViewUnknownAssembly;
         }
 
         private void LoadLicense()
         {
             if (_licenses == null)
             {
-                Dispatcher.BeginInvoke(() =>
-                {
-                    _licenses = new StackPanel();
-
-                    var sri = Application.GetResourceStream(
-                        new Uri("OVER.txt", UriKind.Relative));
-                    if (sri != null)
-                    {
-                        using (var sr = new StreamReader(sri.Stream))
-                        {
-                            string line;
-                            var lastWasEmpty = true;
-                            do
-                            {
-                                line = sr.ReadLine();
-
-                                if (string.IsNullOrWhiteSpace(line))
-                                {
-                                    var r = new Rectangle
-                                    {
-                                        Height = 15,
-                                    };
-                                    _licenses.Children.Add(r);
-                                    lastWasEmpty = true;
-                                }
-                                else
-                                {
-                                    var tb = new TextBlock
-                                    {
-                                        TextWrapping = TextWrapping.Wrap,
-                                        Text = line,
-                                        Style = (lastWasEmpty && line.Length > 30) ? SmallStyle : (Style)Application.Current.Resources["PhoneTextNormalStyle"],
-                                    };
-#if(DEBUG)
-                                    Debug.WriteLine("Textblock: \n" + line);
-#endif
-                                    _licenses.Children.Add(tb);
-                                    lastWasEmpty = false;
-                                }
-                            } while (line != null);
-                        }
-                    }
-                    _licenses.Children.Add(ReturnHyperlinkButton());
-                    Sv1.Content = _licenses;
-                });
+                //TODO: fix this issue!
+                _licenses = new StackPanel();
+                _licenses.Children.Add(new TextBlock() { Text = AppResources.AboutViewMobileVikings });
+                _licenses.Children.Add(ReturnHyperlinkButton());
+                Sv1.Content = _licenses;
             }
         }
 
