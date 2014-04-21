@@ -87,6 +87,9 @@
   <ItemGroup>
     <Compile Include="Classes\BaseTile.cs" />
     <Compile Include="Classes\Helper.cs" />
+    <Compile Include="Classes\ToolStackCRCLib.cs" />
+    <Compile Include="Classes\ToolStackPNGWriterLib.cs" />
+    <Compile Include="Classes\ToolStackPNGWriterWBext.cs" />
     <Compile Include="Control\FrontTile.xaml.cs">
       <DependentUpon>FrontTile.xaml</DependentUpon>
     </Compile>

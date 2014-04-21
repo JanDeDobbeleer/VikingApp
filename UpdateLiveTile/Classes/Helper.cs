@@ -27,7 +27,7 @@ namespace UpdateLiveTile.Classes
                 var bmp = new WriteableBitmap(side, side);
                 bmp.Render(element, null);
                 bmp.Invalidate();
-                var name = tile.ToString() + Guid.NewGuid() + ".jpg";
+                var name = tile.ToString() + Guid.NewGuid() + ".png";
                 using (var isf = IsolatedStorageFile.GetUserStoreForApplication())
                 {
                     if (!isf.DirectoryExists("/CustomLiveTiles"))
@@ -36,9 +36,8 @@ namespace UpdateLiveTile.Classes
                     }
                     using (var myFileStream = isf.CreateFile("shared/shellcontent/" + name))
                     {
-                        // Encode WriteableBitmap object to a JPEG stream.
-                        bmp.SaveJpeg(myFileStream, side, side, 0, 100);
-                        myFileStream.Close();
+                        // Encode WriteableBitmap object to a PNG stream.
+                        bmp.WritePng(myFileStream);
                     }
                     var filesTodelete =
                              from f in isf.GetFileNames("shared/shellcontent/" + tile + "*").AsQueryable()
