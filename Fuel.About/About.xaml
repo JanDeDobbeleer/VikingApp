@@ -144,11 +144,8 @@
                                        Style="{StaticResource PhoneTextNormalStyle}"
                                        x:Name="VersionText"/>
                         </StackPanel>
-                        <TextBlock x:Name="ReviewBlock"
-                                   TextWrapping="Wrap"
-                                   Margin="12,10,0,0"
-                                   FontSize="{StaticResource PhoneFontSizeSmall}"
-                                   FontWeight="Light"/>
+                        <RichTextBox x:Name="ReviewBlock"
+                                   TextWrapping="Wrap"/>
                         <Grid Margin="0,15,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>

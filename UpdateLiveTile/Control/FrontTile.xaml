@@ -7,9 +7,10 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
+    Background="{StaticResource TransparentBrush}"
     d:DesignHeight="336" d:DesignWidth="336">
-    
-    <Grid x:Name="LayoutRoot">
+
+    <Grid x:Name="LayoutRoot" Background="{StaticResource TransparentBrush}">
         <Image x:Name="Image" Margin="-52,0,0,0" Source="/Assets/336x336.png" Width="320" HorizontalAlignment="Left" />
         <TextBlock x:Name="Days" FontSize="98" Margin="0,-121,35,0" HorizontalAlignment="Right" VerticalAlignment="Center"  FontWeight="SemiBold"/>
         <TextBlock x:Name="DaysBlock" Text="days" Margin="0,5,38,0" FontSize="51"  FontWeight="Medium" HorizontalAlignment="Right" VerticalAlignment="Center"/>

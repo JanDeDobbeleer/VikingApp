@@ -28,11 +28,18 @@ namespace Fuel.About
 
         private void AssignValues()
         {
-            GetVersionNumber();
-            LoadLicense();
-            HyperLinkButton.NavigateUri = new Uri("http://www.jan-joris.be");
-            ReviewBlock.Text = AppResources.AboutViewDisclaimer;
-            GetVikingNumbers();
+            try
+            {
+                GetVersionNumber();
+                LoadLicense();
+                HyperLinkButton.NavigateUri = new Uri("http://www.jan-joris.be");
+                ReviewBlock.Xaml = @AppResources.AboutViewDisclaimer;
+                GetVikingNumbers();
+            }
+            catch (Exception)
+            {
+                //TODO: handle this
+            }
         }
 
         #region buttons
@@ -60,14 +67,13 @@ namespace Fuel.About
 
         private void LoadLicense()
         {
-            if (_licenses == null)
-            {
-                //TODO: fix this issue!
-                _licenses = new StackPanel();
-                _licenses.Children.Add(new TextBlock() { Text = AppResources.AboutViewMobileVikings });
-                _licenses.Children.Add(ReturnHyperlinkButton());
-                Sv1.Content = _licenses;
-            }
+            if (_licenses != null)
+                return;
+            _licenses = new StackPanel();
+            var xaml = @AppResources.AboutViewMobileVikings;
+            _licenses.Children.Add(new RichTextBox { Xaml = @AppResources.AboutViewMobileVikings });
+            _licenses.Children.Add(ReturnHyperlinkButton());
+            Sv1.Content = _licenses;
         }
 
         private HyperlinkButton ReturnHyperlinkButton()

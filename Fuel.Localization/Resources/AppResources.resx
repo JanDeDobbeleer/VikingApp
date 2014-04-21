@@ -429,10 +429,33 @@
     <value>{0} at {1}</value>
   </data>
   <data name="AboutViewDisclaimer" xml:space="preserve">
-    <value>Hi there. Welcome to Fuel. This app has been built with passion, a lot of cursing, crying and occasional eufory. So, when you encounter an issue, please hit the contact button instead of handing out a 1 star review.\n\nFuel will remain free throughout its lifecycle, feel free to enjoy it as much as I do.</value>
+    <value>&lt;Section xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"&gt;
+  &lt;Paragraph/&gt;&lt;Paragraph FontWeight="Light"&gt;
+      Hi there. Welcome to Fuel. This app has been built with passion, a lot of cursing, crying and occasional eufory. So, when you encounter an issue, please hit the contact button instead of handing out a 1 star review.&lt;/Paragraph&gt;
+  &lt;Paragraph/&gt;
+  &lt;Paragraph FontWeight="Light"&gt;
+    Fuel will remain free throughout its lifecycle, feel free to enjoy it as much as I do.
+  &lt;/Paragraph&gt;&lt;Paragraph/&gt;
+&lt;/Section&gt;</value>
   </data>
   <data name="AboutViewMobileVikings" xml:space="preserve">
-    <value>Mission\n\nJust like every earth resident has the right for drinking water, energy and education, they believe everyone should have free access to information and digital services. Mobile Vikings wants to be a movement that accelerates this process.\n\nDescription\n\nMobile Vikings is an online mobile operator that focuses on mobile Internet. Mobile Vikings was launched in 2009 in Belgium. As of December 2012 they are also active in the Netherlands.</value>
+    <value>&lt;Section xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"&gt;
+  &lt;Paragraph&gt;
+                                &lt;Bold&gt;Mission&lt;/Bold&gt;
+                            &lt;/Paragraph&gt;
+                            &lt;Paragraph&gt;&lt;/Paragraph&gt;
+                            &lt;Paragraph FontWeight="Light"&gt;
+                                Just like every earth resident has the right for drinking water, energy and education, they believe everyone should have free access to information and digital services. Mobile Vikings wants to be a movement that accelerates this process.
+                            &lt;/Paragraph&gt;
+                            &lt;Paragraph&gt;&lt;/Paragraph&gt;
+                            &lt;Paragraph&gt;
+                                &lt;Bold&gt;Description&lt;/Bold&gt;
+                            &lt;/Paragraph&gt;
+                            &lt;Paragraph&gt;&lt;/Paragraph&gt;
+                            &lt;Paragraph FontWeight="Light"&gt;
+                                Mobile Vikings is an online mobile operator that focuses on mobile Internet. Mobile Vikings was launched in 2009 in Belgium. As of December 2012 they are also active in the Netherlands.
+                            &lt;/Paragraph&gt;&lt;Paragraph/&gt;
+&lt;/Section&gt;</value>
   </data>
   <data name="AboutViewUnknownAssembly" xml:space="preserve">
     <value>unknown</value>

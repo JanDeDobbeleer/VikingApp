@@ -28,7 +28,7 @@ namespace UpdateLiveTile.Control
                 try
                 {
                     var color = (bool) IsolatedStorageSettings.ApplicationSettings["tileAccentColor"]
-                        ? (SolidColorBrush)Application.Current.Resources["PhoneAccentBrush"]
+                        ? (SolidColorBrush)Application.Current.Resources["TransparentBrush"]
                         : new SolidColorBrush(new Color {A = 255, R = 150, G = 8, B = 8});
                     BackTile customBackTile;
                     if (failed)

@@ -7,6 +7,7 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
+    Background="{StaticResource TransparentBrush}"
     d:DesignHeight="336" d:DesignWidth="336">
     
     <UserControl.Resources>
@@ -21,7 +22,7 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid x:Name="MainGrid">
+    <Grid x:Name="MainGrid" Background="{StaticResource TransparentBrush}">
         <StackPanel Margin="0,4,0,0">
             <TextBlock x:Name="Credit" Style="{StaticResource TextStyle}" />
             <TextBlock x:Name="Data" Style="{StaticResource TextStyle}" />
