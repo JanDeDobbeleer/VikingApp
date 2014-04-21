@@ -499,4 +499,7 @@
   <data name="ChangeLog204_5" xml:space="preserve">
     <value>• new settings menu for tile</value>
   </data>
+  <data name="ChangeLog205_1" xml:space="preserve">
+    <value>added transparent tile support for WP 8.1</value>
+  </data>
 </root>

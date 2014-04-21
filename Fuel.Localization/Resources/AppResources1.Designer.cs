@@ -88,7 +88,13 @@ namespace Fuel.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hi there. Welcome to Fuel. This app has been built with passion, a lot of cursing, crying and occasional eufory. So, when you encounter an issue, please hit the contact button instead of handing out a 1 star review.\n\nFuel will remain free throughout its lifecycle, feel free to enjoy it as much as I do..
+        ///   Looks up a localized string similar to &lt;Section xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;&gt;
+        ///  &lt;Paragraph/&gt;&lt;Paragraph FontWeight=&quot;Light&quot;&gt;
+        ///      Hi there. Welcome to Fuel. This app has been built with passion, a lot of cursing, crying and occasional eufory. So, when you encounter an issue, please hit the contact button instead of handing out a 1 star review.&lt;/Paragraph&gt;
+        ///  &lt;Paragraph/&gt;
+        ///  &lt;Paragraph FontWeight=&quot;Light&quot;&gt;
+        ///    Fuel will remain free throughout its lifecycle, feel free to enjoy it as much as I do.
+        ///  &lt;/Paragrap [rest of string was truncated]&quot;;.
         /// </summary>
         public static string AboutViewDisclaimer {
             get {
@@ -124,7 +130,13 @@ namespace Fuel.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mission\n\nJust like every earth resident has the right for drinking water, energy and education, they believe everyone should have free access to information and digital services. Mobile Vikings wants to be a movement that accelerates this process.\n\nDescription\n\nMobile Vikings is an online mobile operator that focuses on mobile Internet. Mobile Vikings was launched in 2009 in Belgium. As of December 2012 they are also active in the Netherlands..
+        ///   Looks up a localized string similar to &lt;Section xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;&gt;
+        ///  &lt;Paragraph&gt;
+        ///                                &lt;Bold&gt;Mission&lt;/Bold&gt;
+        ///                            &lt;/Paragraph&gt;
+        ///                            &lt;Paragraph&gt;&lt;/Paragraph&gt;
+        ///                            &lt;Paragraph FontWeight=&quot;Light&quot;&gt;
+        ///                                Just like every earth resident has the right for drinking water, energy and education, they believe everyone should have free access to information and digital services. Mobile Vi [rest of string was truncated]&quot;;.
         /// </summary>
         public static string AboutViewMobileVikings {
             get {
@@ -417,6 +429,15 @@ namespace Fuel.Localization.Resources {
         public static string ChangeLog204_5 {
             get {
                 return ResourceManager.GetString("ChangeLog204_5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to added transparent tile support for WP 8.1.
+        /// </summary>
+        public static string ChangeLog205_1 {
+            get {
+                return ResourceManager.GetString("ChangeLog205_1", resourceCulture);
             }
         }
         
