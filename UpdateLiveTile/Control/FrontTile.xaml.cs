@@ -20,8 +20,9 @@ namespace UpdateLiveTile.Control
                 int result;
                 if (int.TryParse(days, out result))
                 {
-                    DaysBlock.Text = (result == 1)? "day":"days";
-                    DaysBlock.Margin = new Thickness(0, 5, 49, 0);
+                    DaysBlock.Text = (result == 1) ? "day" : "days";
+                    if (result == 1)
+                        DaysBlock.Margin = new Thickness(0, 5, 49, 0);
                 }
             }
             else if (int.Parse(days) >= 10 && int.Parse(days) < 20)
