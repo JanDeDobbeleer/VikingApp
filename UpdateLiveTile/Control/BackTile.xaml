@@ -19,6 +19,7 @@
             <Setter Property="TextAlignment" Value="Left"/>
             <Setter Property="FontWeight" Value="Normal"/>
             <Setter Property="Text" Value="testest"></Setter>
+            <Setter Property="Foreground" Value="White"></Setter>
         </Style>
     </UserControl.Resources>
 

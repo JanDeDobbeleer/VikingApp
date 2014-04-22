@@ -10,10 +10,19 @@
     Background="{StaticResource TransparentBrush}"
     d:DesignHeight="336" d:DesignWidth="336">
 
+    <UserControl.Resources>
+        <Style TargetType="TextBlock" x:Key="TextStyle">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Foreground" Value="White"></Setter>
+        </Style>
+    </UserControl.Resources>
+
     <Grid x:Name="LayoutRoot" Background="{StaticResource TransparentBrush}">
         <Image x:Name="Image" Margin="-52,0,0,0" Source="/Assets/336x336.png" Width="320" HorizontalAlignment="Left" />
-        <TextBlock x:Name="Days" FontSize="98" Margin="0,-121,35,0" HorizontalAlignment="Right" VerticalAlignment="Center"  FontWeight="SemiBold"/>
-        <TextBlock x:Name="DaysBlock" Text="days" Margin="0,5,38,0" FontSize="51"  FontWeight="Medium" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-        <TextBlock Text="left" Margin="0,126,39,0" FontSize="70" FontWeight="Medium" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <TextBlock x:Name="Days" FontSize="98" Margin="0,-121,35,0" FontWeight="SemiBold" Style="{StaticResource TextStyle}"/>
+        <TextBlock x:Name="DaysBlock" Text="days" Margin="0,5,38,0" FontSize="51" Style="{StaticResource TextStyle}"/>
+        <TextBlock Text="left" Margin="0,126,39,0" FontSize="70" Style="{StaticResource TextStyle}"/>
     </Grid>
 </UserControl>
