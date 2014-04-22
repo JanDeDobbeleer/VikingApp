@@ -201,7 +201,7 @@
     <value>sign in</value>
   </data>
   <data name="LoginUserName" xml:space="preserve">
-    <value>username or password</value>
+    <value>username or email</value>
   </data>
   <data name="PopupPrivacy" xml:space="preserve">
     <value>your credentials are not stored locally and will only be used to request a token</value>
