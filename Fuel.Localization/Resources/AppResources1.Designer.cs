@@ -433,11 +433,29 @@ namespace Fuel.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to added transparent tile support for WP 8.1.
+        ///   Looks up a localized string similar to • added transparent tile support for WP 8.1.
         /// </summary>
         public static string ChangeLog205_1 {
             get {
                 return ResourceManager.GetString("ChangeLog205_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • fix for tile text on white theme.
+        /// </summary>
+        public static string ChangeLog205_2 {
+            get {
+                return ResourceManager.GetString("ChangeLog205_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • text fixes.
+        /// </summary>
+        public static string ChangeLog205_3 {
+            get {
+                return ResourceManager.GetString("ChangeLog205_3", resourceCulture);
             }
         }
         
@@ -667,7 +685,7 @@ namespace Fuel.Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to username or password.
+        ///   Looks up a localized string similar to username or email.
         /// </summary>
         public static string LoginUserName {
             get {

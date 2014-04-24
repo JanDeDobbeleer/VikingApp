@@ -500,6 +500,12 @@
     <value>• new settings menu for tile</value>
   </data>
   <data name="ChangeLog205_1" xml:space="preserve">
-    <value>added transparent tile support for WP 8.1</value>
+    <value>• added transparent tile support for WP 8.1</value>
+  </data>
+  <data name="ChangeLog205_2" xml:space="preserve">
+    <value>• fix for tile text on white theme</value>
+  </data>
+  <data name="ChangeLog205_3" xml:space="preserve">
+    <value>• text fixes</value>
   </data>
 </root>
