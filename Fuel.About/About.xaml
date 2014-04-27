@@ -152,7 +152,7 @@
                                 <ColumnDefinition Width="20"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Button Content="{Binding Path=LocalizedResources.AboutViewReviewButton, Source={StaticResource LocalizedStrings}}"
+                            <Button Content="{Binding Path=LocalizedResources.AboutViewContactButton, Source={StaticResource LocalizedStrings}}"
                                     Grid.Column="0"
                                     HorizontalAlignment="Right"
                                     Click="ButtonBase_OnClick"
@@ -161,7 +161,7 @@
                                     Grid.Column="2"
                                     Tag="Review"
                                     Click="HyperlinkButton_Click"
-                                    Content="{Binding Path=LocalizedResources.AboutViewContactButton, Source={StaticResource LocalizedStrings}}"
+                                    Content="{Binding Path=LocalizedResources.AboutViewReviewButton, Source={StaticResource LocalizedStrings}}"
                                     Style="{StaticResource ButtonStyle}"/>
                         </Grid>
                     </StackPanel>
