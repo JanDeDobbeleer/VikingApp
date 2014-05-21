@@ -92,7 +92,7 @@ namespace VikingApi.Api
 
         public async Task<bool> Authorize(string userName, string passWord)
         {
-            var xAuth = new VikingXauth();
+            var xAuth = new Xauth();
             return await xAuth.XAuthAccessTokenGet(userName, passWord);
         }
 

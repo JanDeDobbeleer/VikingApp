@@ -96,9 +96,10 @@
     <Compile Include="ApiTools\Extensions.cs" />
     <Compile Include="ApiTools\GetInfoCompletedArgs.cs" />
     <Compile Include="ApiTools\CancelTask.cs" />
-    <Compile Include="Api\Oauth.cs" />
+    <Compile Include="Api\OAuthBase.cs" />
+    <Compile Include="Api\OauthClient.cs" />
     <Compile Include="Api\VikingsApi.cs" />
-    <Compile Include="Api\VikingXauth.cs" />
+    <Compile Include="Api\Xauth.cs" />
     <Compile Include="AppClasses\UserBalance.cs" />
     <Compile Include="Json\Balance.cs" />
     <Compile Include="Json\Links.cs" />
