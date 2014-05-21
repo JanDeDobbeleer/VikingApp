@@ -68,21 +68,21 @@ namespace UpdateLiveTile.Classes
 
         private static string GetDefaultBackTile()
         {
-            return (bool)IsolatedStorageSettings.ApplicationSettings["tileAccentColor"]
+            return (bool)IsolatedStorageSettings.ApplicationSettings[Setting.FrontTileAccentColor.ToString()]
                 ? "/Assets/336x336empty.png"
                 : "/Assets/336x336redempty.png";
         }
 
         private static string GetDefaultFrontTile()
         {
-            return (bool)IsolatedStorageSettings.ApplicationSettings["tileAccentColor"]
+            return (bool)IsolatedStorageSettings.ApplicationSettings[Setting.FrontTileAccentColor.ToString()]
                 ? "/Assets/336x336.png"
                 : "/Assets/336x336red.png";
         }
 
         private static string GetDefaultSmallTile()
         {
-            return (bool)IsolatedStorageSettings.ApplicationSettings["tileAccentColor"]
+            return (bool)IsolatedStorageSettings.ApplicationSettings[Setting.FrontTileAccentColor.ToString()]
                 ? "/Assets/159x159.png"
                 : "/Assets/159x159red.png";
         }

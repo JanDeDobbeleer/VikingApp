@@ -21,15 +21,15 @@ namespace UpdateLiveTile
         public async void Start(bool fromForeground)
         {
             _fromForeground = fromForeground;
-            if (string.IsNullOrEmpty((string)IsolatedStorageSettings.ApplicationSettings["sim"]))
+            if (string.IsNullOrEmpty((string)IsolatedStorageSettings.ApplicationSettings[Setting.Sim.ToString()]))
             {
                 SetTile(true, "unavailable");
                 return;
             }
 #if(DEBUG)
-            Debug.WriteLine("Live tile: Start updating Live tile for number " + (string)IsolatedStorageSettings.ApplicationSettings["sim"]);
+            Debug.WriteLine("Live tile: Start updating Live tile for number " + (string)IsolatedStorageSettings.ApplicationSettings[Setting.Sim.ToString()]);
 #endif
-            await GetData((string)IsolatedStorageSettings.ApplicationSettings["sim"]);
+            await GetData((string)IsolatedStorageSettings.ApplicationSettings[Setting.Sim.ToString()]);
         }
 
         private async Task<bool> GetData(string msisdn)
@@ -44,8 +44,8 @@ namespace UpdateLiveTile
                 }
             };
             return await _client.GetInfo(
-                        new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"],
-                            (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]),
+                        new AccessToken((string)IsolatedStorageSettings.ApplicationSettings[Setting.TokenKey.ToString()],
+                            (string)IsolatedStorageSettings.ApplicationSettings[Setting.TokenSecret.ToString()]),
                         new KeyValuePair { name = "msisdn", content = msisdn }, _fromForeground);
 
         }
@@ -116,7 +116,7 @@ namespace UpdateLiveTile
 
         private void SaveImageForeground(bool failed, string backcontent)
         {
-            if (IsolatedStorageSettings.ApplicationSettings.Contains("oldtilestyle") && (bool)IsolatedStorageSettings.ApplicationSettings["oldtilestyle"])
+            if (IsolatedStorageSettings.ApplicationSettings.Contains(Setting.Oldtilestyle.ToString()) && (bool)IsolatedStorageSettings.ApplicationSettings[Setting.Oldtilestyle.ToString()])
             {
                 OldSmallTile.SaveTile(failed, _balance);
             }

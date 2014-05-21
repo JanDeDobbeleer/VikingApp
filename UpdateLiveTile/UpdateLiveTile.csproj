@@ -94,6 +94,7 @@
   <ItemGroup>
     <Compile Include="Classes\BaseTile.cs" />
     <Compile Include="Classes\Helper.cs" />
+    <Compile Include="Classes\Settings.cs" />
     <Compile Include="Classes\ToolStackCRCLib.cs" />
     <Compile Include="Classes\ToolStackPNGWriterLib.cs" />
     <Compile Include="Classes\ToolStackPNGWriterWBext.cs" />

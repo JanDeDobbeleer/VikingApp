@@ -42,12 +42,12 @@ namespace Fuel.View
         private async void RefreshOnClick(object sender, EventArgs e)
         {
             _loading = true;
-            await App.Viewmodel.MainPivotViewmodel.GetData(string.IsNullOrWhiteSpace(SimBox.Text) ? (string)IsolatedStorageSettings.ApplicationSettings["sim"] : SimBox.Text);
+            await App.Viewmodel.MainPivotViewmodel.GetData(string.IsNullOrWhiteSpace(SimBox.Text) ? (string)IsolatedStorageSettings.ApplicationSettings[Setting.Sim.ToString()] : SimBox.Text);
         }
 
         private void ReloadOnClick(object sender, EventArgs e)
         {
-            var task = new SmsComposeTask { To = "8989", Body = string.Format("sim topup {0}", IsolatedStorageSettings.ApplicationSettings["defaulttopupvalue"]) };
+            var task = new SmsComposeTask { To = "8989", Body = string.Format("sim topup {0}", IsolatedStorageSettings.ApplicationSettings[Setting.Defaulttopupvalue.ToString()]) };
             task.Show();
         }
 
@@ -59,7 +59,7 @@ namespace Fuel.View
 
         private void SimOnClick(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(SimBox.Text) && string.IsNullOrWhiteSpace((string)IsolatedStorageSettings.ApplicationSettings["sim"]))
+            if (string.IsNullOrWhiteSpace(SimBox.Text) && string.IsNullOrWhiteSpace((string)IsolatedStorageSettings.ApplicationSettings[Setting.Sim.ToString()]))
             {
                 Message.ShowToast(AppResources.ToastSimLoaded);
                 return;
@@ -90,25 +90,25 @@ namespace Fuel.View
 
         private void ProfileOnClick(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(SimBox.Text) && string.IsNullOrWhiteSpace((string)IsolatedStorageSettings.ApplicationSettings["sim"]))
+            if (string.IsNullOrWhiteSpace(SimBox.Text) && string.IsNullOrWhiteSpace((string)IsolatedStorageSettings.ApplicationSettings[Setting.Sim.ToString()]))
             {
                 Message.ShowToast(AppResources.ToastSimLoaded);
                 return;
             }
             App.Viewmodel.MainPivotViewmodel.CancelTask();
-            App.Viewmodel.ProfileViewmodel.Msisdn = string.IsNullOrWhiteSpace(SimBox.Text) ? (string)IsolatedStorageSettings.ApplicationSettings["sim"] : SimBox.Text;
+            App.Viewmodel.ProfileViewmodel.Msisdn = string.IsNullOrWhiteSpace(SimBox.Text) ? (string)IsolatedStorageSettings.ApplicationSettings[Setting.Sim.ToString()] : SimBox.Text;
             NavigationService.Navigate(new Uri("/View/ProfilePage.xaml", UriKind.Relative));
         }
 
         private void UsageOnClick(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(SimBox.Text) && string.IsNullOrWhiteSpace((string)IsolatedStorageSettings.ApplicationSettings["sim"]))
+            if (string.IsNullOrWhiteSpace(SimBox.Text) && string.IsNullOrWhiteSpace((string)IsolatedStorageSettings.ApplicationSettings[Setting.Sim.ToString()]))
             {
                 Message.ShowToast(AppResources.ToastSimLoaded);
                 return;
             }
             App.Viewmodel.MainPivotViewmodel.CancelTask();
-            App.Viewmodel.UsageViewmodel.Msisdn = string.IsNullOrWhiteSpace(SimBox.Text) ? (string)IsolatedStorageSettings.ApplicationSettings["sim"] : SimBox.Text;
+            App.Viewmodel.UsageViewmodel.Msisdn = string.IsNullOrWhiteSpace(SimBox.Text) ? (string)IsolatedStorageSettings.ApplicationSettings[Setting.Sim.ToString()] : SimBox.Text;
             NavigationService.Navigate(new Uri("/View/DetailsPage.xaml", UriKind.Relative));
         }
         #endregion
@@ -117,7 +117,7 @@ namespace Fuel.View
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             ApplicationBar.MenuItems.Clear();
-            if ((bool)IsolatedStorageSettings.ApplicationSettings["topup"])
+            if ((bool)IsolatedStorageSettings.ApplicationSettings[Setting.Topup.ToString()])
             {
                 ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem(AppResources.AppBarMenuSmsTopup, true, ReloadOnClick));
                 ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem(AppResources.AppBarMenuSmsBalance, true, BalanceOnClick));
@@ -135,7 +135,7 @@ namespace Fuel.View
             SystemTray.ProgressIndicator = new ProgressIndicator();
             Bundle.Visibility = Visibility.Collapsed;
             Bonus.Visibility = Visibility.Collapsed;
-            if ((bool)IsolatedStorageSettings.ApplicationSettings["login"])
+            if ((bool)IsolatedStorageSettings.ApplicationSettings[Setting.Login.ToString()])
             {
                 if (!_isLoginControlEnabled)
                     ShowLogin();
@@ -160,14 +160,14 @@ namespace Fuel.View
         #region events
         async void MainPivotViewmodel_GetSimInfoFinished(object sender, VikingApi.ApiTools.GetInfoCompletedArgs args)
         {
-            if (App.Viewmodel.MainPivotViewmodel.Sims != null && App.Viewmodel.MainPivotViewmodel.Sims.Any() && !args.Canceled && !(bool)IsolatedStorageSettings.ApplicationSettings["login"])
+            if (App.Viewmodel.MainPivotViewmodel.Sims != null && App.Viewmodel.MainPivotViewmodel.Sims.Any() && !args.Canceled && !(bool)IsolatedStorageSettings.ApplicationSettings[Setting.Login.ToString()])
             {
-                if (IsolatedStorageSettings.ApplicationSettings.Contains("sim"))
+                if (IsolatedStorageSettings.ApplicationSettings.Contains(Setting.Sim.ToString()))
                 {
-                    SimBox.Text = CheckDefaultSimValue((bool)IsolatedStorageSettings.ApplicationSettings["login"]);
+                    SimBox.Text = CheckDefaultSimValue((bool)IsolatedStorageSettings.ApplicationSettings[Setting.Login.ToString()]);
                 }
-                if (string.IsNullOrEmpty((string)IsolatedStorageSettings.ApplicationSettings["sim"]))
-                    IsolatedStorageSettings.ApplicationSettings["sim"] = SimBox.Text;
+                if (string.IsNullOrEmpty((string)IsolatedStorageSettings.ApplicationSettings[Setting.Sim.ToString()]))
+                    IsolatedStorageSettings.ApplicationSettings[Setting.Sim.ToString()] = SimBox.Text;
                 App.Viewmodel.MainPivotViewmodel.StartPeriodicAgent();
                 App.Viewmodel.MainPivotViewmodel.RenewToken();
                 await App.Viewmodel.MainPivotViewmodel.GetData(SimBox.Text);
@@ -187,8 +187,8 @@ namespace Fuel.View
                 Bonus.Visibility = Visibility.Visible;
                 Loading.Begin();
             }
-            if ((bool)IsolatedStorageSettings.ApplicationSettings["login"])
-                IsolatedStorageSettings.ApplicationSettings["login"] = false;
+            if ((bool)IsolatedStorageSettings.ApplicationSettings[Setting.Login.ToString()])
+                IsolatedStorageSettings.ApplicationSettings[Setting.Login.ToString()] = false;
             _loading = false;
         }
 
@@ -207,10 +207,10 @@ namespace Fuel.View
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             App.Viewmodel.MainPivotViewmodel.CancelTask();
-            if ((bool)IsolatedStorageSettings.ApplicationSettings["lastusedsim"] || (App.Viewmodel.MainPivotViewmodel.Sims != null && App.Viewmodel.MainPivotViewmodel.Sims.Count() == 1))
+            if ((bool)IsolatedStorageSettings.ApplicationSettings[Setting.Lastusedsim.ToString()] || (App.Viewmodel.MainPivotViewmodel.Sims != null && App.Viewmodel.MainPivotViewmodel.Sims.Count() == 1))
             {
                 if (!string.IsNullOrWhiteSpace(SimBox.Text))
-                    Tools.Tools.SaveSetting(new KeyValuePair { Name = "sim", Content = SimBox.Text });
+                    Tools.Settings.GetInstance().SaveSetting(new KeyValuePair { Name = Setting.Sim.ToString(), Content = SimBox.Text });
             }
             SimBox.Text = string.Empty;
             _loading = false;
@@ -230,16 +230,16 @@ namespace Fuel.View
 
         private string CheckDefaultSimValue(bool login)
         {
-            if (App.Viewmodel.MainPivotViewmodel.Sims.Any(x => x.msisdn == (string)IsolatedStorageSettings.ApplicationSettings["sim"]))
-                return (string)IsolatedStorageSettings.ApplicationSettings["sim"];
+            if (App.Viewmodel.MainPivotViewmodel.Sims.Any(x => x.msisdn == (string)IsolatedStorageSettings.ApplicationSettings[Setting.Sim.ToString()]))
+                return (string)IsolatedStorageSettings.ApplicationSettings[Setting.Sim.ToString()];
 #if(DEBUG)
             foreach (var sim in App.Viewmodel.MainPivotViewmodel.Sims)
             {
                 Debug.WriteLine("Sim number: " + sim.msisdn);
             }
-            Debug.WriteLine("Number " + (string)IsolatedStorageSettings.ApplicationSettings["sim"] + " not in list");
+            Debug.WriteLine("Number " + (string)IsolatedStorageSettings.ApplicationSettings[Setting.Sim.ToString()] + " not in list");
 #endif
-            if (App.Viewmodel.MainPivotViewmodel.Sims.Count() > 1 && !login && !string.IsNullOrWhiteSpace((string)IsolatedStorageSettings.ApplicationSettings["sim"]))
+            if (App.Viewmodel.MainPivotViewmodel.Sims.Count() > 1 && !login && !string.IsNullOrWhiteSpace((string)IsolatedStorageSettings.ApplicationSettings[Setting.Sim.ToString()]))
                 Message.ShowToast(AppResources.ToastDefaultSim);
             return App.Viewmodel.MainPivotViewmodel.Sims.Select(x => x.msisdn).FirstOrDefault();
         }

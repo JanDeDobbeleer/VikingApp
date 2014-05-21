@@ -1,77 +1,34 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using Tools.Properties;
+using GalaSoft.MvvmLight;
 
-namespace Fuel.Viewmodel
+namespace Fuel.ViewModel
 {
-    public class MainViewmodel
+    /// <summary>
+    /// This class contains properties that the main View can data bind to.
+    /// <para>
+    /// Use the <strong>mvvminpc</strong> snippet to add bindable properties to this ViewModel.
+    /// </para>
+    /// <para>
+    /// You can also use Blend to data bind with the tool's support.
+    /// </para>
+    /// <para>
+    /// See http://www.galasoft.ch/mvvm
+    /// </para>
+    /// </summary>
+    public class MainViewModel : ViewModelBase
     {
-        private MainPivotViewmodel _mainViewmodel;
-        public MainPivotViewmodel MainPivotViewmodel
+        /// <summary>
+        /// Initializes a new instance of the MainViewModel class.
+        /// </summary>
+        public MainViewModel()
         {
-            get { return _mainViewmodel; }
-            set
-            {
-                if (value.Equals(_mainViewmodel))
-                    return;
-                _mainViewmodel = value;
-                OnPropertyChanged();
-            }
-        }
-        private UsageViewmodel _usageViewmodel;
-        public UsageViewmodel UsageViewmodel
-        {
-            get { return _usageViewmodel; }
-            set
-            {
-                if (value.Equals(_usageViewmodel))
-                    return;
-                _usageViewmodel = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private SimDetailsViewmodel _simViewmodel;
-        public SimDetailsViewmodel SimViewmodel
-        {
-            get { return _simViewmodel; }
-            set
-            {
-                if (value.Equals(_simViewmodel))
-                    return;
-                _simViewmodel = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private ProfileViewmodel _profileViewmodel;
-        public ProfileViewmodel ProfileViewmodel
-        {
-            get { return _profileViewmodel; }
-            set
-            {
-                if (value.Equals(_profileViewmodel))
-                    return;
-                _profileViewmodel = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public MainViewmodel()
-        {
-            UsageViewmodel = new UsageViewmodel();
-            MainPivotViewmodel = new MainPivotViewmodel();
-            SimViewmodel = new SimDetailsViewmodel();
-            ProfileViewmodel = new ProfileViewmodel();
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            ////if (IsInDesignMode)
+            ////{
+            ////    // Code runs in Blend --> create design time data.
+            ////}
+            ////else
+            ////{
+            ////    // Code runs "for real"
+            ////}
         }
     }
 }

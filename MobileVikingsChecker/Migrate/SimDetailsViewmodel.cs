@@ -13,7 +13,7 @@ using VikingApi.Api;
 using VikingApi.ApiTools;
 using VikingApi.Json;
 
-namespace Fuel.Viewmodel
+namespace Fuel.Migrate
 {
     public class SimDetailsViewmodel : CancelAsyncTask
     {
@@ -85,7 +85,7 @@ namespace Fuel.Viewmodel
                         return hmac.ComputeHash(buffer);
                     }
                 };
-                await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.TopUp, pair, Cts);
+                await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings[Setting.TokenKey.ToString()], (string)IsolatedStorageSettings.ApplicationSettings[Setting.TokenSecret.ToString()]), client.TopUp, pair, Cts);
             }
             return true;
         }
@@ -133,7 +133,7 @@ namespace Fuel.Viewmodel
                         return hmac.ComputeHash(buffer);
                     }
                 };
-                await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.PricePlan, new KeyValuePair { Content = Msisdn, Name = "msisdn" }, Cts);
+                await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings[Setting.TokenKey.ToString()], (string)IsolatedStorageSettings.ApplicationSettings[Setting.TokenSecret.ToString()]), client.PricePlan, new KeyValuePair { Content = Msisdn, Name = "msisdn" }, Cts);
             }
             return true;
         }
@@ -179,7 +179,7 @@ namespace Fuel.Viewmodel
                         return hmac.ComputeHash(buffer);
                     }
                 };
-                await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Card, new KeyValuePair { Content = Msisdn, Name = "msisdn" }, Cts);
+                await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings[Setting.TokenKey.ToString()], (string)IsolatedStorageSettings.ApplicationSettings[Setting.TokenSecret.ToString()]), client.Card, new KeyValuePair { Content = Msisdn, Name = "msisdn" }, Cts);
             }
             return true;
         }

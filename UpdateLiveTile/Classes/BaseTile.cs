@@ -14,7 +14,7 @@ namespace UpdateLiveTile.Classes
         {
             try
             {
-                var color = (bool)IsolatedStorageSettings.ApplicationSettings["tileAccentColor"]
+                var color = (bool)IsolatedStorageSettings.ApplicationSettings[Setting.FrontTileAccentColor.ToString()]
                     ? (SolidColorBrush)Application.Current.Resources["PhoneAccentBrush"]
                     : new SolidColorBrush(new Color { A = 255, R = 150, G = 8, B = 8 });
                 var tile = GetElement();

@@ -95,6 +95,7 @@
     <Compile Include="Error.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="Tools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

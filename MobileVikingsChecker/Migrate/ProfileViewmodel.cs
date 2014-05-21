@@ -13,7 +13,7 @@ using VikingApi.Api;
 using VikingApi.ApiTools;
 using VikingApi.Json;
 
-namespace Fuel.Viewmodel
+namespace Fuel.Migrate
 {
     public class ProfileViewmodel:CancelAsyncTask
     {
@@ -78,7 +78,7 @@ namespace Fuel.Viewmodel
                         return hmac.ComputeHash(buffer);
                     }
                 };
-                await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Referrals, pair, Cts);
+                await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings[Setting.TokenKey.ToString()], (string)IsolatedStorageSettings.ApplicationSettings[Setting.TokenSecret.ToString()]), client.Referrals, pair, Cts);
             }
             return true;
         }
@@ -126,7 +126,7 @@ namespace Fuel.Viewmodel
                         return hmac.ComputeHash(buffer);
                     }
                 };
-                await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Stats, Cts);
+                await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings[Setting.TokenKey.ToString()], (string)IsolatedStorageSettings.ApplicationSettings[Setting.TokenKey.ToString()]), client.Stats, Cts);
             }
             return true;
         }
@@ -172,7 +172,7 @@ namespace Fuel.Viewmodel
                         return hmac.ComputeHash(buffer);
                     }
                 };
-                await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Links, Cts);
+                await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings[Setting.TokenKey.ToString()], (string)IsolatedStorageSettings.ApplicationSettings[Setting.TokenSecret.ToString()]), client.Links, Cts);
             }
             return true;
         }

@@ -67,11 +67,11 @@ namespace VikingApi.Api
                     var qs = GetQueryParameters(responseData);
                     if (qs["oauth_token"] != null && qs["oauth_token_secret"] != null)
                     {
-                        Tools.Tools.SaveSetting(new[]
+                        Settings.GetInstance().SaveSetting(new[]
                         {
-                            new KeyValuePair {Name = "login", Content = false},
-                            new KeyValuePair {Name = "tokenKey", Content = qs["oauth_token"]},
-                            new KeyValuePair {Name = "tokenSecret", Content = qs["oauth_token_secret"]}
+                            new KeyValuePair {Name = Setting.Login.ToString(), Content = false},
+                            new KeyValuePair {Name = Setting.TokenKey.ToString(), Content = qs["oauth_token"]},
+                            new KeyValuePair {Name = Setting.TokenSecret.ToString(), Content = qs["oauth_token_secret"]}
                         });
                     }
                 }

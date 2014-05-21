@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Navigation;
 using Fuel.Localization.Resources;
-using Fuel.Viewmodel;
+using Fuel.Migrate;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 
@@ -67,16 +67,7 @@ namespace Fuel
         // This code will not execute when the application is reactivated
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
-            //new settings for Fuel 2.0.5.0
-            if (!IsolatedStorageSettings.ApplicationSettings.Contains("oldtilestyle"))
-                IsolatedStorageSettings.ApplicationSettings["oldtilestyle"] = false;
-            
-            if (!IsolatedStorageSettings.ApplicationSettings.Contains("login"))
-            {
-                IsolatedStorageSettings.ApplicationSettings["login"] = true;
-                Tools.Tools.DefaultAllSettings();
-            }
-            RootFrame.Navigate(new Uri("/View/MainPivot.xaml", UriKind.Relative));
+            Tools.Settings.GetInstance().AssignSettings();
         }
 
         // Code to execute when the application is activated (brought to foreground)

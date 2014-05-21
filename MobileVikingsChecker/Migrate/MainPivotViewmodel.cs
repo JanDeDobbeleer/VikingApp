@@ -17,7 +17,7 @@ using VikingApi.ApiTools;
 using VikingApi.AppClasses;
 using VikingApi.Json;
 
-namespace Fuel.Viewmodel
+namespace Fuel.Migrate
 {
     public class MainPivotViewmodel : CancelAsyncTask, INotifyPropertyChanged
     {
@@ -93,7 +93,7 @@ namespace Fuel.Viewmodel
                         return hmac.ComputeHash(buffer);
                     }
                 };
-                await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Balance, new KeyValuePair { Name = "msisdn", Content = msisdn }, Cts);
+                await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings[Setting.TokenKey.ToString()], (string)IsolatedStorageSettings.ApplicationSettings[Setting.TokenSecret.ToString()]), client.Balance, new KeyValuePair { Name = "msisdn", Content = msisdn }, Cts);
             }
             return true;
         }
@@ -137,7 +137,7 @@ namespace Fuel.Viewmodel
                         return hmac.ComputeHash(buffer);
                     }
                 };
-                await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Sim, new KeyValuePair { Content = "1", Name = "alias" }, Cts);
+                await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings[Setting.TokenKey.ToString()], (string)IsolatedStorageSettings.ApplicationSettings[Setting.TokenSecret.ToString()]), client.Sim, new KeyValuePair { Content = "1", Name = "alias" }, Cts);
             }return true;
         }
 
@@ -223,7 +223,7 @@ namespace Fuel.Viewmodel
                 // No user action required.
             }
             //update tile right now
-            Tools.Tools.UpdateLiveTile();
+            Tools.Settings.GetInstance().UpdateLiveTile();
         }
     }
 }
