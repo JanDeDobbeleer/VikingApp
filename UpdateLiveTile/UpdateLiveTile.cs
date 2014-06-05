@@ -17,9 +17,12 @@ namespace UpdateLiveTile
         private readonly UserBalance _balance = new UserBalance();
         private readonly Api _client = new Api();
         private bool _fromForeground;
+        private bool _running;
 
         public async void Start(bool fromForeground)
         {
+            if(_running)
+                return;
             _fromForeground = fromForeground;
             if (string.IsNullOrEmpty((string)IsolatedStorageSettings.ApplicationSettings["sim"]))
             {
@@ -29,6 +32,7 @@ namespace UpdateLiveTile
 #if(DEBUG)
             Debug.WriteLine("Live tile: Start updating Live tile for number " + (string)IsolatedStorageSettings.ApplicationSettings["sim"]);
 #endif
+            _running = true;
             await GetData((string)IsolatedStorageSettings.ApplicationSettings["sim"]);
         }
 
@@ -71,6 +75,7 @@ namespace UpdateLiveTile
 #if(DEBUG)
             Debug.WriteLine("Live tile: Tile has been updated");
 #endif
+            _running = false;
         }
 
         private void SetTile(bool failed, string backContent)
