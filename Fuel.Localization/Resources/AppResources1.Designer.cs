@@ -478,6 +478,15 @@ namespace Fuel.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to • fixes for accounts with multiple sims.
+        /// </summary>
+        public static string ChangeLog206_3 {
+            get {
+                return ResourceManager.GetString("ChangeLog206_3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to by.
         /// </summary>
         public static string ConverterBy {

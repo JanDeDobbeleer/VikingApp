@@ -514,4 +514,7 @@
   <data name="ChangeLog206_2" xml:space="preserve">
     <value>• prevented unnecessary background tasks</value>
   </data>
+  <data name="ChangeLog206_3" xml:space="preserve">
+    <value>• fixes for accounts with multiple sims</value>
+  </data>
 </root>

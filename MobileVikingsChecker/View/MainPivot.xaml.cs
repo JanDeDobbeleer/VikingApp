@@ -252,6 +252,8 @@ namespace Fuel.View
             if (!_simListOpen) 
                 return;
             ResetLongList();
+            Bundle.Visibility = Visibility.Visible;
+            Bonus.Visibility = Visibility.Visible;
             e.Cancel = true;
         }
 
@@ -268,21 +270,21 @@ namespace Fuel.View
             LongListSelector.Visibility = Visibility.Visible;
         }
 
-        private async void ResetLongList()
+        private void ResetLongList()
         {
             LongListSelector.Visibility = Visibility.Collapsed;
             SimBox.Visibility = Visibility.Visible;
             ApplicationBar.IsVisible = true;
             _simListOpen = false;
-            await App.Viewmodel.MainPivotViewmodel.GetData(SimBox.Text);
         }
 
-        private void LongListSelector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void LongListSelector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (LongListSelector.SelectedItem as Sim == null)
                 return;
             SimBox.Text = (LongListSelector.SelectedItem as Sim).msisdn;
             ResetLongList();
+            await App.Viewmodel.MainPivotViewmodel.GetData(SimBox.Text);
         }
         #endregion
     }
