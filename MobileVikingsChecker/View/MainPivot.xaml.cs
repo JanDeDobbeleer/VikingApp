@@ -1,7 +1,9 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO.IsolatedStorage;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
@@ -20,6 +22,7 @@ namespace Fuel.View
     {
         private bool _isLoginControlEnabled;
         private bool _loading;
+        private bool _simListOpen;
 
         public MainPivot()
         {
@@ -244,10 +247,19 @@ namespace Fuel.View
             return App.Viewmodel.MainPivotViewmodel.Sims.Select(x => x.msisdn).FirstOrDefault();
         }
 
+        protected override void OnBackKeyPress(CancelEventArgs e)
+        {
+            if (!_simListOpen) 
+                return;
+            ResetLongList();
+            e.Cancel = true;
+        }
+
         private void SimBox_OnTap(object sender, GestureEventArgs e)
         {
             if (App.Viewmodel.MainPivotViewmodel.Sims.Count() == 1)
                 return;
+            _simListOpen = true;
             Bundle.Visibility = Visibility.Collapsed;
             Bonus.Visibility = Visibility.Collapsed;
             SimBox.Visibility = Visibility.Collapsed;
@@ -256,15 +268,21 @@ namespace Fuel.View
             LongListSelector.Visibility = Visibility.Visible;
         }
 
-        private async void LongListSelector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void ResetLongList()
+        {
+            LongListSelector.Visibility = Visibility.Collapsed;
+            SimBox.Visibility = Visibility.Visible;
+            ApplicationBar.IsVisible = true;
+            _simListOpen = false;
+            await App.Viewmodel.MainPivotViewmodel.GetData(SimBox.Text);
+        }
+
+        private void LongListSelector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (LongListSelector.SelectedItem as Sim == null)
                 return;
             SimBox.Text = (LongListSelector.SelectedItem as Sim).msisdn;
-            LongListSelector.Visibility = Visibility.Collapsed;
-            SimBox.Visibility = Visibility.Visible;
-            ApplicationBar.IsVisible = true;
-            await App.Viewmodel.MainPivotViewmodel.GetData(SimBox.Text);
+            ResetLongList();
         }
         #endregion
     }
