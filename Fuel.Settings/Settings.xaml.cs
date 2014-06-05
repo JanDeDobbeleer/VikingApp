@@ -157,9 +157,12 @@ namespace Fuel.Settings
             SimPicker.Visibility = visible;
             SimCheck.Visibility = (_sims.Count() == 1) ? visible : Visibility.Visible;
             LastUsedText.Visibility = (_sims.Count() == 1) ? visible : Visibility.Visible;
-            //TODO: remove this and join into one line when it works
             var number = IsolatedStorageSettings.ApplicationSettings["sim"].ToString();
-            var index = Sims.IndexOf(number);
+            var index = 0;
+            if (Sims.Contains(number))
+            {
+                index = Sims.IndexOf(number);
+            }
             SimPicker.SelectedIndex = index;
             Tools.Tools.SetProgressIndicator(false);
         }

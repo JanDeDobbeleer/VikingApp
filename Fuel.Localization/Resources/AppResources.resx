@@ -508,4 +508,10 @@
   <data name="ChangeLog205_3" xml:space="preserve">
     <value>• text fixes</value>
   </data>
+  <data name="ChangeLog206_1" xml:space="preserve">
+    <value>• fix for crash in settings</value>
+  </data>
+  <data name="ChangeLog206_2" xml:space="preserve">
+    <value>• prevented unnecessary background tasks</value>
+  </data>
 </root>

@@ -460,6 +460,24 @@ namespace Fuel.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to • fix for crash in settings.
+        /// </summary>
+        public static string ChangeLog206_1 {
+            get {
+                return ResourceManager.GetString("ChangeLog206_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • prevented unnecessary background tasks.
+        /// </summary>
+        public static string ChangeLog206_2 {
+            get {
+                return ResourceManager.GetString("ChangeLog206_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to by.
         /// </summary>
         public static string ConverterBy {
