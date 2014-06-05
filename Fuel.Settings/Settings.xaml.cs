@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO.IsolatedStorage;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,6 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
 using AsyncOAuth;
+using Fuel.Settings.Annotations;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Newtonsoft.Json;
@@ -19,12 +23,33 @@ using VikingApi.Json;
 
 namespace Fuel.Settings
 {
-    public partial class Settings : PhoneApplicationPage
+    public partial class Settings : PhoneApplicationPage, INotifyPropertyChanged
     {
-        private IEnumerable<Sim> _sims;
         private CancellationTokenSource _cts = new CancellationTokenSource();
         private bool _starting;
         private bool _isPressed;
+
+        public const string SimsPropertyName = "Sims";
+        private ObservableCollection<string> _sims = new ObservableCollection<string>();
+        public ObservableCollection<string> Sims
+        {
+            get
+            {
+                return _sims;
+            }
+
+            set
+            {
+                if (_sims == value)
+                {
+                    return;
+                }
+
+                _sims = value;
+                OnPropertyChanged(SimsPropertyName);
+            }
+
+        }
 
         public Settings()
         {
@@ -39,12 +64,11 @@ namespace Fuel.Settings
             SmallTilePicker.SelectedIndex = (bool)IsolatedStorageSettings.ApplicationSettings["oldtilestyle"] ? 1 : 0;
             SystemTray.ProgressIndicator = new ProgressIndicator();
             ShowHideSimTopup((bool)IsolatedStorageSettings.ApplicationSettings["topup"]);
-            _starting = false;
             _cts = new CancellationTokenSource();
             await GetSimInfo(_cts);
         }
 
-        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        protected override void OnBackKeyPress(CancelEventArgs e)
         {
             _cts.Cancel();
         }
@@ -80,10 +104,20 @@ namespace Fuel.Settings
                         return;
                     try
                     {
-                        _sims = JsonConvert.DeserializeObject<Sim[]>(args.Json);
-                        ShowHideDefaultSim(_sims.Count() > 1);
+                        var sims = JsonConvert.DeserializeObject<Sim[]>(args.Json);
+                        Deployment.Current.Dispatcher.BeginInvoke(() =>
+                        {
+                            Sims.Clear();
+                            foreach (var sim in sims)
+                            {
+                                Sims.Add(sim.msisdn);
+                            }
+                            ShowHideDefaultSim(Sims.Count() > 1);
+                            _starting = false;
+                        });
+                        
                     }
-                    catch (Exception)
+                    catch (Exception e)
                     {
                         Tools.Tools.SetProgressIndicator(false);
                     }
@@ -94,7 +128,6 @@ namespace Fuel.Settings
         private void ShowHideSimTopup(bool on)
         {
             Switch.IsChecked = on;
-            //ReloadPicker.ItemsSource = _topupValues.ToList();
             var item = IsolatedStorageSettings.ApplicationSettings["defaulttopupvalue"].ToString();
             ReloadPicker.SelectedIndex = SetIndex(item);
             var visible = (on) ? Visibility.Visible : Visibility.Collapsed;
@@ -119,21 +152,21 @@ namespace Fuel.Settings
 
         private void ShowHideDefaultSim(bool on)
         {
-            foreach (var item in _sims.Select(sim => new ListPickerItem { Content = sim.msisdn }))
-            {
-                SimPicker.Items.Add(item);
-            }
             var visible = (on) ? Visibility.Visible : Visibility.Collapsed;
             SimText.Visibility = visible;
             SimPicker.Visibility = visible;
             SimCheck.Visibility = (_sims.Count() == 1) ? visible : Visibility.Visible;
             LastUsedText.Visibility = (_sims.Count() == 1) ? visible : Visibility.Visible;
+            //TODO: remove this and join into one line when it works
+            var number = IsolatedStorageSettings.ApplicationSettings["sim"].ToString();
+            var index = Sims.IndexOf(number);
+            SimPicker.SelectedIndex = index;
             Tools.Tools.SetProgressIndicator(false);
         }
 
         private void Picker_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if ((sender as ListPicker) == null || _starting || ((sender as ListPicker).SelectedItem as ListPickerItem) == null)
+            if ((sender as ListPicker) == null || _starting)
                 return;
             switch ((sender as ListPicker).Tag.ToString())
             {
@@ -149,10 +182,10 @@ namespace Fuel.Settings
                     Tools.Tools.ResetLiveTile();
                     break;
                 case "sim":
-                    var pickerItem3 = (sender as ListPicker).SelectedItem as ListPickerItem;
-                    if (pickerItem3 != null && !string.IsNullOrWhiteSpace(pickerItem3.Content.ToString()))
+                    var pickerItem3 = (sender as ListPicker).SelectedItem as String;
+                    if (pickerItem3 != null && !string.IsNullOrWhiteSpace(pickerItem3) && !pickerItem3.Equals(IsolatedStorageSettings.ApplicationSettings["sim"].ToString()))
                     {
-                        IsolatedStorageSettings.ApplicationSettings["sim"] = pickerItem3.Content.ToString();
+                        IsolatedStorageSettings.ApplicationSettings["sim"] = pickerItem3;
                         Tools.Tools.UpdateLiveTile();
                     }
                     break;
@@ -201,6 +234,15 @@ namespace Fuel.Settings
             IsolatedStorageSettings.ApplicationSettings["login"] = true;
             Tools.Tools.DefaultAllSettings();
             NavigationService.GoBack();
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if  (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

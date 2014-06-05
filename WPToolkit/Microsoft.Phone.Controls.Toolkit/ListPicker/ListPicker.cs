@@ -433,7 +433,7 @@ namespace Microsoft.Phone.Controls
         public int ItemCountThreshold
         {
             get { return (int)GetValue(ItemCountThresholdProperty); }
-            private set { SetValue(ItemCountThresholdProperty, value); }
+            set { SetValue(ItemCountThresholdProperty, value); }
         }
 
         /// <summary>

@@ -12,7 +12,8 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
-    shell:SystemTray.IsVisible="True">
+    shell:SystemTray.IsVisible="True"
+    DataContext="{Binding RelativeSource={RelativeSource Self}}">
 
     <phone:PhoneApplicationPage.Resources>
         <Style x:Key="TextStyle" TargetType="TextBlock">
@@ -200,7 +201,7 @@
                         <TextBlock Grid.Row="1" Text="default sim on startup" Style="{StaticResource TextStyle}" x:Name="SimText"
                            Visibility="Collapsed" />
                         <toolkit:ListPicker Grid.Row="2" x:Name="SimPicker" Tag="sim" SelectionChanged="Picker_OnSelectionChanged"
-                                    Visibility="Collapsed" Template="{StaticResource ListPickerControlTemplate}" />
+                                    Visibility="Collapsed" Template="{StaticResource ListPickerControlTemplate}" ItemCountThreshold="10" ItemsSource="{Binding Sims}"/>
                         <toolkit:ToggleSwitch Grid.Row="3" x:Name="Switch" HorizontalAlignment="Stretch" VerticalAlignment="Center"
                                       Margin="0,0,0,-10" SwitchForeground="#960808" Checked="Switch_OnChecked"
                                       Unchecked="Switch_OnChecked">
