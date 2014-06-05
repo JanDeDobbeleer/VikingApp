@@ -74,7 +74,7 @@ namespace Tools
         {
             IsolatedStorageSettings.ApplicationSettings["topup"] = true;
             IsolatedStorageSettings.ApplicationSettings["defaultnumber"] = string.Empty;
-            IsolatedStorageSettings.ApplicationSettings["defaulttopupvalue"] = 10;
+            IsolatedStorageSettings.ApplicationSettings["defaulttopupvalue"] = 15;
             IsolatedStorageSettings.ApplicationSettings["lastusedsim"] = false;
             IsolatedStorageSettings.ApplicationSettings["sim"] = string.Empty;
             IsolatedStorageSettings.ApplicationSettings["tileAccentColor"] = true;
