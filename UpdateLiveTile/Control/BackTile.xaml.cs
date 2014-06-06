@@ -43,8 +43,7 @@ namespace UpdateLiveTile.Control
                     }
                     else
                     {
-                        customBackTile = new BackTile(color, balance.Credit, "0 MB", "0 SMS", balance.VikingMinutes,
-                            string.Empty);
+                        customBackTile = new BackTile(color, balance.Credit, "0", "0", string.IsNullOrWhiteSpace(balance.VikingMinutes) ? "0" : balance.VikingMinutes, "0");
                     }
                     if (!Helper.SaveElement(customBackTile, Tile.Back))
                     {
