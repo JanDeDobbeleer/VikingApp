@@ -520,4 +520,10 @@
   <data name="ChangeLog206_4" xml:space="preserve">
     <value>• improved layout for live tile (back)</value>
   </data>
+  <data name="AppBarMenuLogout" xml:space="preserve">
+    <value>logout</value>
+  </data>
+  <data name="AppBarMenuReloadSims" xml:space="preserve">
+    <value>reload sim list</value>
+  </data>
 </root>

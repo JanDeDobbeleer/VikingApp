@@ -202,7 +202,7 @@ namespace Fuel.View
             LayoutRoot.Children.Remove(LayoutRoot.Children.First(c => c.GetType() == typeof(OauthLogin)));
             _isLoginControlEnabled = false;
             App.Viewmodel.MainPivotViewmodel.RenewToken();
-            await App.Viewmodel.MainPivotViewmodel.GetSimInfo();
+            await App.Viewmodel.MainPivotViewmodel.GetSimInfo(true);
         }
         #endregion
 
@@ -233,18 +233,18 @@ namespace Fuel.View
 
         private string CheckDefaultSimValue(bool login)
         {
-            if (App.Viewmodel.MainPivotViewmodel.Sims.Any(x => x.msisdn == (string)IsolatedStorageSettings.ApplicationSettings["sim"]))
+            if (App.Viewmodel.MainPivotViewmodel.Sims.Any(x => x.Msisdn == (string)IsolatedStorageSettings.ApplicationSettings["sim"]))
                 return (string)IsolatedStorageSettings.ApplicationSettings["sim"];
 #if(DEBUG)
             foreach (var sim in App.Viewmodel.MainPivotViewmodel.Sims)
             {
-                Debug.WriteLine("Sim number: " + sim.msisdn);
+                Debug.WriteLine("Sim number: " + sim.Msisdn);
             }
             Debug.WriteLine("Number " + (string)IsolatedStorageSettings.ApplicationSettings["sim"] + " not in list");
 #endif
             if (App.Viewmodel.MainPivotViewmodel.Sims.Count() > 1 && !login && !string.IsNullOrWhiteSpace((string)IsolatedStorageSettings.ApplicationSettings["sim"]))
                 Message.ShowToast(AppResources.ToastDefaultSim);
-            return App.Viewmodel.MainPivotViewmodel.Sims.Select(x => x.msisdn).FirstOrDefault();
+            return App.Viewmodel.MainPivotViewmodel.Sims.Select(x => x.Msisdn).FirstOrDefault();
         }
 
         protected override void OnBackKeyPress(CancelEventArgs e)
@@ -282,7 +282,7 @@ namespace Fuel.View
         {
             if (LongListSelector.SelectedItem as Sim == null)
                 return;
-            SimBox.Text = (LongListSelector.SelectedItem as Sim).msisdn;
+            SimBox.Text = (LongListSelector.SelectedItem as Sim).Msisdn;
             ResetLongList();
             await App.Viewmodel.MainPivotViewmodel.GetData(SimBox.Text);
         }

@@ -12,6 +12,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
 using AsyncOAuth;
+using Fuel.Database.Database;
+using Fuel.Localization.Resources;
 using Fuel.Settings.Annotations;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
@@ -40,11 +42,6 @@ namespace Fuel.Settings
 
             set
             {
-                if (_sims == value)
-                {
-                    return;
-                }
-
                 _sims = value;
                 OnPropertyChanged(SimsPropertyName);
             }
@@ -55,6 +52,14 @@ namespace Fuel.Settings
         {
             _starting = true;
             InitializeComponent();
+            BuildApplicationBar();
+        }
+
+        private void BuildApplicationBar()
+        {
+            ApplicationBar = new ApplicationBar { Mode = ApplicationBarMode.Minimized, Opacity = 1, IsVisible = true };
+            ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem(AppResources.AppBarMenuReloadSims, true, SimRefresh_OnClick));
+            ApplicationBar.MenuItems.Add(Tools.Tools.CreateMenuItem(AppResources.AppBarMenuLogout, true, Logout_OnClick));
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -73,9 +78,16 @@ namespace Fuel.Settings
             _cts.Cancel();
         }
 
-        public async Task<bool> GetSimInfo(CancellationTokenSource cts)
+        public async Task<bool> GetSimInfo(CancellationTokenSource cts, bool force = false)
         {
             Tools.Tools.SetProgressIndicator(true);
+            if (CheckForSimsInDb() && !force)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() => ShowHideDefaultSim(Sims.Count() > 1));
+                _starting = false;
+                Tools.Tools.SetProgressIndicator(false);
+                return true;
+            }
             SystemTray.ProgressIndicator.Text = "loading sims";
             using (var client = new VikingsApi())
             {
@@ -88,6 +100,20 @@ namespace Fuel.Settings
                     }
                 };
                 await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Sim, new KeyValuePair { Content = "1", Name = "alias" }, _cts);
+            }
+            return true;
+        }
+
+        private bool CheckForSimsInDb()
+        {
+            var db = new FuelDatabase();
+            var value = !db.Sims.Any();
+            if (value)
+                return false;
+            Sims.Clear();
+            foreach (var sim in db.Sims)
+            {
+                Sims.Add(sim.Msisdn);
             }
             return true;
         }
@@ -110,7 +136,7 @@ namespace Fuel.Settings
                             Sims.Clear();
                             foreach (var sim in sims)
                             {
-                                Sims.Add(sim.msisdn);
+                                Sims.Add(sim.Msisdn);
                             }
                             ShowHideDefaultSim(Sims.Count() > 1);
                             _starting = false;
@@ -224,7 +250,7 @@ namespace Fuel.Settings
             ShowHideSimTopup((sender as ToggleSwitch).IsChecked ?? false);
         }
 
-        private void Logout_OnClick(object sender, RoutedEventArgs e)
+        private void Logout_OnClick(object sender, EventArgs e)
         {
             if (_isPressed)
                 return;
@@ -235,8 +261,15 @@ namespace Fuel.Settings
                 return;
             }
             IsolatedStorageSettings.ApplicationSettings["login"] = true;
+            var db = new FuelDatabase();
+            db.DeleteAllSims();
             Tools.Tools.DefaultAllSettings();
             NavigationService.GoBack();
+        }
+
+        private async void SimRefresh_OnClick(object sender, EventArgs e)
+        {
+            await GetSimInfo(_cts, true);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

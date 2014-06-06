@@ -135,6 +135,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Fuel.Database\Fuel.Database.csproj">
+      <Project>{f0bcbeb0-1325-4a46-aac1-3e95b720c026}</Project>
+      <Name>Fuel.Database</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fuel.Localization\Fuel.Localization.csproj">
+      <Project>{0c00c813-4104-4a36-8f22-a7d675bde4ab}</Project>
+      <Name>Fuel.Localization</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Tools\Tools.csproj">
       <Project>{CF7909FE-98C4-48C2-B7EE-B2E9187B8BAE}</Project>
       <Name>Tools</Name>

@@ -264,6 +264,10 @@
       <Project>{450EA373-90FB-493F-96AB-EAF9F77BF8A2}</Project>
       <Name>Fuel.About</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Fuel.Database\Fuel.Database.csproj">
+      <Project>{f0bcbeb0-1325-4a46-aac1-3e95b720c026}</Project>
+      <Name>Fuel.Database</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fuel.Localization\Fuel.Localization.csproj">
       <Project>{0C00C813-4104-4A36-8F22-A7D675BDE4AB}</Project>
       <Name>Fuel.Localization</Name>

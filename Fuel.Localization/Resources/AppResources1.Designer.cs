@@ -271,11 +271,29 @@ namespace Fuel.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to logout.
+        /// </summary>
+        public static string AppBarMenuLogout {
+            get {
+                return ResourceManager.GetString("AppBarMenuLogout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to profile.
         /// </summary>
         public static string AppBarMenuProfile {
             get {
                 return ResourceManager.GetString("AppBarMenuProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to reload sim list.
+        /// </summary>
+        public static string AppBarMenuReloadSims {
+            get {
+                return ResourceManager.GetString("AppBarMenuReloadSims", resourceCulture);
             }
         }
         

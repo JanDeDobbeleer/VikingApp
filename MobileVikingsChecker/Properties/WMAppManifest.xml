@@ -17,9 +17,10 @@
       <PrimaryToken TokenID="FuelToken" TaskName="_default">
         <TemplateFlip>
           <SmallImageURI IsRelative="true" IsResource="false">Assets\159x159.png</SmallImageURI>
-          <Count>
-          </Count>
+          <Count></Count>
           <BackgroundImageURI IsRelative="true" IsResource="false">Assets\336x336.png</BackgroundImageURI>
+          <Title></Title>
+          <BackTitle></BackTitle>
           <DeviceLockImageURI IsRelative="true" IsResource="false">Assets\lockscreen.png</DeviceLockImageURI>
         </TemplateFlip>
       </PrimaryToken>

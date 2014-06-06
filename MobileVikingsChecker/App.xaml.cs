@@ -4,6 +4,7 @@ using System.IO.IsolatedStorage;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Navigation;
+using Fuel.Database.Database;
 using Fuel.Localization.Resources;
 using Fuel.Viewmodel;
 using Microsoft.Phone.Controls;
@@ -55,6 +56,18 @@ namespace Fuel
 
             //Create new Viewmodel
             Viewmodel = new MainViewmodel();
+            // Specify the local database connection string.
+            const string dbConnectionString = "Data Source=isostore:/Database.sdf";
+
+            // Create the database if it does not exist.
+            using (var db = new FuelDataContext(dbConnectionString))
+            {
+                if (db.DatabaseExists())
+                    return;
+                db.CreateDatabase();
+                // Save categories to the database.
+                db.SubmitChanges();
+            }
         }
 
         /// <summary>
@@ -70,7 +83,7 @@ namespace Fuel
             //new settings for Fuel 2.0.5.0
             if (!IsolatedStorageSettings.ApplicationSettings.Contains("oldtilestyle"))
                 IsolatedStorageSettings.ApplicationSettings["oldtilestyle"] = false;
-            
+
             if (!IsolatedStorageSettings.ApplicationSettings.Contains("login"))
             {
                 IsolatedStorageSettings.ApplicationSettings["login"] = true;
@@ -155,7 +168,7 @@ namespace Fuel
                 //
                 // If a compiler error is hit then ResourceFlowDirection is missing from
                 // the resource file.
-                var flow = (FlowDirection) Enum.Parse(typeof (FlowDirection), AppResources.ResourceFlowDirection);
+                var flow = (FlowDirection)Enum.Parse(typeof(FlowDirection), AppResources.ResourceFlowDirection);
                 RootFrame.FlowDirection = flow;
             }
             catch

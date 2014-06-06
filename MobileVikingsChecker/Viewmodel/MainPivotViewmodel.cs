@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO.IsolatedStorage;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using AsyncOAuth;
+using Fuel.Database.Database;
 using Fuel.Localization.Resources;
 using Microsoft.Phone.Scheduler;
 using Microsoft.Phone.Shell;
@@ -24,6 +26,7 @@ namespace Fuel.Viewmodel
         #region properties
         private const string PeriodicTaskName = "UpdateVikingTile";
         private PeriodicTask _periodicTask;
+        private readonly FuelDatabase _fuelDb = new FuelDatabase();
 
         private IEnumerable<Sim> _sims;
         public IEnumerable<Sim> Sims
@@ -123,9 +126,14 @@ namespace Fuel.Viewmodel
             OnGetBalanceInfoFinished(args);
         }
 
-        public async Task<bool> GetSimInfo()
+        public async Task<bool> GetSimInfo(bool force = false)
         {
             Tools.Tools.SetProgressIndicator(true);
+            if (CheckForSimsInDb() && !force)
+            {
+                OnGetSimInfoFinished(new GetInfoCompletedArgs());
+                return true;
+            }
             SystemTray.ProgressIndicator.Text = AppResources.ProgressLoadingSims;
             using (var client = new VikingsApi())
             {
@@ -138,7 +146,16 @@ namespace Fuel.Viewmodel
                     }
                 };
                 await client.GetInfo(new AccessToken((string)IsolatedStorageSettings.ApplicationSettings["tokenKey"], (string)IsolatedStorageSettings.ApplicationSettings["tokenSecret"]), client.Sim, new KeyValuePair { Content = "1", Name = "alias" }, Cts);
-            }return true;
+            }
+            return true;
+        }
+
+        private bool CheckForSimsInDb()
+        {
+            if (!_fuelDb.Sims.Any())
+                return false;
+            Sims = _fuelDb.Sims;
+            return true;
         }
 
         void client_GetSimInfoFinished(object sender, GetInfoCompletedArgs args)
@@ -154,6 +171,7 @@ namespace Fuel.Viewmodel
                     try
                     {
                         Sims = JsonConvert.DeserializeObject<Sim[]>(args.Json);
+                        _fuelDb.AddSims(Sims);
                     }
                     catch (Exception)
                     {
