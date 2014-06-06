@@ -183,6 +183,7 @@
                         <TextBlock Text="{Binding Path=LocalizedResources.ChangeLog206_2, Source={StaticResource LocalizedStrings}}" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
                         <TextBlock Text="{Binding Path=LocalizedResources.ChangeLog206_3, Source={StaticResource LocalizedStrings}}" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
                         <TextBlock Text="{Binding Path=LocalizedResources.ChangeLog206_4, Source={StaticResource LocalizedStrings}}" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
+                        <TextBlock Text="{Binding Path=LocalizedResources.ChangeLog206_5, Source={StaticResource LocalizedStrings}}" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
                         <TextBlock Text="2.0.5" FontSize="{StaticResource PhoneFontSizeLarge}" Margin="0,5,0,2"/>
                         <TextBlock Text="{Binding Path=LocalizedResources.ChangeLog205_1, Source={StaticResource LocalizedStrings}}" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>
                         <TextBlock Text="{Binding Path=LocalizedResources.ChangeLog205_2, Source={StaticResource LocalizedStrings}}" Margin="7,0,0,0" FontSize="{StaticResource PhoneFontSizeSmall}" FontWeight="Light"/>

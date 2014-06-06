@@ -514,6 +514,15 @@ namespace Fuel.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to • app remembers SIM numbers.
+        /// </summary>
+        public static string ChangeLog206_5 {
+            get {
+                return ResourceManager.GetString("ChangeLog206_5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to by.
         /// </summary>
         public static string ConverterBy {

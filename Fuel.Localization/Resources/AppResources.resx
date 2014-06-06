@@ -526,4 +526,7 @@
   <data name="AppBarMenuReloadSims" xml:space="preserve">
     <value>reload sim list</value>
   </data>
+  <data name="ChangeLog206_5" xml:space="preserve">
+    <value>• app remembers SIM numbers</value>
+  </data>
 </root>
