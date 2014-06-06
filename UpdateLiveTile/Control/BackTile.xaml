@@ -9,7 +9,7 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     Background="{StaticResource TransparentBrush}"
     d:DesignHeight="336" d:DesignWidth="336">
-    
+
     <UserControl.Resources>
         <Style TargetType="TextBlock" x:Key="TextStyle">
             <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -17,20 +17,29 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="FontSize" Value="47"/>
             <Setter Property="TextAlignment" Value="Left"/>
-            <Setter Property="FontWeight" Value="Normal"/>
-            <Setter Property="Text" Value="testest"></Setter>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <!--<Setter Property="Text" Value="testest"></Setter>-->
             <Setter Property="Foreground" Value="White"></Setter>
         </Style>
     </UserControl.Resources>
 
-    <Grid x:Name="MainGrid" Background="{StaticResource TransparentBrush}">
-        <StackPanel Margin="0,4,0,0">
-            <TextBlock x:Name="Credit" Style="{StaticResource TextStyle}" />
-            <TextBlock x:Name="Data" Style="{StaticResource TextStyle}" />
-            <TextBlock x:Name="Sms" Style="{StaticResource TextStyle}"/>
-            <TextBlock x:Name="VSms" Style="{StaticResource TextStyle}" />
-            <TextBlock x:Name="VCall" Style="{StaticResource TextStyle}" />
-        </StackPanel>
-
+    <Grid x:Name="MainGrid" Background="{StaticResource TransparentBrush}" Margin="0,28,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" x:Name="Credit" Style="{StaticResource TextStyle}" />
+        <TextBlock Grid.Row="1" x:Name="Data" Style="{StaticResource TextStyle}" />
+        <TextBlock Grid.Row="2" x:Name="Sms" Style="{StaticResource TextStyle}"/>
+        <TextBlock Grid.Row="3" x:Name="VSms" Style="{StaticResource TextStyle}" />
+        <TextBlock Grid.Row="4" x:Name="VCall" Style="{StaticResource TextStyle}" />
+        <TextBlock Grid.Row="0" Style="{StaticResource TextStyle}" HorizontalAlignment="Right" Margin="13,0,13,-10" Text="Euro"/>
+        <TextBlock Grid.Row="1" Style="{StaticResource TextStyle}" HorizontalAlignment="Right" Margin="13,0,13,-10" Text="MB"/>
+        <TextBlock Grid.Row="2" Style="{StaticResource TextStyle}" HorizontalAlignment="Right" Margin="13,0,13,-10" Text="SMS"/>
+        <TextBlock Grid.Row="3" Style="{StaticResource TextStyle}" HorizontalAlignment="Right" Margin="13,0,13,-10" Text="vSMS"/>
+        <TextBlock Grid.Row="4" Style="{StaticResource TextStyle}" HorizontalAlignment="Right" Margin="13,0,13,-10" Text="vCall"/>
     </Grid>
 </UserControl>

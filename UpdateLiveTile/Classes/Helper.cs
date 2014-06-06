@@ -92,7 +92,9 @@ namespace UpdateLiveTile.Classes
             var newTile = new FlipTileData
             {
                 Count = 0,
-                BackContent = string.Empty
+                BackContent = string.Empty,
+                Title = string.Empty,
+                BackTitle = string.Empty
             };
             switch (tile)
             {

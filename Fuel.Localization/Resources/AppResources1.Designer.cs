@@ -487,6 +487,15 @@ namespace Fuel.Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to • improved layout for live tile (back).
+        /// </summary>
+        public static string ChangeLog206_4 {
+            get {
+                return ResourceManager.GetString("ChangeLog206_4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to by.
         /// </summary>
         public static string ConverterBy {

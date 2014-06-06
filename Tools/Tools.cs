@@ -123,7 +123,9 @@ namespace Tools
             {
                 BackgroundImage = new Uri(frontImageUri, UriKind.Relative),
                 BackBackgroundImage = new Uri(backImageUri, UriKind.Relative),
-                SmallBackgroundImage = new Uri(smallBackImageUri, UriKind.Relative)
+                SmallBackgroundImage = new Uri(smallBackImageUri, UriKind.Relative),
+                Title = string.Empty,
+                BackTitle = string.Empty
             };
             var firstOrDefault = ShellTile.ActiveTiles.FirstOrDefault();
             if (firstOrDefault != null)

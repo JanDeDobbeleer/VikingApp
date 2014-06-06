@@ -517,4 +517,7 @@
   <data name="ChangeLog206_3" xml:space="preserve">
     <value>• fixes for accounts with multiple sims</value>
   </data>
+  <data name="ChangeLog206_4" xml:space="preserve">
+    <value>• improved layout for live tile (back)</value>
+  </data>
 </root>
