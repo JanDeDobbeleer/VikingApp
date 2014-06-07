@@ -109,10 +109,10 @@ namespace Tools
             UpdateLiveTile();
         }
 
-        public static void UpdateLiveTile()
+        public static void UpdateLiveTile(bool foreground = true)
         {
             var update = new UpdateLiveTile.UpdateLiveTile();
-            update.Start(true);
+            update.Start(foreground);
         }
 
 

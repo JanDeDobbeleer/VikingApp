@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO.IsolatedStorage;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,6 +14,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
 using Tools;
+using VikingApi.AppClasses;
 using VikingApi.Json;
 using GestureEventArgs = System.Windows.Input.GestureEventArgs;
 
@@ -23,6 +25,7 @@ namespace Fuel.View
         private bool _isLoginControlEnabled;
         private bool _loading;
         private bool _simListOpen;
+        private bool _new;
 
         public MainPivot()
         {
@@ -119,6 +122,7 @@ namespace Fuel.View
         #region startup
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            _new = e.NavigationMode == NavigationMode.New;
             ApplicationBar.MenuItems.Clear();
             if ((bool)IsolatedStorageSettings.ApplicationSettings["topup"])
             {
@@ -171,9 +175,17 @@ namespace Fuel.View
                 }
                 if (string.IsNullOrEmpty((string)IsolatedStorageSettings.ApplicationSettings["sim"]))
                     IsolatedStorageSettings.ApplicationSettings["sim"] = SimBox.Text;
-                App.Viewmodel.MainPivotViewmodel.StartPeriodicAgent();
+                //App.Viewmodel.MainPivotViewmodel.StartPeriodicAgent();
                 App.Viewmodel.MainPivotViewmodel.RenewToken();
-                await App.Viewmodel.MainPivotViewmodel.GetData(SimBox.Text);
+                if (IsolatedStorageSettings.ApplicationSettings.Contains("data") && !_new)
+                {
+                    App.Viewmodel.MainPivotViewmodel.Balance = (UserBalance) IsolatedStorageSettings.ApplicationSettings["data"];
+                    Bundle.Visibility = Visibility.Visible;
+                    Bonus.Visibility = Visibility.Visible;
+                    Tools.Tools.SetProgressIndicator(false);
+                }
+                if(_new)
+                    await App.Viewmodel.MainPivotViewmodel.GetData(SimBox.Text);
             }
             else if (!args.Canceled)
             {
@@ -182,13 +194,18 @@ namespace Fuel.View
             _loading = false;
         }
 
-        void MainPivotViewmodel_GetBalanceInfoFinished(object sender, VikingApi.ApiTools.GetInfoCompletedArgs args)
+        async void MainPivotViewmodel_GetBalanceInfoFinished(object sender, VikingApi.ApiTools.GetInfoCompletedArgs args)
         {
             if (!args.Canceled)
             {
                 Bundle.Visibility = Visibility.Visible;
                 Bonus.Visibility = Visibility.Visible;
                 Loading.Begin();
+                await Task.Run(() =>
+                {
+                    Thread.Sleep(1000);
+                    Tools.Tools.UpdateLiveTile(false);
+                });
             }
             if ((bool)IsolatedStorageSettings.ApplicationSettings["login"])
                 IsolatedStorageSettings.ApplicationSettings["login"] = false;

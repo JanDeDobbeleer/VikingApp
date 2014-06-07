@@ -47,8 +47,6 @@ namespace Fuel.Viewmodel
             get { return _balance; }
             set
             {
-                if (value.Equals(_balance))
-                    return;
                 _balance = value;
                 OnPropertyChanged();
             }
@@ -114,6 +112,7 @@ namespace Fuel.Viewmodel
                     try
                     {
                         Balance.Load(args.Json);
+                        IsolatedStorageSettings.ApplicationSettings["data"] = Balance;
                     }
                     catch (Exception)
                     {
@@ -240,8 +239,6 @@ namespace Fuel.Viewmodel
             {
                 // No user action required.
             }
-            //update tile right now
-            Tools.Tools.UpdateLiveTile();
         }
     }
 }
