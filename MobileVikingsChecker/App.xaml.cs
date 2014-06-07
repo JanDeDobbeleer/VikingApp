@@ -55,19 +55,22 @@ namespace Fuel
             }
 
             //Create new Viewmodel
-            Viewmodel = new MainViewmodel();
+            
             // Specify the local database connection string.
             const string dbConnectionString = "Data Source=isostore:/Database.sdf";
 
             // Create the database if it does not exist.
             using (var db = new FuelDataContext(dbConnectionString))
             {
-                if (db.DatabaseExists())
-                    return;
-                db.CreateDatabase();
-                // Save categories to the database.
-                db.SubmitChanges();
+                if (!db.DatabaseExists())
+                {
+                    db.CreateDatabase();
+                    // Save categories to the database.
+                    db.SubmitChanges();
+                }
             }
+
+            Viewmodel = new MainViewmodel();
         }
 
         /// <summary>

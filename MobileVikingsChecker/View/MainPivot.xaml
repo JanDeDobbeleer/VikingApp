@@ -54,7 +54,7 @@
                         <TextBlock FontSize="{StaticResource PhoneFontSizeExtraLarge}"
                                    HorizontalAlignment="Center"
                                    Margin="0,20,0,0"
-                                   Text="{Binding msisdn}"/>
+                                   Text="{Binding Msisdn}"/>
                     </DataTemplate>
                 </Setter.Value>
             </Setter>

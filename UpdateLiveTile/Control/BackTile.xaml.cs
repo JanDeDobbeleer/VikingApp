@@ -20,6 +20,17 @@ namespace UpdateLiveTile.Control
             VCall.Text = vCall;
         }
 
+        public BackTile(SolidColorBrush background, string credit)
+        {
+            InitializeComponent();
+            MainGrid.Background = background;
+            Credit.Text = credit;
+            Right2.Text = string.Empty;
+            Right3.Text = string.Empty;
+            Right4.Text = string.Empty;
+            Right5.Text = string.Empty;
+        }
+
         public static void SaveTile(bool failed, UserBalance balance, string backcontent)
         {
             var i = 0;
@@ -34,7 +45,14 @@ namespace UpdateLiveTile.Control
                     if (failed)
                     {
                         customBackTile = new BackTile(color, backcontent, string.Empty, string.Empty, string.Empty,
-                            string.Empty);
+                            string.Empty)
+                        {
+                            Right1 = {Text = string.Empty},
+                            Right2 = {Text = string.Empty},
+                            Right3 = {Text = string.Empty},
+                            Right4 = {Text = string.Empty},
+                            Right5 = {Text = string.Empty}
+                        };
                     }
                     else if (balance.Data != null)
                     {
@@ -43,7 +61,7 @@ namespace UpdateLiveTile.Control
                     }
                     else
                     {
-                        customBackTile = new BackTile(color, balance.Credit, "0", "0", string.IsNullOrWhiteSpace(balance.VikingMinutes) ? "0" : balance.VikingMinutes, "0");
+                        customBackTile = new BackTile(color, balance.Credit);
                     }
                     if (!Helper.SaveElement(customBackTile, Tile.Back))
                     {

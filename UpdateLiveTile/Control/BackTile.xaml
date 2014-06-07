@@ -23,7 +23,7 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid x:Name="MainGrid" Background="{StaticResource TransparentBrush}" Margin="0,28,0,0">
+    <Grid x:Name="MainGrid" Background="{StaticResource TransparentBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -31,15 +31,15 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" x:Name="Credit" Style="{StaticResource TextStyle}" />
+        <TextBlock Grid.Row="0" x:Name="Credit" Style="{StaticResource TextStyle}" Margin="13,28,0,-10"/>
         <TextBlock Grid.Row="1" x:Name="Data" Style="{StaticResource TextStyle}" />
         <TextBlock Grid.Row="2" x:Name="Sms" Style="{StaticResource TextStyle}"/>
         <TextBlock Grid.Row="3" x:Name="VSms" Style="{StaticResource TextStyle}" />
         <TextBlock Grid.Row="4" x:Name="VCall" Style="{StaticResource TextStyle}" />
-        <TextBlock Grid.Row="0" Style="{StaticResource TextStyle}" HorizontalAlignment="Right" Margin="13,0,13,-10" Text="Euro"/>
-        <TextBlock Grid.Row="1" Style="{StaticResource TextStyle}" HorizontalAlignment="Right" Margin="13,0,13,-10" Text="MB"/>
-        <TextBlock Grid.Row="2" Style="{StaticResource TextStyle}" HorizontalAlignment="Right" Margin="13,0,13,-10" Text="SMS"/>
-        <TextBlock Grid.Row="3" Style="{StaticResource TextStyle}" HorizontalAlignment="Right" Margin="13,0,13,-10" Text="vSMS"/>
-        <TextBlock Grid.Row="4" Style="{StaticResource TextStyle}" HorizontalAlignment="Right" Margin="13,0,13,-10" Text="vCall"/>
+        <TextBlock Grid.Row="0" x:Name="Right1" Style="{StaticResource TextStyle}" HorizontalAlignment="Right" Margin="13,28,13,-10" Text="Euro"/>
+        <TextBlock Grid.Row="1" x:Name="Right2" Style="{StaticResource TextStyle}" HorizontalAlignment="Right" Margin="13,0,13,-10" Text="MB"/>
+        <TextBlock Grid.Row="2" x:Name="Right3" Style="{StaticResource TextStyle}" HorizontalAlignment="Right" Margin="13,0,13,-10" Text="SMS"/>
+        <TextBlock Grid.Row="3" x:Name="Right4" Style="{StaticResource TextStyle}" HorizontalAlignment="Right" Margin="13,0,13,-10" Text="vSMS"/>
+        <TextBlock Grid.Row="4" x:Name="Right5" Style="{StaticResource TextStyle}" HorizontalAlignment="Right" Margin="13,0,13,-10" Text="vCall"/>
     </Grid>
 </UserControl>
