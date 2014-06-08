@@ -175,17 +175,26 @@ namespace Fuel.View
                 }
                 if (string.IsNullOrEmpty((string)IsolatedStorageSettings.ApplicationSettings["sim"]))
                     IsolatedStorageSettings.ApplicationSettings["sim"] = SimBox.Text;
-                //App.Viewmodel.MainPivotViewmodel.StartPeriodicAgent();
                 App.Viewmodel.MainPivotViewmodel.RenewToken();
                 if (IsolatedStorageSettings.ApplicationSettings.Contains("data") && !_new)
                 {
-                    App.Viewmodel.MainPivotViewmodel.Balance = (UserBalance) IsolatedStorageSettings.ApplicationSettings["data"];
-                    Bundle.Visibility = Visibility.Visible;
-                    Bonus.Visibility = Visibility.Visible;
-                    Tools.Tools.SetProgressIndicator(false);
+                    var data = IsolatedStorageSettings.ApplicationSettings["data"] as UserBalance;
+                    if (data != null)
+                    {
+                        App.Viewmodel.MainPivotViewmodel.Balance = data;
+                        Bundle.Visibility = Visibility.Visible;
+                        Bonus.Visibility = Visibility.Visible;
+                        Tools.Tools.SetProgressIndicator(false);
+                    }
+                    else
+                    {
+                        await App.Viewmodel.MainPivotViewmodel.GetData(SimBox.Text);
+                    }
                 }
-                if(_new)
+                else
+                {
                     await App.Viewmodel.MainPivotViewmodel.GetData(SimBox.Text);
+                }
             }
             else if (!args.Canceled)
             {
