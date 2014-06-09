@@ -9,6 +9,7 @@
     xmlns:controls="clr-namespace:Fuel.Controls"
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     xmlns:ei="clr-namespace:Microsoft.Expression.Interactivity.Media;assembly=Microsoft.Expression.Interactions"
+    xmlns:c="clr-namespace:Fuel.Common"
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -17,6 +18,7 @@
     shell:SystemTray.IsVisible="True">
 
     <phone:PhoneApplicationPage.Resources>
+        <c:SimColorConverter x:Key="SimColorConverter"/>
         <Style x:Key="ContentTextStyle" TargetType="TextBlock">
             <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMediumLarge}" />
             <Setter Property="Foreground" Value="{StaticResource PhoneForegroundBrush}" />
@@ -44,6 +46,7 @@
             <Setter Property="Height" Value="20" />
             <Setter Property="Width" Value="20" />
         </Style>
+        
         <Style x:Key="SimListStyle" TargetType="phone:LongListSelector">
             <Setter Property="Margin" Value="12,70,0,0"/>
             <Setter Property="ListHeader" Value="sims"/>

@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.Windows.Data;
 using Fuel.Localization.Resources;
-using VikingApi.Json;
 
 namespace Fuel.Common
 {

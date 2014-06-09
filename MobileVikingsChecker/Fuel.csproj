@@ -104,6 +104,7 @@
     <Compile Include="Common\MethodConverter.cs" />
     <Compile Include="Common\NameConverter.cs" />
     <Compile Include="Common\PricesConverter.cs" />
+    <Compile Include="Common\SimColorConverter.cs" />
     <Compile Include="Common\TimestampConverter.cs" />
     <Compile Include="Common\UsageColorConverter.cs" />
     <Compile Include="Common\UsageImageConverter.cs" />
@@ -175,7 +176,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Properties\AppManifest.xml" />
+    <None Include="Properties\AppManifest.xml">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\WMAppManifest.xml">
       <SubType>Designer</SubType>
     </None>
