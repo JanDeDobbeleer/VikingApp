@@ -18,7 +18,6 @@
     shell:SystemTray.IsVisible="True">
 
     <phone:PhoneApplicationPage.Resources>
-        <c:SimColorConverter x:Key="SimColorConverter"/>
         <Style x:Key="ContentTextStyle" TargetType="TextBlock">
             <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMediumLarge}" />
             <Setter Property="Foreground" Value="{StaticResource PhoneForegroundBrush}" />

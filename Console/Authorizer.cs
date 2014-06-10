@@ -17,8 +17,6 @@ namespace Console
 
         private const string AuthorizeTokenUrl = BaseUrl + "authorize/";
 
-        private string code;
-
         public Authorizer()
         {
             
