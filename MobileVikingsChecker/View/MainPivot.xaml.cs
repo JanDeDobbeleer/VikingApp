@@ -34,6 +34,7 @@ namespace Fuel.View
             DataContext = App.Viewmodel.MainPivotViewmodel.Balance;
             App.Viewmodel.MainPivotViewmodel.GetBalanceInfoFinished += MainPivotViewmodel_GetBalanceInfoFinished;
             App.Viewmodel.MainPivotViewmodel.GetSimInfoFinished += MainPivotViewmodel_GetSimInfoFinished;
+            App.Viewmodel.MainPivotViewmodel.StartPeriodicAgent();
         }
 
         #region buttons
